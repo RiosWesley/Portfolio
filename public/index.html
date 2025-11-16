@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wesley Rios - Developer Portfolio</title>
+    <title>Wesley Rios - Portfólio de Desenvolvedor</title>
     
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -58,10 +58,14 @@
     <style>
         /* Base styles */
         body {
-            background-color: #0a041a;
+            background-color: transparent;
             color: #e0e0e0;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+        }
+        
+        html {
+            background-color: #0a041a;
         }
 
         /* Subtle Grainy Noise Overlay */
@@ -91,21 +95,44 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0;
+            opacity: 1;
             transition: opacity 1s ease-in;
+            pointer-events: none;
         }
 
         /* Bento Card Style */
         .bento-card {
             position: relative;
-            background: rgba(10, 4, 26, 0.6); 
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(10, 4, 26, 0.4), rgba(10, 4, 26, 0.2));
+            backdrop-filter: blur(5px) saturate(200%);
+            -webkit-backdrop-filter: blur(5px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 1rem;
             padding: 1.5rem;
-            overflow: hidden; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+        
+        /* Glassmorphism inner glow */
+        .bento-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 1rem;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 2;
         }
 
         /* Spotlight Effect */
@@ -120,31 +147,36 @@
             transform: translate(-50%, -50%);
             transition: left 0.1s linear, top 0.1s linear, opacity 0.3s;
             opacity: 0;
-            z-index: 1;
+            z-index: 0;
             pointer-events: none;
         }
         .bento-card:hover::before { opacity: 1; }
         .bento-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, rgba(10, 4, 26, 0.5), rgba(10, 4, 26, 0.3));
         }
         .bento-card > * { position: relative; z-index: 2; }
 
         /* Scroll-Reveal Animation */
         .fade-in-section {
-            opacity: 0;
+            opacity: 1;
             transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: transform 0.6s ease-out;
         }
-        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+        .fade-in-section.is-visible { transform: translateY(0); }
         
         /* Staggered animation for bento grid */
-        .bento-grid.is-visible .bento-card { opacity: 1; transform: translateY(0); }
+        .bento-grid.is-visible .bento-card { transform: translateY(0); }
         .bento-grid .bento-card {
-            opacity: 0;
+            opacity: 1;
             transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: transform 0.6s ease-out;
         }
         /* Stagger delays */
         .bento-grid.is-visible .bento-card:nth-child(1) { transition-delay: 0.1s; }
@@ -173,10 +205,10 @@
         /* Tech Stack Item Style */
         .tech-item {
             flex-shrink: 0; /* Prevents squishing */
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 4, 26, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 0.75rem;
             padding: 1rem 1.5rem; /* Made larger */
             display: flex;
@@ -186,8 +218,8 @@
             cursor: default;
         }
         .tech-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(10, 4, 26, 0.85);
+            border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
         
@@ -260,15 +292,15 @@
         /* Project Card Icon Tag */
         .project-icon-tag {
             @apply inline-flex items-center justify-center w-10 h-10 rounded-full;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 4, 26, 0.5);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             transition: all 0.3s ease;
         }
         .project-icon-tag:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(10, 4, 26, 0.7);
+            border-color: rgba(255, 255, 255, 0.3);
             transform: scale(1.1);
         }
         /* Style for new icons that DON'T have a brand color */
@@ -290,15 +322,15 @@
             
             <!-- Desktop Nav -->
             <nav class="hidden md:flex items-center space-x-6">
-                <a href="#about" class="font-mono text-sm text-light-text hover:text-primary transition-colors">About</a>
-                <a href="#projects" class="font-mono text-sm text-light-text hover:text-primary transition-colors">Projects</a>
-                <a href="#services" class="font-mono text-sm text-light-text hover:text-primary transition-colors">Services</a>
-                <a href="#contact" class="font-mono text-sm text-light-text hover:text-primary transition-colors">Contact</a>
+                <a href="#about" class="font-mono text-sm text-light-text hover:text-primary transition-colors">Sobre</a>
+                <a href="#projects" class="font-mono text-sm text-light-text hover:text-primary transition-colors">Projetos</a>
+                <a href="#services" class="font-mono text-sm text-light-text hover:text-primary transition-colors">Serviços</a>
+                <a href="#contact" class="font-mono text-sm text-light-text hover:text-primary transition-colors">Contato</a>
             </nav>
             
             <!-- Mobile Menu Button -->
             <button id="menu-toggle-btn" class="md:hidden z-50 p-2 -mr-2">
-                <span class="sr-only">Open menu</span>
+                <span class="sr-only">Abrir menu</span>
                 <div class="w-6 h-6 flex flex-col justify-around">
                     <span class="hamburger-line hamburger-line-1 block w-full h-0.5 bg-heading rounded-full"></span>
                     <span class="hamburger-line hamburger-line-2 block w-full h-0.5 bg-heading rounded-full"></span>
@@ -311,10 +343,10 @@
     <!-- ===== MOBILE MENU OVERLAY ===== -->
     <div id="mobile-menu">
         <div class="flex flex-col items-center justify-center h-full space-y-8">
-            <a href="#about" class="mobile-menu-link font-mono text-3xl text-heading">About</a>
-            <a href="#projects" class="mobile-menu-link font-mono text-3xl text-heading">Projects</a>
-            <a href="#services" class="mobile-menu-link font-mono text-3xl text-heading">Services</a>
-            <a href="#contact" class="mobile-menu-link font-mono text-3xl text-heading">Contact</a>
+            <a href="#about" class="mobile-menu-link font-mono text-3xl text-heading">Sobre</a>
+            <a href="#projects" class="mobile-menu-link font-mono text-3xl text-heading">Projetos</a>
+            <a href="#services" class="mobile-menu-link font-mono text-3xl text-heading">Serviços</a>
+            <a href="#contact" class="mobile-menu-link font-mono text-3xl text-heading">Contato</a>
         </div>
     </div>
 
@@ -334,7 +366,7 @@
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                             </span>
-                            Available for new projects
+                            Disponível para novos projetos
                         </div>
                     </div>
         
@@ -342,19 +374,19 @@
                         Wesley Rios
                     </h1>
                     <h2 class="text-2xl md:text-4xl font-light text-gradient opacity-0 animate-fade-up font-mono" style="animation-delay: 0.6s;">
-                        Developer & Tech Innovator
+                        Desenvolvedor & Inovador em Tecnologia
                     </h2>
                     <p class="mt-6 text-lg md:text-xl text-light-text max-w-xl mx-auto md:mx-0 opacity-0 animate-fade-up font-serif leading-relaxed" style="animation-delay: 0.8s;">
-                        Crafting modern, product-focused web applications with a strong command of frontend, serverless, and user experience.
+                        Criando aplicações web modernas e focadas em produto com domínio sólido de frontend, serverless e experiência do usuário.
                     </p>
                 </div>
                 
                 <!-- Photo Content -->
                 <div class="md:w-2/5 flex justify-center opacity-0 animate-fade-up" style="animation-delay: 0.5s;">
                     <div class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 relative">
-                        <!-- Placeholder Image -->
-                        <img src="https://placehold.co/400x400/8a2be2/ffffff?text=WR&font=roboto" 
-                             alt="Wesley Rios Placeholder" 
+                        <!-- Profile Photo -->
+                        <img src="images/profile-photo.jpg" 
+                             alt="Foto de perfil de Wesley Rios" 
                              class="rounded-full w-full h-full object-cover border-4 border-primary/50 shadow-2xl shadow-primary/20">
                         <!-- Orbiting 'glow' element -->
                         <div class="absolute inset-0 border-2 border-primary-light/30 rounded-full animate-spin-slow" style="animation-duration: 8s;"></div>
@@ -406,14 +438,14 @@
         <section id="about" class="my-24 fade-in-section">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 font-mono">
                 <span class="text-primary-light/50">[</span>
-                <span class="text-gradient">About Me</span>
+                <span class="text-gradient">Sobre Mim</span>
                 <span class="text-primary-light/50">]</span>
             </h2>
             <div class="bento-card">
                 <p class="text-lg text-light-text font-serif leading-relaxed">
                     <!-- Drop Cap and text styling -->
-                    <span class="text-5xl font-bold text-primary float-left mr-3">I</span>
-                    am a product-focused developer specializing in modern web technologies. With a strong command of the <span class="text-highlight">React ecosystem</span>, <span class="text-highlight">Next.js</span>, and serverless backends on <span class="text-highlight">Firebase</span>, I build scalable, high-performance applications from the ground up. My expertise includes everything from advanced frontend componentization and <span class="text-highlight">mobile-first design</span> to complex integrations with payment APIs (<span class="text-highlight">Mercado Pago</span>) and <span class="text-highlight">AI (Google Gemini)</span>. I thrive on tackling challenges and transforming ideas into secure, efficient, and user-friendly digital experiences.
+                    <span class="text-5xl font-bold text-primary float-left mr-3">S</span>
+                    ou um desenvolvedor focado em produto, especializado em tecnologias web modernas. Com domínio sólido do <span class="text-highlight">ecossistema React</span>, <span class="text-highlight">Next.js</span> e backends serverless no <span class="text-highlight">Firebase</span>, construo aplicações escaláveis e de alto desempenho do zero. Minha expertise inclui desde componentização avançada de frontend e <span class="text-highlight">design mobile-first</span> até integrações complexas com APIs de pagamento (<span class="text-highlight">Mercado Pago</span>) e <span class="text-highlight">IA (Google Gemini)</span>. Tenho paixão por enfrentar desafios e transformar ideias em experiências digitais seguras, eficientes e amigáveis ao usuário.
                 </p>
             </div>
         </section>
@@ -423,7 +455,7 @@
         <section id="projects" class="my-24">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 font-mono fade-in-section">
                 <span class="text-primary-light/50">[</span>
-                <span class="text-gradient">Projects & Principles</span>
+                <span class="text-gradient">Projetos & Princípios</span>
                 <span class="text-primary-light/50">]</span>
             </h2>
             
@@ -432,28 +464,48 @@
                 <div class="bento-card md:col-span-2 md:row-span-2">
                     <h3 class="text-2xl font-semibold text-heading mb-3 font-mono">ZeroGasto</h3>
                     <p class="text-light-text mb-4 font-serif leading-relaxed">
-                        A personal finance management app with dashboards, goal tracking, and interactive reports. Mobile-first design with a focus on accessible UX and automatic categorization.
+                        Um aplicativo de gestão financeira pessoal com dashboards, acompanhamento de metas e relatórios interativos. Design mobile-first com foco em UX acessível e categorização automática.
                     </p>
                     <div class="w-full h-32 bg-primary/10 rounded-lg border border-primary-light/20 flex items-center justify-center text-primary-light/50">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     </div>
-                    <!-- Icon-based tags (NEW) -->
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <div class="project-tech-tag">
-                            <svg class="text-[#61DAFB]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 6.5c-3.033 0-5.5 2.467-5.5 5.5s2.467 5.5 5.5 5.5 5.5-2.467 5.5-5.5-2.467-5.5-5.5-5.5zm0 9c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(150 12 12)"/></svg>
-                            <span>React</span>
-                        </div>
-                        <div class="project-tech-tag">
-                            <svg class="text-[#FFA000]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg>
-                            <span>Firebase</span>
-                        </div>
-                        <div class="project-tech-tag">
-                            <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
-                            <span>Recharts</span>
-                        </div>
-                        <div class="project-tech-tag">
-                            <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                            <span>Mobile-First</span>
+                    <!-- Icon-based tags (NEW) with carousel animation -->
+                    <div class="overflow-hidden mt-4 [mask-image:_linear-gradient(to_right,transparent_0,_black_10%,_black_90%,transparent_100%)]">
+                        <div class="flex animate-scroll-tech">
+                            <!-- List 1 -->
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="text-[#61DAFB]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 6.5c-3.033 0-5.5 2.467-5.5 5.5s2.467 5.5 5.5 5.5 5.5-2.467 5.5-5.5-2.467-5.5-5.5-5.5zm0 9c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(150 12 12)"/></svg>
+                                <span>React</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="text-[#FFA000]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg>
+                                <span>Firebase</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
+                                <span>Recharts</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                <span>Mobile-First</span>
+                            </div>
+                            <!-- List 2 (Duplicate for seamless loop) -->
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="text-[#61DAFB]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 6.5c-3.033 0-5.5 2.467-5.5 5.5s2.467 5.5 5.5 5.5 5.5-2.467 5.5-5.5-2.467-5.5-5.5-5.5zm0 9c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(150 12 12)"/></svg>
+                                <span>React</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="text-[#FFA000]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg>
+                                <span>Firebase</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
+                                <span>Recharts</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                <span>Mobile-First</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -462,24 +514,40 @@
                 <div class="bento-card md:row-span-2">
                     <h3 class="text-2xl font-semibold text-heading mb-3 font-mono">HoroscopoZap</h3>
                     <p class="text-light-text mb-4 font-serif leading-relaxed">
-                        WhatsApp chat analysis WebApp using NLP and AI for sentiment analysis. Scalable backend on Firebase Functions with payment integration.
+                        WebApp de análise de conversas do WhatsApp usando NLP e IA para análise de sentimento. Backend escalável em Firebase Functions com integração de pagamento.
                     </p>
                     <div class="w-full h-32 bg-primary/10 rounded-lg border border-primary-light/20 flex items-center justify-center text-primary-light/50">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" /><path stroke-linecap="round" stroke-linejoin="round" d="M7.41 8.586l-2.828 2.828a1 1 0 000 1.414l2.828 2.828M12 5v.01M12 8v.01M12 11v.01M12 14v.01" /></svg>
                     </div>
-                    <!-- Icon-based tags (NEW) -->
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <div class="project-tech-tag">
-                            <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 11.25a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zM12 18a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 0112 18zM15.362 5.214a.75.75 0 01-.062 1.06l-1.5 1.5a.75.75 0 11-1.06-1.06l1.5-1.5a.75.75 0 011.06.062zM6.5 6.5a.75.75 0 000 1.06l1.5 1.5a.75.75 0 001.06-1.06l-1.5-1.5a.75.75 0 00-1.06 0zM18 11.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM4.5 11.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM15.362 17.336a.75.75 0 011.06.062l1.5 1.5a.75.75 0 11-1.06 1.06l-1.5-1.5a.75.75 0 01.062-1.06zM6.5 16.25a.75.75 0 00-1.06.062l-1.5 1.5a.75.75 0 001.06 1.06l1.5-1.5a.75.75 0 00-.062-1.06z"/></svg>
-                            <span>AI / NLP</span>
-                        </div>
-                        <div class="project-tech-tag">
-                            <svg class="text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10s4.5 10 10 10 10-4.49 10-10-4.5-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z"/></svg>
-                            <span>Gemini API</span>
-                        </div>
-                        <div class="project-tech-tag">
-                            <svg class="text-[#00A2FF]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.63 21.84c-1.3 0-2.5-.3-3.6-.9-1.1-.6-2-1.3-2.8-2.3s-1.4-2-1.9-3.2c-.5-1.2-.7-2.4-.7-3.7s.2-2.5.7-3.7c.5-1.2 1.1-2.2 1.9-3.2s1.7-1.8 2.8-2.3c1.1-.6 2.3-.9 3.6-.9 1.2 0 2.3.3 3.3.8 1 .5 1.9 1.2 2.6 2l-2.9 2.1c-.5-.5-1-.9-1.6-1.2-.6-.3-1.3-.5-2-.5-1 0-1.8.3-2.5.8-.7.5-1.2 1.2-1.6 2-.4.8-.6 1.7-.6 2.7s.2 1.9.6 2.7c.4.8 1 1.5 1.6 2 .7.5 1.5.8 2.5.8 1.4 0 2.6-.5 3.6-1.6l2.9 2.1c-.7.8-1.6 1.5-2.6 2-1 .6-2.1.8-3.3.8z"/></svg>
-                            <span>Mercado Pago</span>
+                    <!-- Icon-based tags (NEW) with carousel animation -->
+                    <div class="overflow-hidden mt-4 [mask-image:_linear-gradient(to_right,transparent_0,_black_10%,_black_90%,transparent_100%)]">
+                        <div class="flex animate-scroll-tech">
+                            <!-- List 1 -->
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 11.25a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zM12 18a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 0112 18zM15.362 5.214a.75.75 0 01-.062 1.06l-1.5 1.5a.75.75 0 11-1.06-1.06l1.5-1.5a.75.75 0 011.06.062zM6.5 6.5a.75.75 0 000 1.06l1.5 1.5a.75.75 0 001.06-1.06l-1.5-1.5a.75.75 0 00-1.06 0zM18 11.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM4.5 11.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM15.362 17.336a.75.75 0 011.06.062l1.5 1.5a.75.75 0 11-1.06 1.06l-1.5-1.5a.75.75 0 01.062-1.06zM6.5 16.25a.75.75 0 00-1.06.062l-1.5 1.5a.75.75 0 001.06 1.06l1.5-1.5a.75.75 0 00-.062-1.06z"/></svg>
+                                <span>AI / NLP</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10s4.5 10 10 10 10-4.49 10-10-4.5-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z"/></svg>
+                                <span>Gemini API</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="text-[#00A2FF]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.63 21.84c-1.3 0-2.5-.3-3.6-.9-1.1-.6-2-1.3-2.8-2.3s-1.4-2-1.9-3.2c-.5-1.2-.7-2.4-.7-3.7s.2-2.5.7-3.7c.5-1.2 1.1-2.2 1.9-3.2s1.7-1.8 2.8-2.3c1.1-.6 2.3-.9 3.6-.9 1.2 0 2.3.3 3.3.8 1 .5 1.9 1.2 2.6 2l-2.9 2.1c-.5-.5-1-.9-1.6-1.2-.6-.3-1.3-.5-2-.5-1 0-1.8.3-2.5.8-.7.5-1.2 1.2-1.6 2-.4.8-.6 1.7-.6 2.7s.2 1.9.6 2.7c.4.8 1 1.5 1.6 2 .7.5 1.5.8 2.5.8 1.4 0 2.6-.5 3.6-1.6l2.9 2.1c-.7.8-1.6 1.5-2.6 2-1 .6-2.1.8-3.3.8z"/></svg>
+                                <span>Mercado Pago</span>
+                            </div>
+                            <!-- List 2 (Duplicate for seamless loop) -->
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="icon-default-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 11.25a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zM12 18a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 0112 18zM15.362 5.214a.75.75 0 01-.062 1.06l-1.5 1.5a.75.75 0 11-1.06-1.06l1.5-1.5a.75.75 0 011.06.062zM6.5 6.5a.75.75 0 000 1.06l1.5 1.5a.75.75 0 001.06-1.06l-1.5-1.5a.75.75 0 00-1.06 0zM18 11.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM4.5 11.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM15.362 17.336a.75.75 0 011.06.062l1.5 1.5a.75.75 0 11-1.06 1.06l-1.5-1.5a.75.75 0 01.062-1.06zM6.5 16.25a.75.75 0 00-1.06.062l-1.5 1.5a.75.75 0 001.06 1.06l1.5-1.5a.75.75 0 00-.062-1.06z"/></svg>
+                                <span>AI / NLP</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10s4.5 10 10 10 10-4.49 10-10-4.5-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z"/></svg>
+                                <span>Gemini API</span>
+                            </div>
+                            <div class="project-tech-tag flex-shrink-0 mx-1">
+                                <svg class="text-[#00A2FF]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.63 21.84c-1.3 0-2.5-.3-3.6-.9-1.1-.6-2-1.3-2.8-2.3s-1.4-2-1.9-3.2c-.5-1.2-.7-2.4-.7-3.7s.2-2.5.7-3.7c.5-1.2 1.1-2.2 1.9-3.2s1.7-1.8 2.8-2.3c1.1-.6 2.3-.9 3.6-.9 1.2 0 2.3.3 3.3.8 1 .5 1.9 1.2 2.6 2l-2.9 2.1c-.5-.5-1-.9-1.6-1.2-.6-.3-1.3-.5-2-.5-1 0-1.8.3-2.5.8-.7.5-1.2 1.2-1.6 2-.4.8-.6 1.7-.6 2.7s.2 1.9.6 2.7c.4.8 1 1.5 1.6 2 .7.5 1.5.8 2.5.8 1.4 0 2.6-.5 3.6-1.6l2.9 2.1c-.7.8-1.6 1.5-2.6 2-1 .6-2.1.8-3.3.8z"/></svg>
+                                <span>Mercado Pago</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -487,17 +555,17 @@
                 <!-- Skill 1 -->
                 <div class="bento-card">
                     <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Design & UX</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Mobile-first interfaces, smooth transitions, and modern animations.</p>
+                    <p class="text-light-text text-sm font-serif leading-relaxed">Interfaces mobile-first, transições suaves e animações modernas.</p>
                 </div>
                 <!-- Skill 2 -->
                 <div class="bento-card">
-                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Componentization</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Advanced modular architecture for maximum code reusability.</p>
+                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Componentização</h4>
+                    <p class="text-light-text text-sm font-serif leading-relaxed">Arquitetura modular avançada para máxima reutilização de código.</p>
                 </div>
                 <!-- Skill 3 -->
                 <div class="bento-card">
                     <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Performance</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Constant focus on optimization, from rendering to efficient loading.</p>
+                    <p class="text-light-text text-sm font-serif leading-relaxed">Foco constante em otimização, desde renderização até carregamento eficiente.</p>
                 </div>
             </div>
         </section>
@@ -506,24 +574,24 @@
         <section id="services" class="my-24">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 font-mono fade-in-section">
                 <span class="text-primary-light/50">[</span>
-                <span class="text-gradient">Services</span>
+                <span class="text-gradient">Serviços</span>
                 <span class="text-primary-light/50">]</span>
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bento-grid fade-in-section">
                 <!-- Service 1 -->
                 <div class="bento-card">
-                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Frontend Development</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Building responsive, high-performance UIs with <span class="text-highlight">React</span>, <span class="text-highlight">Next.js</span>, and <span class="text-highlight">Tailwind CSS</span>.</p>
+                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Desenvolvimento Frontend</h4>
+                    <p class="text-light-text text-sm font-serif leading-relaxed">Construindo interfaces responsivas e de alto desempenho com <span class="text-highlight">React</span>, <span class="text-highlight">Next.js</span> e <span class="text-highlight">Tailwind CSS</span>.</p>
                 </div>
                 <!-- Service 2 -->
                 <div class="bento-card">
-                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Serverless Backend</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Scalable backends using <span class="text-highlight">Firebase Functions</span>, <span class="text-highlight">Firestore</span>, and secure auth rules.</p>
+                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Backend Serverless</h4>
+                    <p class="text-light-text text-sm font-serif leading-relaxed">Backends escaláveis usando <span class="text-highlight">Firebase Functions</span>, <span class="text-highlight">Firestore</span> e regras de autenticação seguras.</p>
                 </div>
                 <!-- Service 3 -->
                 <div class="bento-card">
-                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono">API Integration</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Connecting your app to third-party services like <span class="text-highlight">Mercado Pago</span> and <span class="text-highlight">Gemini AI</span>.</p>
+                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Integração de APIs</h4>
+                    <p class="text-light-text text-sm font-serif leading-relaxed">Conectando seu aplicativo a serviços de terceiros como <span class="text-highlight">Mercado Pago</span> e <span class="text-highlight">Gemini AI</span>.</p>
                 </div>
             </div>
         </section>
@@ -533,31 +601,31 @@
         <footer id="contact" class="my-24 text-center fade-in-section">
             <h2 class="text-3xl md:text-4xl font-bold text-gradient mb-4 font-mono">
                 <span class="text-primary-light/50">[</span>
-                Get in Touch
+                Entre em Contato
                 <span class="text-primary-light/50">]</span>
             </h2>
             <p class="text-lg text-light-text mb-8 max-w-lg mx-auto font-serif leading-relaxed">
-                I'm currently available for new projects and open to opportunities.
+                Estou disponível para novos projetos e aberto a oportunidades.
             </p>
             <div class="flex justify-center gap-6">
                 <!-- SVGs are inlined for a single-file solution -->
-                <a href="mailto:wesley.rios@example.com" class="text-gray-400 hover:text-primary transition-colors" aria-label="Email">
+                <a href="mailto:wesley.rios@example.com" class="text-gray-400 hover:text-primary transition-colors" aria-label="E-mail">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                 </a>
-                <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="LinkedIn"> <!-- Replace # with LinkedIn URL -->
+                <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="LinkedIn"> <!-- Substitua # pela URL do LinkedIn -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
                 </a>
-                <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="GitHub"> <!-- Replace # with GitHub URL -->
+                <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="GitHub"> <!-- Substitua # pela URL do GitHub -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.085 8.199-11.386 0-6.627-5.373-12-12-12z" />
                     </svg>
                 </a>
             </div>
-            <p class="text-sm text-gray-500 mt-12 font-mono">&copy; 2025 Wesley Rios. All rights reserved.</p>
+            <p class="text-sm text-gray-500 mt-12 font-mono">&copy; 2025 Wesley Rios. Todos os direitos reservados.</p>
         </footer>
     </main>
 
@@ -573,20 +641,21 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem; /* 8px */
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 4, 26, 0.5);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 0.5rem; /* rounded-md */
             padding: 0.25rem 0.75rem; /* py-1 px-3 */
             font-family: 'Roboto Mono', monospace;
             font-size: 0.75rem; /* 12px */
             color: #e0e0e0;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
         .project-tech-tag:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(10, 4, 26, 0.7);
+            border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
         .project-tech-tag svg {
@@ -695,7 +764,7 @@
                     mobileMenu.classList.toggle('is-open');
                 });
             } else {
-                console.warn('Mobile menu toggle button or menu element not found.');
+                console.warn('Botão de alternância do menu mobile ou elemento do menu não encontrado.');
             }
 
             // --- 6. 3D Background (Three.js) ---
@@ -707,7 +776,7 @@
                     try {
                         scene = new THREE.Scene();
                         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                        camera.position.z = 5;
+                        camera.position.set(0, 0, 3);
 
                         renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
                         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -715,12 +784,14 @@
                         
                         canvas.style.opacity = '1';
 
-                        const geometry = new THREE.IcosahedronGeometry(1.2, 0);
+                        const geometry = new THREE.IcosahedronGeometry(1.5, 2);
                         const material = new THREE.MeshStandardMaterial({
                             color: 0x8a2be2, 
                             wireframe: true,
-                            metalness: 0.5,
-                            roughness: 0.3
+                            metalness: 0.8,
+                            roughness: 0.2,
+                            emissive: 0x4a1a8a,
+                            emissiveIntensity: 0.3
                         });
                         mainObject = new THREE.Mesh(geometry, material);
                         scene.add(mainObject);
@@ -743,21 +814,24 @@
                         particles = new THREE.Points(particleGeometry, particleMaterial);
                         scene.add(particles);
 
-                        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+                        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
                         scene.add(ambientLight);
-                        const pointLight = new THREE.PointLight(0xffffff, 1);
+                        const pointLight = new THREE.PointLight(0xffffff, 1.5);
                         pointLight.position.set(5, 5, 5);
                         scene.add(pointLight);
-                        const pointLight2 = new THREE.PointLight(0x8a2be2, 0.8);
+                        const pointLight2 = new THREE.PointLight(0x8a2be2, 1.2);
                         pointLight2.position.set(-5, -5, -5);
                         scene.add(pointLight2);
+                        const pointLight3 = new THREE.PointLight(0xa78bfa, 0.8);
+                        pointLight3.position.set(0, 5, 0);
+                        scene.add(pointLight3);
 
                         window.addEventListener('resize', onWindowResize);
                         window.addEventListener('scroll', onScroll);
                         animate();
 
                     } catch (error) {
-                        console.error("Failed to initialize 3D scene:", error);
+                        console.error("Falha ao inicializar cena 3D:", error);
                         if(canvas) canvas.style.display = 'none';
                     }
                 }
@@ -780,11 +854,12 @@
                 function onScroll() {
                     const scrollY = window.scrollY;
                     if (camera) {
-                        camera.position.y = -scrollY * 0.003;
-                    }
-                    if (mainObject) {
-                        mainObject.rotation.x = scrollY * 0.0005;
-                        mainObject.rotation.y = scrollY * 0.0005;
+                        const minZ = 3;
+                        const maxZ = 15;
+                        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                        const scrollProgress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
+                        const scrollFactor = scrollProgress * (maxZ - minZ);
+                        camera.position.z = minZ + scrollFactor;
                     }
                 }
 
@@ -806,7 +881,7 @@
                 initThreeJS();
             
             } else {
-                console.warn('3D canvas element not found.');
+                console.warn('Elemento canvas 3D não encontrado.');
             }
         });
     </script>
