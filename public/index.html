@@ -64,11 +64,16 @@
             overflow-x: hidden;
         }
         
+        body.loading {
+            overflow: hidden;
+            height: 100vh;
+        }
+        
         html {
             background-color: #0a041a;
         }
 
-        /* Subtle Grainy Noise Overlay */
+        /* Subtle Grainy Noise Overlay - Frosted Matte Aesthetic */
         body::before {
             content: "";
             position: fixed;
@@ -78,13 +83,23 @@
             height: 100vh;
             pointer-events: none;
             z-index: 9999;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-            opacity: 0.08;
-            animation: grain 8s steps(10) infinite;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+            opacity: 0.18;
+            mix-blend-mode: overlay;
+            animation: grain 12s steps(10) infinite;
         }
         
         @keyframes grain {
-          0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-1%, 1%); } 20% { transform: translate(1%, -1%); } 30% { transform: translate(-1%, 1%); } 40% { transform: translate(1%, -1%); } 50% { transform: translate(-1%, 1%); } 60% { transform: translate(1%, -1%); } 70% { transform: translate(-1%, 1%); } 80% { transform: translate(1%, -1%); } 90% { transform: translate(-1%, 1%); }
+          0%, 100% { transform: translate(0, 0); }
+          10% { transform: translate(-0.5%, -0.5%); }
+          20% { transform: translate(0.5%, 0.5%); }
+          30% { transform: translate(-0.5%, 0.5%); }
+          40% { transform: translate(0.5%, -0.5%); }
+          50% { transform: translate(-0.5%, -0.5%); }
+          60% { transform: translate(0.5%, 0.5%); }
+          70% { transform: translate(-0.5%, 0.5%); }
+          80% { transform: translate(0.5%, -0.5%); }
+          90% { transform: translate(-0.5%, -0.5%); }
         }
 
         /* 3D Background Canvas */
@@ -307,9 +322,201 @@
         .project-icon-tag .icon-default-color {
             @apply w-5 h-5 text-primary-light;
         }
+        
+        /* Loading Screen Styles */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(10, 4, 26, 0.95), rgba(10, 4, 26, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+            visibility: visible;
+        }
+        
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(138, 43, 226, 0.2);
+            border-top-color: #8a2be2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.125rem;
+            color: #a78bfa;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            display: inline-flex;
+            gap: 0.1em;
+            position: relative;
+        }
+        
+        .loading-text .char {
+            display: inline-block;
+            position: relative;
+            min-width: 0.6em;
+            text-align: center;
+        }
+        
+        .loading-text .char.glitching {
+            animation: glitch 0.1s infinite;
+        }
+        
+        .loading-text .char.glitching::before,
+        .loading-text .char.glitching::after {
+            content: attr(data-char);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .loading-text .char.glitching::before {
+            color: #00ffff;
+            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+            transform: translate(-2px, 0);
+            opacity: 0.8;
+            z-index: 1;
+        }
+        
+        .loading-text .char.glitching::after {
+            color: #ff00ff;
+            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+            transform: translate(2px, 0);
+            opacity: 0.8;
+            z-index: 1;
+        }
+        
+        .loading-text .char.glitching {
+            position: relative;
+            z-index: 0;
+        }
+        
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+        
+        .loading-text.final {
+            animation: finalGlitch 0.3s ease-out;
+        }
+        
+        @keyframes finalGlitch {
+            0% {
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+            10% {
+                transform: translate(-3px, 2px);
+                filter: hue-rotate(90deg);
+            }
+            20% {
+                transform: translate(3px, -2px);
+                filter: hue-rotate(180deg);
+            }
+            30% {
+                transform: translate(-2px, 3px);
+                filter: hue-rotate(270deg);
+            }
+            40% {
+                transform: translate(2px, -3px);
+                filter: hue-rotate(360deg);
+            }
+            50% {
+                transform: translate(-1px, 1px);
+            }
+            60% {
+                transform: translate(1px, -1px);
+            }
+            70% {
+                transform: translate(-1px, 1px);
+            }
+            80% {
+                transform: translate(1px, -1px);
+            }
+            90% {
+                transform: translate(0);
+            }
+            100% {
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+        }
+        
+        .loading-progress {
+            width: 200px;
+            height: 2px;
+            background: rgba(138, 43, 226, 0.2);
+            border-radius: 2px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #8a2be2, #a78bfa);
+            width: 0%;
+            border-radius: 2px;
+            animation: progress 2s ease-out forwards;
+        }
+        
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
     </style>
 </head>
 <body class="antialiased">
+    
+    <!-- ===== LOADING SCREEN ===== -->
+    <div id="loading-screen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loading-text"></div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar"></div>
+        </div>
+    </div>
 
     <!-- 3D Background Canvas -->
     <canvas id="bg-canvas"></canvas>
@@ -673,6 +880,118 @@
         import Lenis from 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.mjs';
 
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 0. Glitch Text Effect ---
+            const loadingText = document.getElementById('loading-text');
+            const finalText = 'CARREGANDO';
+            const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            if (loadingText) {
+                // Create character elements with random initial characters
+                const chars = finalText.split('').map((char, index) => {
+                    const span = document.createElement('span');
+                    span.className = 'char glitching';
+                    // Start with random glitch character
+                    const randomChar = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                    span.textContent = char === ' ' ? '\u00A0' : randomChar;
+                    span.setAttribute('data-char', char === ' ' ? '\u00A0' : randomChar);
+                    span.setAttribute('data-index', index);
+                    span.setAttribute('data-final', char === ' ' ? '\u00A0' : char);
+                    return span;
+                });
+                
+                loadingText.append(...chars);
+                
+                // Glitch animation function
+                let glitchInterval;
+                let glitchCount = 0;
+                const maxGlitches = 8; // Number of glitch cycles before revealing final text
+                const glitchSpeed = 40; // Milliseconds between character changes
+                
+                function startGlitch() {
+                    glitchInterval = setInterval(() => {
+                        chars.forEach((charEl, index) => {
+                            const finalChar = charEl.getAttribute('data-final');
+                            if (finalChar !== '\u00A0' && charEl.textContent !== finalChar) {
+                                // Random glitch character
+                                const randomChar = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                                charEl.textContent = randomChar;
+                                charEl.setAttribute('data-char', randomChar);
+                                charEl.classList.add('glitching');
+                            }
+                        });
+                        
+                        glitchCount++;
+                        
+                        // Gradually reveal final text
+                        if (glitchCount >= maxGlitches) {
+                            clearInterval(glitchInterval);
+                            
+                            // Reveal final text character by character
+                            chars.forEach((charEl, index) => {
+                                setTimeout(() => {
+                                    const finalChar = charEl.getAttribute('data-final');
+                                    if (finalChar !== '\u00A0') {
+                                        charEl.textContent = finalChar;
+                                        charEl.setAttribute('data-char', finalChar);
+                                        charEl.classList.remove('glitching');
+                                        
+                                        // Add final glitch effect when all characters are revealed
+                                        if (index === chars.length - 1) {
+                                            setTimeout(() => {
+                                                loadingText.classList.add('final');
+                                                setTimeout(() => {
+                                                    loadingText.classList.remove('final');
+                                                }, 300);
+                                            }, 50);
+                                        }
+                                    }
+                                }, index * 40);
+                            });
+                        }
+                    }, glitchSpeed);
+                }
+                
+                // Start glitch effect immediately
+                startGlitch();
+            }
+            
+            // --- 0. Loading Screen Control ---
+            const loadingScreen = document.getElementById('loading-screen');
+            document.body.classList.add('loading');
+            
+            function hideLoadingScreen() {
+                if (loadingScreen) {
+                    // Wait for minimum display time (1.5s) for better UX
+                    const minDisplayTime = 1500;
+                    const startTime = Date.now();
+                    
+                    function checkAndHide() {
+                        const elapsed = Date.now() - startTime;
+                        const remaining = Math.max(0, minDisplayTime - elapsed);
+                        
+                        setTimeout(() => {
+                            loadingScreen.classList.add('hidden');
+                            document.body.classList.remove('loading');
+                            // Remove from DOM after transition
+                            setTimeout(() => {
+                                if (loadingScreen.parentNode) {
+                                    loadingScreen.remove();
+                                }
+                            }, 600);
+                        }, remaining);
+                    }
+                    
+                    // Wait for all resources to load
+                    if (document.readyState === 'complete') {
+                        checkAndHide();
+                    } else {
+                        window.addEventListener('load', checkAndHide);
+                    }
+                }
+            }
+            
+            hideLoadingScreen();
 
             // --- 1. Smooth Scrolling (Lenis) ---
             const lenis = new Lenis();
