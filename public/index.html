@@ -109,10 +109,28 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -2;
             opacity: 1;
             transition: opacity 1s ease-in;
             pointer-events: none;
+        }
+        
+        /* Background Blur Overlay */
+        /* AJUSTE A INTENSIDADE DO BLUR: altere o valor "8px" nas linhas backdrop-filter e -webkit-backdrop-filter */
+        /* Valores menores (ex: 4px) = menos blur | Valores maiores (ex: 16px) = mais blur */
+        /* AJUSTE A OPACIDADE DO OVERLAY: altere o valor "0.3" na linha background (0 = transparente, 1 = opaco) */
+        #bg-blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            backdrop-filter: blur(0.5px); /* ← INTENSIDADE DO BLUR: altere "8px" aqui */
+            -webkit-backdrop-filter: blur(0.5px); /* ← INTENSIDADE DO BLUR: altere "8px" aqui também */
+            background: rgba(10, 4, 26, 0.1); /* ← OPACIDADE DO OVERLAY: altere "0.3" aqui (0-1) */
+            opacity: 1;
         }
 
         /* Bento Card Style */
@@ -520,6 +538,9 @@
 
     <!-- 3D Background Canvas -->
     <canvas id="bg-canvas"></canvas>
+    
+    <!-- Background Blur Overlay -->
+    <div id="bg-blur-overlay"></div>
 
     <!-- ===== FLOATING HEADER ===== -->
     <header id="floating-header">
