@@ -127,9 +127,9 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
-            backdrop-filter: blur(0.5px); /* ← INTENSIDADE DO BLUR: altere "8px" aqui */
-            -webkit-backdrop-filter: blur(0.5px); /* ← INTENSIDADE DO BLUR: altere "8px" aqui também */
-            background: rgba(10, 4, 26, 0.1); /* ← OPACIDADE DO OVERLAY: altere "0.3" aqui (0-1) */
+            backdrop-filter: blur(3px); /* ← INTENSIDADE DO BLUR: altere "8px" aqui */
+            -webkit-backdrop-filter: blur(3px); /* ← INTENSIDADE DO BLUR: altere "8px" aqui também */
+            background: rgba(10, 4, 26, 0.2); /* ← OPACIDADE DO OVERLAY: altere "0.3" aqui (0-1) */
             opacity: 1;
         }
 
@@ -137,8 +137,8 @@
         .bento-card {
             position: relative;
             background: linear-gradient(135deg, rgba(10, 4, 26, 0.4), rgba(10, 4, 26, 0.2));
-            backdrop-filter: blur(5px) saturate(200%);
-            -webkit-backdrop-filter: blur(5px) saturate(200%);
+            backdrop-filter: blur(12px) saturate(200%);
+            -webkit-backdrop-filter: blur(12px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 1rem;
             padding: 1.5rem;
@@ -1107,67 +1107,427 @@
                 console.warn('Botão de alternância do menu mobile ou elemento do menu não encontrado.');
             }
 
-            // --- 6. 3D Background (Three.js) ---
-            let scene, camera, renderer, particles, mainObject;
+            // --- 6. 3D Background (Three.js) - Enhanced Organic Blob with Multiple Effects ---
+            let scene, camera, renderer, blobMesh, mouseX = 0, mouseY = 0, scrollProgress = 0;
+            let blobGroup, particles, connectionLines, orbitalRings, particleVelocities, particleCount;
             const canvas = document.getElementById('bg-canvas');
 
-            if (canvas) { // Add null check for canvas
+            if (canvas) {
                 function initThreeJS() {
                     try {
                         scene = new THREE.Scene();
                         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                        camera.position.set(0, 0, 3);
+                        
+                        // Adjust initial zoom for mobile (reduce zoom = increase Z distance)
+                        const isMobile = window.innerWidth < 768;
+                        const initialZ = isMobile ? 6.5 : 5;
+                        camera.position.set(0, 0, initialZ);
 
-                        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+                        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                        renderer.setClearColor(0x000000, 0);
                         
                         canvas.style.opacity = '1';
 
-                        const geometry = new THREE.IcosahedronGeometry(1.5, 2);
-                        const material = new THREE.MeshStandardMaterial({
-                            color: 0x8a2be2, 
-                            wireframe: true,
-                            metalness: 0.8,
-                            roughness: 0.2,
-                            emissive: 0x4a1a8a,
-                            emissiveIntensity: 0.3
-                        });
-                        mainObject = new THREE.Mesh(geometry, material);
-                        scene.add(mainObject);
+                        // Create group for all blob elements
+                        blobGroup = new THREE.Group();
+                        scene.add(blobGroup);
 
-                        const particleCount = 5000;
-                        const particleGeometry = new THREE.BufferGeometry();
-                        const positions = new Float32Array(particleCount * 3);
-                        for (let i = 0; i < particleCount; i++) {
-                            positions[i * 3] = (Math.random() - 0.5) * 20; 
-                            positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-                            positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
-                        }
-                        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                        const particleMaterial = new THREE.PointsMaterial({
-                            size: 0.015,
-                            color: 0xffffff,
+                        // Create organic blob using Icosahedron with noise displacement
+                        const geometry = new THREE.IcosahedronGeometry(2, 64);
+                        const positions = geometry.attributes.position;
+                        const originalPositions = positions.array.slice();
+                        
+                        // Shader material for organic blob effect
+                        const vertexShader = `
+                            uniform float uTime;
+                            uniform vec2 uMouse;
+                            varying vec3 vPosition;
+                            varying vec3 vNormal;
+                            
+                            // Noise function
+                            vec3 mod289(vec3 x) {
+                                return x - floor(x * (1.0 / 289.0)) * 289.0;
+                            }
+                            
+                            vec4 mod289(vec4 x) {
+                                return x - floor(x * (1.0 / 289.0)) * 289.0;
+                            }
+                            
+                            vec4 permute(vec4 x) {
+                                return mod289(((x*34.0)+1.0)*x);
+                            }
+                            
+                            vec4 taylorInvSqrt(vec4 r) {
+                                return 1.79284291400159 - 0.85373472095314 * r;
+                            }
+                            
+                            float snoise(vec3 v) {
+                                const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+                                const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+                                
+                                vec3 i = floor(v + dot(v, C.yyy));
+                                vec3 x0 = v - i + dot(i, C.xxx);
+                                
+                                vec3 g = step(x0.yzx, x0.xyz);
+                                vec3 l = 1.0 - g;
+                                vec3 i1 = min(g.xyz, l.zxy);
+                                vec3 i2 = max(g.xyz, l.zxy);
+                                
+                                vec3 x1 = x0 - i1 + C.xxx;
+                                vec3 x2 = x0 - i2 + C.yyy;
+                                vec3 x3 = x0 - D.yyy;
+                                
+                                i = mod289(i);
+                                vec4 p = permute(permute(permute(
+                                    i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+                                    + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+                                
+                                float n_ = 0.142857142857;
+                                vec3 ns = n_ * D.wyz - D.xzx;
+                                
+                                vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                                
+                                vec4 x_ = floor(j * ns.z);
+                                vec4 y_ = floor(j - 7.0 * x_);
+                                
+                                vec4 x = x_ *ns.x + ns.yyyy;
+                                vec4 y = y_ *ns.x + ns.yyyy;
+                                vec4 h = 1.0 - abs(x) - abs(y);
+                                
+                                vec4 b0 = vec4(x.xy, y.xy);
+                                vec4 b1 = vec4(x.zw, y.zw);
+                                
+                                vec4 s0 = floor(b0)*2.0 + 1.0;
+                                vec4 s1 = floor(b1)*2.0 + 1.0;
+                                vec4 sh = -step(h, vec4(0.0));
+                                
+                                vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+                                vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+                                
+                                vec3 p0 = vec3(a0.xy, h.x);
+                                vec3 p1 = vec3(a0.zw, h.y);
+                                vec3 p2 = vec3(a1.xy, h.z);
+                                vec3 p3 = vec3(a1.zw, h.w);
+                                
+                                vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+                                p0 *= norm.x;
+                                p1 *= norm.y;
+                                p2 *= norm.z;
+                                p3 *= norm.w;
+                                
+                                vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                                m = m * m;
+                                return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+                            }
+                            
+                            void main() {
+                                vNormal = normalize(normalMatrix * normal);
+                                vPosition = position;
+                                
+                                vec3 pos = position;
+                                
+                                // Apply noise for organic deformation (slower)
+                                float noise = snoise(pos * 0.5 + uTime * 0.15);
+                                float noise2 = snoise(pos * 0.8 + uTime * 0.1);
+                                float noise3 = snoise(pos * 1.2 + uTime * 0.075);
+                                
+                                float displacement = (noise * 0.3 + noise2 * 0.2 + noise3 * 0.1) * 0.4;
+                                
+                                // Mouse interaction
+                                vec3 mouseInfluence = normalize(pos) * 0.0;
+                                float mouseDistance = distance(uMouse, vec2(pos.x, pos.y));
+                                if (mouseDistance < 2.0) {
+                                    mouseInfluence = normalize(pos) * (1.0 - mouseDistance / 2.0) * 0.3;
+                                }
+                                
+                                pos += normal * displacement + mouseInfluence;
+                                
+                                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                            }
+                        `;
+                        
+                        const fragmentShader = `
+                            uniform float uTime;
+                            uniform float uScrollProgress;
+                            varying vec3 vPosition;
+                            varying vec3 vNormal;
+                            
+                            void main() {
+                                vec3 color1 = vec3(0.545, 0.169, 0.886); // #8a2be2
+                                vec3 color2 = vec3(0.655, 0.545, 0.980); // #a78bfa
+                                vec3 color3 = vec3(0.290, 0.102, 0.541); // #4a1a8a
+                                
+                                // Gradient based on position and scroll
+                                float gradient = (vPosition.y + 2.0) / 4.0;
+                                vec3 baseColor = mix(color3, color1, gradient);
+                                
+                                // Scroll-based color shift
+                                baseColor = mix(baseColor, color2, uScrollProgress * 0.3);
+                                
+                                // Fresnel effect
+                                vec3 viewDirection = normalize(cameraPosition - vPosition);
+                                float fresnel = pow(1.0 - dot(viewDirection, vNormal), 2.0);
+                                
+                                // Combine colors with enhanced glow on scroll
+                                vec3 finalColor = mix(baseColor, color2, fresnel * 0.5);
+                                
+                                // Add subtle glow that intensifies with scroll
+                                float glow = fresnel * (0.3 + uScrollProgress * 0.4);
+                                
+                                // Opacity increases with scroll for more presence
+                                float alpha = 0.15 + fresnel * 0.25 + uScrollProgress * 0.2;
+                                
+                                gl_FragColor = vec4(finalColor + glow, alpha);
+                            }
+                        `;
+                        
+                        const material = new THREE.ShaderMaterial({
+                            vertexShader: vertexShader,
+                            fragmentShader: fragmentShader,
+                            uniforms: {
+                                uTime: { value: 0 },
+                                uMouse: { value: new THREE.Vector2(0, 0) },
+                                uScrollProgress: { value: 0 }
+                            },
                             transparent: true,
-                            opacity: 0.6
+                            side: THREE.DoubleSide,
+                            blending: THREE.AdditiveBlending
                         });
+                        
+                        blobMesh = new THREE.Mesh(geometry, material);
+                        blobGroup.add(blobMesh);
+                        
+                        // Enhanced particle system with connections
+                        particleCount = 3000;
+                        const particleGeometry = new THREE.BufferGeometry();
+                        const particlePositions = new Float32Array(particleCount * 3);
+                        const particleSizes = new Float32Array(particleCount);
+                        particleVelocities = new Float32Array(particleCount * 3);
+                        
+                        for (let i = 0; i < particleCount; i++) {
+                            const radius = 4 + Math.random() * 3;
+                            const theta = Math.random() * Math.PI * 2;
+                            const phi = Math.acos(Math.random() * 2 - 1);
+                            
+                            particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                            particlePositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                            particlePositions[i * 3 + 2] = radius * Math.cos(phi);
+                            
+                            particleSizes[i] = Math.random() * 0.03 + 0.01;
+                            
+                            // Random velocities for movement (slower)
+                            particleVelocities[i * 3] = (Math.random() - 0.5) * 0.005;
+                            particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.005;
+                            particleVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.005;
+                        }
+                        
+                        particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+                        particleGeometry.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
+                        
+                        const particleMaterial = new THREE.ShaderMaterial({
+                            uniforms: {
+                                uTime: { value: 0 },
+                                uScrollProgress: { value: 0 },
+                                color: { value: new THREE.Color(0xa78bfa) }
+                            },
+                            vertexShader: `
+                                attribute float size;
+                                uniform float uTime;
+                                uniform float uScrollProgress;
+                                varying vec3 vColor;
+                                varying float vAlpha;
+                                
+                                void main() {
+                                    vColor = vec3(0.655, 0.545, 0.980);
+                                    vAlpha = 0.4 + uScrollProgress * 0.3;
+                                    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                                    gl_PointSize = size * (300.0 / -mvPosition.z) * (1.0 + uScrollProgress * 0.5);
+                                    gl_Position = projectionMatrix * mvPosition;
+                                }
+                            `,
+                            fragmentShader: `
+                                varying vec3 vColor;
+                                varying float vAlpha;
+                                
+                                void main() {
+                                    float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
+                                    float alpha = 1.0 - smoothstep(0.0, 0.5, distanceToCenter);
+                                    gl_FragColor = vec4(vColor, alpha * vAlpha);
+                                }
+                            `,
+                            transparent: true,
+                            blending: THREE.AdditiveBlending
+                        });
+                        
                         particles = new THREE.Points(particleGeometry, particleMaterial);
                         scene.add(particles);
 
-                        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-                        scene.add(ambientLight);
-                        const pointLight = new THREE.PointLight(0xffffff, 1.5);
-                        pointLight.position.set(5, 5, 5);
-                        scene.add(pointLight);
-                        const pointLight2 = new THREE.PointLight(0x8a2be2, 1.2);
-                        pointLight2.position.set(-5, -5, -5);
-                        scene.add(pointLight2);
-                        const pointLight3 = new THREE.PointLight(0xa78bfa, 0.8);
-                        pointLight3.position.set(0, 5, 0);
-                        scene.add(pointLight3);
+                        // Connection lines between nearby particles
+                        const lineGeometry = new THREE.BufferGeometry();
+                        const linePositions = new Float32Array(particleCount * 6);
+                        lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+                        
+                        const lineMaterial = new THREE.LineBasicMaterial({
+                            color: 0xa78bfa,
+                            transparent: true,
+                            opacity: 0.1,
+                            blending: THREE.AdditiveBlending
+                        });
+                        
+                        connectionLines = new THREE.LineSegments(lineGeometry, lineMaterial);
+                        scene.add(connectionLines);
 
+                        // Orbital rings
+                        const ringCount = 2;
+                        orbitalRings = [];
+                        for (let i = 0; i < ringCount; i++) {
+                            const ringGeometry = new THREE.RingGeometry(3 + i * 1.5, 3.1 + i * 1.5, 64);
+                            const ringMaterial = new THREE.MeshBasicMaterial({
+                                color: 0x8a2be2,
+                                transparent: true,
+                                opacity: 0.1,
+                                side: THREE.DoubleSide,
+                                blending: THREE.AdditiveBlending
+                            });
+                            const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                            ring.rotation.x = Math.PI / 2;
+                            ring.userData = { speed: 0.2 + i * 0.1, offset: i * Math.PI / ringCount };
+                            orbitalRings.push(ring);
+                            scene.add(ring);
+                        }
+                        
+                        // Mouse tracking with smooth interpolation
+                        let targetMouseX = 0, targetMouseY = 0;
+                        document.addEventListener('mousemove', (e) => {
+                            targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+                            targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+                        });
+                        
                         window.addEventListener('resize', onWindowResize);
                         window.addEventListener('scroll', onScroll);
+                        
+                        const clock = new THREE.Clock();
+                        function animate() {
+                            if (!renderer) return;
+                            requestAnimationFrame(animate);
+                            
+                            const elapsedTime = clock.getElapsedTime();
+                            
+                            // Smooth mouse interpolation
+                            mouseX += (targetMouseX - mouseX) * 0.05;
+                            mouseY += (targetMouseY - mouseY) * 0.05;
+                            
+                            // Update main blob
+                            if (blobMesh && blobMesh.material) {
+                                blobMesh.material.uniforms.uTime.value = elapsedTime;
+                                blobMesh.material.uniforms.uMouse.value.set(mouseX * 2, mouseY * 2);
+                                blobMesh.material.uniforms.uScrollProgress.value = scrollProgress;
+                                
+                                // Dynamic scale based on scroll
+                                const scale = 1 + scrollProgress * 0.5;
+                                blobMesh.scale.set(scale, scale, scale);
+                                
+                                // Enhanced rotation with mouse influence (slower)
+                                blobMesh.rotation.x = Math.sin(elapsedTime * 0.05) * 0.1 + mouseY * 0.1;
+                                blobMesh.rotation.y = elapsedTime * 0.025 + mouseX * 0.1;
+                            }
+                            
+                            // Update particles
+                            if (particles && particles.material) {
+                                particles.material.uniforms.uTime.value = elapsedTime;
+                                particles.material.uniforms.uScrollProgress.value = scrollProgress;
+                                
+                                // Animate particle positions
+                                const positions = particles.geometry.attributes.position.array;
+                                const velocities = particleVelocities;
+                                
+                                for (let i = 0; i < particleCount; i++) {
+                                    positions[i * 3] += velocities[i * 3];
+                                    positions[i * 3 + 1] += velocities[i * 3 + 1];
+                                    positions[i * 3 + 2] += velocities[i * 3 + 2];
+                                    
+                                    // Boundary check and reset
+                                    const dist = Math.sqrt(
+                                        positions[i * 3] ** 2 + 
+                                        positions[i * 3 + 1] ** 2 + 
+                                        positions[i * 3 + 2] ** 2
+                                    );
+                                    
+                                    if (dist > 8) {
+                                        const radius = 4 + Math.random() * 3;
+                                        const theta = Math.random() * Math.PI * 2;
+                                        const phi = Math.acos(Math.random() * 2 - 1);
+                                        
+                                        positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                                        positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                                        positions[i * 3 + 2] = radius * Math.cos(phi);
+                                    }
+                                }
+                                
+                                particles.geometry.attributes.position.needsUpdate = true;
+                                particles.rotation.y = elapsedTime * 0.01;
+                            }
+                            
+                            // Update connection lines (reduced number)
+                            if (connectionLines && particles) {
+                                const linePositions = connectionLines.geometry.attributes.position.array;
+                                const particlePositions = particles.geometry.attributes.position.array;
+                                let lineIndex = 0;
+                                const maxDistance = 1.2;
+                                const maxLines = 500;
+                                const skipFactor = 5;
+                                
+                                for (let i = 0; i < particleCount && lineIndex < maxLines * 6; i += skipFactor * 3) {
+                                    for (let j = i + skipFactor * 3; j < particleCount && lineIndex < maxLines * 6; j += skipFactor * 3) {
+                                        const dx = particlePositions[i] - particlePositions[j];
+                                        const dy = particlePositions[i + 1] - particlePositions[j + 1];
+                                        const dz = particlePositions[i + 2] - particlePositions[j + 2];
+                                        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                                        
+                                        if (dist < maxDistance) {
+                                            linePositions[lineIndex] = particlePositions[i];
+                                            linePositions[lineIndex + 1] = particlePositions[i + 1];
+                                            linePositions[lineIndex + 2] = particlePositions[i + 2];
+                                            linePositions[lineIndex + 3] = particlePositions[j];
+                                            linePositions[lineIndex + 4] = particlePositions[j + 1];
+                                            linePositions[lineIndex + 5] = particlePositions[j + 2];
+                                            lineIndex += 6;
+                                        }
+                                    }
+                                }
+                                
+                                // Clear remaining lines
+                                for (let i = lineIndex; i < maxLines * 6; i++) {
+                                    linePositions[i] = 0;
+                                }
+                                
+                                connectionLines.geometry.attributes.position.needsUpdate = true;
+                                connectionLines.material.opacity = 0.1 + scrollProgress * 0.15;
+                            }
+                            
+                            // Update orbital rings (slower)
+                            if (orbitalRings) {
+                                orbitalRings.forEach((ring, i) => {
+                                    const data = ring.userData;
+                                    ring.rotation.z = elapsedTime * data.speed * 0.5 + data.offset;
+                                    ring.rotation.y = Math.sin(elapsedTime * 0.05 + i) * 0.2;
+                                    ring.material.opacity = 0.1 + scrollProgress * 0.1;
+                                });
+                            }
+                            
+                            // Enhanced camera movement with mouse and scroll (slower)
+                            const cameraOffsetX = Math.sin(elapsedTime * 0.05) * 0.3 + mouseX * 0.5;
+                            const cameraOffsetY = Math.cos(elapsedTime * 0.075) * 0.2 + mouseY * 0.5;
+                            camera.position.x = cameraOffsetX;
+                            camera.position.y = cameraOffsetY;
+                            camera.lookAt(0, 0, 0);
+                            
+                            renderer.render(scene, camera);
+                        }
+                        
                         animate();
 
                     } catch (error) {
@@ -1183,7 +1543,13 @@
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                         
-                        // Recalculate heroHeight here as well
+                        // Adjust camera Z position for mobile on resize
+                        const isMobile = window.innerWidth < 768;
+                        const targetZ = isMobile ? 6.5 : 5;
+                        if (Math.abs(camera.position.z - targetZ) < 1) {
+                            camera.position.z = targetZ;
+                        }
+                        
                         const heroSection = document.querySelector('section');
                         if(heroSection) {
                             heroHeight = heroSection.offsetHeight;
@@ -1194,28 +1560,20 @@
                 function onScroll() {
                     const scrollY = window.scrollY;
                     if (camera) {
-                        const minZ = 3;
-                        const maxZ = 15;
+                        // Adjust minZ for mobile to maintain the reduced initial zoom
+                        const isMobile = window.innerWidth < 768;
+                        const minZ = isMobile ? 6.5 : 5;
+                        const maxZ = 18;
                         const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                        const scrollProgress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
+                        scrollProgress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
                         const scrollFactor = scrollProgress * (maxZ - minZ);
                         camera.position.z = minZ + scrollFactor;
+                        
+                        // Update blob group position based on scroll
+                        if (blobGroup) {
+                            blobGroup.position.y = -scrollProgress * 2;
+                        }
                     }
-                }
-
-                const clock = new THREE.Clock();
-                function animate() {
-                    if (!renderer) return; // Stop animation if renderer failed
-                    requestAnimationFrame(animate);
-                    const elapsedTime = clock.getElapsedTime();
-                    if (mainObject) {
-                        mainObject.rotation.x += 0.001;
-                        mainObject.rotation.y += 0.001;
-                    }
-                    if (particles) {
-                        particles.rotation.y = elapsedTime * 0.05;
-                    }
-                    renderer.render(scene, camera);
                 }
 
                 initThreeJS();
