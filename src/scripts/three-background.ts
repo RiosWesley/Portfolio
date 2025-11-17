@@ -341,89 +341,21 @@ export function initThreeBackground(): void {
     const starCount = currentConfig.starCount;
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
-    const starSizes = new Float32Array(starCount);
-    const starColors = new Float32Array(starCount * 3);
     
     for (let i = 0; i < starCount; i++) {
-      const depthLayer = Math.floor(Math.random() * 5);
-      const minRadius = 6 + depthLayer * 4;
-      const maxRadius = 10 + depthLayer * 4;
-      const radius = minRadius + Math.random() * (maxRadius - minRadius);
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-      
-      starPositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      starPositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      starPositions[i * 3 + 2] = radius * Math.cos(phi);
-      
-      const sizeRandom = Math.random();
-      if (sizeRandom < 0.75) {
-        starSizes[i] = 0.003 + Math.random() * 0.008;
-      } else if (sizeRandom < 0.92) {
-        starSizes[i] = 0.012 + Math.random() * 0.008;
-      } else {
-        starSizes[i] = 0.022 + Math.random() * 0.012;
-      }
-      
-      const colorVariation = Math.random();
-      if (colorVariation < 0.75) {
-        starColors[i * 3] = 1.0;
-        starColors[i * 3 + 1] = 1.0;
-        starColors[i * 3 + 2] = 1.0;
-      } else if (colorVariation < 0.92) {
-        starColors[i * 3] = 0.8 + Math.random() * 0.2;
-        starColors[i * 3 + 1] = 0.7 + Math.random() * 0.2;
-        starColors[i * 3 + 2] = 0.9 + Math.random() * 0.1;
-      } else {
-        starColors[i * 3] = 0.6 + Math.random() * 0.2;
-        starColors[i * 3 + 1] = 0.4 + Math.random() * 0.2;
-        starColors[i * 3 + 2] = 0.8 + Math.random() * 0.2;
-      }
+      starPositions[i * 3] = (Math.random() - 0.5) * 40;
+      starPositions[i * 3 + 1] = (Math.random() - 0.5) * 40;
+      starPositions[i * 3 + 2] = (Math.random() - 0.5) * 40;
     }
     
     starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
-    starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
     
-    const starMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uScrollProgress: { value: 0 }
-      },
-      vertexShader: `
-        attribute float size;
-        attribute vec3 color;
-        uniform float uTime;
-        uniform float uScrollProgress;
-        varying vec3 vColor;
-        varying float vAlpha;
-        
-        void main() {
-          vColor = color;
-          float twinkle = 0.8 + sin(uTime * 0.5 + position.x * 10.0) * 0.2;
-          vAlpha = twinkle * (0.6 + uScrollProgress * 0.2);
-          
-          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          float pointSize = size * (300.0 / -mvPosition.z) * (1.0 + uScrollProgress * 0.3);
-          pointSize = clamp(pointSize, 0.5, 10.0);
-          gl_PointSize = pointSize;
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vColor;
-        varying float vAlpha;
-        
-        void main() {
-          float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
-          float alpha = 1.0 - smoothstep(0.0, 0.4, distanceToCenter);
-          float glow = 1.0 - smoothstep(0.0, 0.6, distanceToCenter) * 0.3;
-          gl_FragColor = vec4(vColor * glow, alpha * vAlpha);
-        }
-      `,
+    const starMaterial = new THREE.PointsMaterial({
+      size: 0.015,
+      color: 0xffffff,
       transparent: true,
-      vertexColors: true,
-      blending: THREE.AdditiveBlending
+      opacity: 0.6,
+      sizeAttenuation: true
     });
     
     starField = new THREE.Points(starGeometry, starMaterial);
@@ -533,9 +465,7 @@ export function initThreeBackground(): void {
         }
       }
       
-      if (starField && starField.material instanceof THREE.ShaderMaterial) {
-        starField.material.uniforms.uTime.value = elapsedTime;
-        starField.material.uniforms.uScrollProgress.value = scrollProgress;
+      if (starField) {
         starField.rotation.y = elapsedTime * 0.002;
       }
       
