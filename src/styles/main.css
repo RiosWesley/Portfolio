@@ -322,34 +322,26 @@
     }
   }
   
-  #floating-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-width: 100%;
-    z-index: 50;
-    padding: 0 1rem;
-    background: rgba(10, 4, 26, 0.5);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    opacity: 0;
-    transform: translateY(-100%);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  
-  @media (max-width: 767px) {
-    #floating-header {
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-  }
+#floating-header {
+  position: fixed;
+  top: 1.5rem;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0 1.5rem;
+  background: transparent;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
   
   #floating-header.is-visible {
     opacity: 1;
     transform: translateY(0);
+  pointer-events: auto;
   }
   
   #header-inner {
@@ -358,9 +350,15 @@
     justify-content: space-between;
     max-width: 90rem;
     margin: 0 auto;
-    height: 4rem;
     width: 100%;
-    padding: 0 1rem;
+  padding: 0 1.5rem;
+  min-height: 3.75rem;
+  border-radius: 9999px;
+  background: rgba(10, 4, 26, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 20px 60px rgba(5, 0, 20, 0.45);
     box-sizing: border-box;
   }
   
@@ -378,12 +376,22 @@
     transition: opacity 0.3s ease;
   }
   
-  @media (max-width: 767px) {
-    #mobile-menu {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
+@media (max-width: 767px) {
+  #floating-header {
+    top: 1rem;
+    padding: 0 1rem;
   }
+
+  #mobile-menu {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  #header-inner {
+    padding: 0 1rem;
+    min-height: 3.25rem;
+  }
+}
   
   #mobile-menu.is-open {
     opacity: 1;
