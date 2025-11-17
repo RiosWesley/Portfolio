@@ -153,6 +153,9 @@
     opacity: 1;
     transform: translateY(20px);
     transition: transform 0.6s ease-out;
+    will-change: transform;
+    contain: paint;
+    overflow: hidden;
   }
   
   .fade-in-section.is-visible { 
@@ -167,6 +170,42 @@
     opacity: 1;
     transform: translateY(20px);
     transition: transform 0.6s ease-out;
+  }
+
+  /* Prevent transient scrollbars during intro animation in Projects */
+  #projects {
+    contain: layout paint;
+    overflow: hidden;
+  }
+
+  .bento-grid {
+    contain: paint;
+    min-height: 1px;
+  }
+
+  #projects h2.fade-in-section {
+    min-height: 3rem;
+  }
+  
+  @media (min-width: 768px) {
+    #projects h2.fade-in-section {
+      min-height: 4rem;
+    }
+  }
+  
+  #services {
+    contain: layout paint;
+    overflow: hidden;
+  }
+  
+  #services h2.fade-in-section {
+    min-height: 3rem;
+  }
+  
+  @media (min-width: 768px) {
+    #services h2.fade-in-section {
+      min-height: 4rem;
+    }
   }
   
   .bento-grid.is-visible .bento-card:nth-child(1) { transition-delay: 0.1s; }
@@ -192,7 +231,8 @@
   
   .animate-scroll-tech {
     will-change: transform;
-    overflow: hidden;
+    display: flex;
+    width: fit-content;
   }
   
   .tech-item {
