@@ -3,6 +3,10 @@ import { resolve } from 'path';
 
 export default defineConfig({
   publicDir: 'public',
+  server: {
+    host: true,
+    allowedHosts: true,
+  },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

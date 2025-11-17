@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { isMobileDevice, isPageVisible } from './environment';
 
 let scene: THREE.Scene | null = null;
 let camera: THREE.PerspectiveCamera | null = null;
@@ -14,6 +15,27 @@ let orbitalRings: THREE.Mesh[] = [];
 let particleVelocities: Float32Array | null = null;
 let particleCount = 0;
 let starField: THREE.Points | null = null;
+let animationId: number | null = null;
+let isPaused = false;
+let maxConnectionLines = 500;
+let skipFactor = 5;
+
+const config = {
+  mobile: {
+    geometryDetail: 32,
+    particleCount: 1000,
+    starCount: 1500,
+    maxConnectionLines: 200,
+    antialias: false,
+  },
+  desktop: {
+    geometryDetail: 64,
+    particleCount: 3000,
+    starCount: 5000,
+    maxConnectionLines: 500,
+    antialias: true,
+  }
+};
 
 const vertexShader = `
   uniform float uTime;
@@ -156,9 +178,10 @@ function onWindowResize(): void {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const currentConfig = isMobileDevice() ? config.mobile : config.desktop;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, currentConfig.antialias ? 2 : 1));
   
-  const isMobile = window.innerWidth < 768;
+  const isMobile = isMobileDevice();
   const targetZ = isMobile ? 6.5 : 5;
   if (Math.abs(camera.position.z - targetZ) < 1) {
     camera.position.z = targetZ;
@@ -168,7 +191,7 @@ function onWindowResize(): void {
 function onScroll(): void {
   if (!camera) return;
   
-  const isMobile = window.innerWidth < 768;
+  const isMobile = isMobileDevice();
   const minZ = isMobile ? 6.5 : 5;
   const maxZ = 18;
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
@@ -189,16 +212,25 @@ export function initThreeBackground(): void {
   }
 
   try {
+    const currentConfig = isMobileDevice() ? config.mobile : config.desktop;
+    maxConnectionLines = currentConfig.maxConnectionLines;
+    skipFactor = isMobileDevice() ? 8 : 5;
+    
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     
-    const isMobile = window.innerWidth < 768;
+    const isMobile = isMobileDevice();
     const initialZ = isMobile ? 6.5 : 5;
     camera.position.set(0, 0, initialZ);
 
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer = new THREE.WebGLRenderer({ 
+      canvas, 
+      alpha: true, 
+      antialias: currentConfig.antialias,
+      powerPreference: 'high-performance'
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, currentConfig.antialias ? 2 : 1));
     renderer.setClearColor(0x000000, 0);
     
     canvas.style.opacity = '1';
@@ -206,7 +238,7 @@ export function initThreeBackground(): void {
     blobGroup = new THREE.Group();
     scene.add(blobGroup);
 
-    const geometry = new THREE.IcosahedronGeometry(2, 64);
+    const geometry = new THREE.IcosahedronGeometry(2, currentConfig.geometryDetail);
     
     const material = new THREE.ShaderMaterial({
       vertexShader,
@@ -224,7 +256,7 @@ export function initThreeBackground(): void {
     blobMesh = new THREE.Mesh(geometry, material);
     blobGroup.add(blobMesh);
     
-    particleCount = 3000;
+    particleCount = currentConfig.particleCount;
     const particleGeometry = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleSizes = new Float32Array(particleCount);
@@ -301,7 +333,7 @@ export function initThreeBackground(): void {
     connectionLines = new THREE.LineSegments(lineGeometry, lineMaterial);
     scene.add(connectionLines);
 
-    const starCount = 5000;
+    const starCount = currentConfig.starCount;
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
     const starSizes = new Float32Array(starCount);
@@ -418,11 +450,29 @@ export function initThreeBackground(): void {
     window.addEventListener('resize', onWindowResize);
     window.addEventListener('scroll', onScroll);
     
+    function handleVisibilityChange(): void {
+      if (document.hidden) {
+        isPaused = true;
+        if (animationId !== null) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
+      } else if (isPaused && isPageVisible()) {
+        isPaused = false;
+        animate();
+      }
+    }
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
     const clock = new THREE.Clock();
     
     function animate(): void {
-      if (!renderer) return;
-      requestAnimationFrame(animate);
+      if (!renderer || isPaused || !isPageVisible()) {
+        return;
+      }
+      
+      animationId = requestAnimationFrame(animate);
       
       const elapsedTime = clock.getElapsedTime();
       
@@ -487,8 +537,7 @@ export function initThreeBackground(): void {
         const particlePositions = particles.geometry.attributes.position.array as Float32Array;
         let lineIndex = 0;
         const maxDistance = 1.2;
-        const maxLines = 500;
-        const skipFactor = 5;
+        const maxLines = maxConnectionLines;
         
         for (let i = 0; i < particleCount && lineIndex < maxLines * 6; i += skipFactor * 3) {
           for (let j = i + skipFactor * 3; j < particleCount && lineIndex < maxLines * 6; j += skipFactor * 3) {
@@ -539,7 +588,9 @@ export function initThreeBackground(): void {
       renderer.render(scene!, camera!);
     }
     
-    animate();
+    if (isPageVisible()) {
+      animate();
+    }
   } catch (error) {
     console.error('Falha ao inicializar cena 3D:', error);
     canvas.style.display = 'none';

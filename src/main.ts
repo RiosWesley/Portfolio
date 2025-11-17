@@ -5,20 +5,29 @@ import { initNavigation } from './scripts/navigation';
 import { initScrollReveal } from './scripts/scroll-reveal';
 import { initBentoCards } from './scripts/bento-cards';
 import { initFloatingHeader } from './scripts/floating-header';
+import { shouldLoadHeavyFeatures, prefersReducedMotion } from './scripts/environment';
 
 document.addEventListener('DOMContentLoaded', () => {
   initLoadingScreen();
-  initSmoothScroll();
+  
+  if (shouldLoadHeavyFeatures()) {
+    initSmoothScroll();
+  }
+  
   initNavigation();
   initScrollReveal();
   initBentoCards();
   initFloatingHeader();
   
-  const initThreeBackground = async () => {
-    const { initThreeBackground: init } = await import('./scripts/three-background');
-    init();
-  };
-  
-  initThreeBackground();
+  if (!prefersReducedMotion()) {
+    const initThreeBackground = async () => {
+      const { initThreeBackground: init } = await import('./scripts/three-background');
+      init();
+    };
+    
+    initThreeBackground();
+  } else {
+    document.body.classList.add('no-webgl');
+  }
 });
 
