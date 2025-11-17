@@ -3,20 +3,24 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    background-color: #0a041a;
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+  
   body {
     background-color: transparent;
     color: #e0e0e0;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
+    max-width: 100%;
+    position: relative;
   }
   
   body.loading {
     overflow: hidden;
     height: 100vh;
-  }
-  
-  html {
-    background-color: #0a041a;
   }
 
   body::before {
@@ -24,8 +28,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 9999;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
@@ -55,6 +59,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    max-width: 100%;
     z-index: -2;
     opacity: 1;
     transition: opacity 1s ease-in;
@@ -67,6 +72,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    max-width: 100%;
     z-index: -1;
     pointer-events: none;
     backdrop-filter: blur(3px);
@@ -184,6 +190,11 @@
   ::-webkit-scrollbar-thumb { background: #8a2be2; border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: #a855f7; }
   
+  .animate-scroll-tech {
+    will-change: transform;
+    overflow: hidden;
+  }
+  
   .tech-item {
     flex-shrink: 0;
     background: rgba(10, 4, 26, 0.7);
@@ -197,6 +208,7 @@
     gap: 0.5rem;
     transition: all 0.3s ease;
     cursor: default;
+    white-space: nowrap;
   }
   
   @media (min-width: 768px) {
@@ -239,6 +251,8 @@
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
+    max-width: 100%;
     z-index: 50;
     padding: 0 1rem;
     background: rgba(10, 4, 26, 0.5);
@@ -262,11 +276,16 @@
     max-width: 90rem;
     margin: 0 auto;
     height: 4rem;
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
   }
   
   #mobile-menu {
     position: fixed;
     inset: 0;
+    width: 100%;
+    max-width: 100%;
     z-index: 40;
     background: rgba(10, 4, 26, 0.8);
     backdrop-filter: blur(24px);
@@ -378,8 +397,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(135deg, rgba(10, 4, 26, 0.95), rgba(10, 4, 26, 0.98));
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
