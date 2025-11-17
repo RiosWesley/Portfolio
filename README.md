@@ -1,88 +1,82 @@
-# Portfolio - Wesley Rios
+# Portfolio - Optimized Build
 
-Portfolio pessoal desenvolvido com HTML, CSS, JavaScript e Three.js.
+This portfolio has been optimized with a modern build system using Vite, TypeScript, and Tailwind CSS.
 
-## Estrutura de Diretórios
+## Improvements
 
-```
-Portfolio/
-├── index.html              # Página principal
-├── images/
-│   └── profile-photo.jpg   # Sua foto de perfil (adicione aqui)
-├── firebase.json           # Configuração do Firebase Hosting
-├── .firebaserc            # ID do projeto Firebase
-└── .gitignore             # Arquivos ignorados pelo Git
-```
+- **Modular Architecture**: Code split into separate TypeScript modules for better maintainability
+- **Build System**: Vite for fast development and optimized production builds
+- **Type Safety**: Full TypeScript support with strict type checking
+- **CSS Optimization**: Tailwind CSS with PostCSS purging to remove unused styles
+- **Code Splitting**: Three.js and Lenis are loaded as separate chunks for better caching
+- **Lazy Loading**: Three.js background is loaded asynchronously to improve initial load time
+- **Minification**: Production builds are minified and optimized with Terser
+- **Tree Shaking**: Unused code is automatically removed from the bundle
 
-## Como Adicionar sua Foto de Perfil
+## Development
 
-1. Coloque sua foto na pasta `images/`
-2. Renomeie o arquivo para `profile-photo.jpg`
-3. Formatos suportados: JPG, PNG, WebP
-4. Tamanho recomendado: 400x400px ou maior (quadrado)
-
-## Deploy no Firebase Hosting
-
-### Pré-requisitos
-
-1. Instale o Firebase CLI:
 ```bash
-npm install -g firebase-tools
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
 ```
 
-2. Faça login no Firebase:
+## Project Structure
+
+```
+├── src/
+│   ├── scripts/          # TypeScript modules
+│   │   ├── loading.ts
+│   │   ├── smooth-scroll.ts
+│   │   ├── navigation.ts
+│   │   ├── scroll-reveal.ts
+│   │   ├── bento-cards.ts
+│   │   ├── floating-header.ts
+│   │   └── three-background.ts
+│   ├── styles/
+│   │   └── main.css      # Tailwind CSS with custom styles
+│   └── main.ts           # Entry point
+├── public/               # Static assets
+│   ├── images/
+│   └── 404.html
+├── index.html            # HTML entry point
+├── vite.config.ts        # Vite configuration
+├── tailwind.config.js    # Tailwind configuration
+└── tsconfig.json         # TypeScript configuration
+```
+
+## Deployment
+
+The build output is in the `dist` folder. Firebase hosting is configured to serve from this directory.
+
 ```bash
-firebase login
-```
+# Build for production
+npm run build
 
-### Configuração Inicial
-
-1. Edite o arquivo `.firebaserc` e substitua `"your-project-id"` pelo ID do seu projeto Firebase:
-```json
-{
-  "projects": {
-    "default": "seu-projeto-id"
-  }
-}
-```
-
-2. Se ainda não criou um projeto no Firebase:
-   - Acesse [Firebase Console](https://console.firebase.google.com/)
-   - Crie um novo projeto
-   - Ative o Firebase Hosting
-
-### Deploy
-
-1. Inicialize o Firebase Hosting (apenas na primeira vez):
-```bash
-firebase init hosting
-```
-   - Selecione o projeto existente
-   - Configure o diretório público como `.` (ponto)
-   - Configure como single-page app: `Yes`
-   - Não sobrescreva o index.html: `No`
-
-2. Faça o deploy:
-```bash
+# Deploy to Firebase
 firebase deploy
 ```
 
-3. Para fazer deploy apenas do hosting:
-```bash
-firebase deploy --only hosting
-```
+## Performance Optimizations
 
-### Atualizações Futuras
+1. **Code Splitting**: Three.js and Lenis are in separate chunks
+2. **Lazy Loading**: Three.js background loads asynchronously
+3. **CSS Purging**: Unused Tailwind classes are removed
+4. **Minification**: All code is minified in production
+5. **Tree Shaking**: Unused imports are removed
+6. **Image Optimization**: Images use lazy loading
 
-Após a configuração inicial, basta executar:
-```bash
-firebase deploy
-```
+## Browser Support
 
-## Recursos
-
-- **Three.js**: Animação 3D de fundo
-- **Glassmorphism**: Efeito de vidro nos cards
-- **Responsive Design**: Layout adaptável para mobile e desktop
-- **Smooth Scroll**: Navegação suave entre seções
-
+Modern browsers with ES2020 support. The build system automatically handles transpilation and polyfills as needed.
