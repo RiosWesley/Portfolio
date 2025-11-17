@@ -45,7 +45,8 @@
     }
   }
   
-  body.no-webgl::before {
+  body.no-webgl::before,
+  body.has-webgl::before {
     display: none;
   }
   

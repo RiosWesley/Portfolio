@@ -24,14 +24,14 @@ const config = {
   mobile: {
     geometryDetail: 32,
     particleCount: 1000,
-    starCount: 1500,
+    starCount: 4000,
     maxConnectionLines: 200,
     antialias: false,
   },
   desktop: {
     geometryDetail: 64,
     particleCount: 3000,
-    starCount: 5000,
+    starCount: 12000,
     maxConnectionLines: 500,
     antialias: true,
   }
@@ -212,6 +212,9 @@ export function initThreeBackground(): void {
   }
 
   try {
+    document.body.classList.add('has-webgl');
+    document.body.classList.remove('no-webgl');
+
     const currentConfig = isMobileDevice() ? config.mobile : config.desktop;
     maxConnectionLines = currentConfig.maxConnectionLines;
     skipFactor = isMobileDevice() ? 8 : 5;
@@ -298,7 +301,9 @@ export function initThreeBackground(): void {
           vColor = vec3(0.655, 0.545, 0.980);
           vAlpha = 0.4 + uScrollProgress * 0.3;
           vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          gl_PointSize = size * (300.0 / -mvPosition.z) * (1.0 + uScrollProgress * 0.5);
+          float pointSize = size * (300.0 / -mvPosition.z) * (1.0 + uScrollProgress * 0.5);
+          pointSize = clamp(pointSize, 1.0, 14.0);
+          gl_PointSize = pointSize;
           gl_Position = projectionMatrix * mvPosition;
         }
       `,
@@ -340,9 +345,9 @@ export function initThreeBackground(): void {
     const starColors = new Float32Array(starCount * 3);
     
     for (let i = 0; i < starCount; i++) {
-      const depthLayer = Math.floor(Math.random() * 3);
-      const minRadius = 8 + depthLayer * 5;
-      const maxRadius = 12 + depthLayer * 5;
+      const depthLayer = Math.floor(Math.random() * 5);
+      const minRadius = 6 + depthLayer * 4;
+      const maxRadius = 10 + depthLayer * 4;
       const radius = minRadius + Math.random() * (maxRadius - minRadius);
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
@@ -352,20 +357,20 @@ export function initThreeBackground(): void {
       starPositions[i * 3 + 2] = radius * Math.cos(phi);
       
       const sizeRandom = Math.random();
-      if (sizeRandom < 0.7) {
-        starSizes[i] = 0.005 + Math.random() * 0.01;
-      } else if (sizeRandom < 0.95) {
-        starSizes[i] = 0.015 + Math.random() * 0.01;
+      if (sizeRandom < 0.75) {
+        starSizes[i] = 0.003 + Math.random() * 0.008;
+      } else if (sizeRandom < 0.92) {
+        starSizes[i] = 0.012 + Math.random() * 0.008;
       } else {
-        starSizes[i] = 0.025 + Math.random() * 0.015;
+        starSizes[i] = 0.022 + Math.random() * 0.012;
       }
       
       const colorVariation = Math.random();
-      if (colorVariation < 0.7) {
+      if (colorVariation < 0.75) {
         starColors[i * 3] = 1.0;
         starColors[i * 3 + 1] = 1.0;
         starColors[i * 3 + 2] = 1.0;
-      } else if (colorVariation < 0.9) {
+      } else if (colorVariation < 0.92) {
         starColors[i * 3] = 0.8 + Math.random() * 0.2;
         starColors[i * 3 + 1] = 0.7 + Math.random() * 0.2;
         starColors[i * 3 + 2] = 0.9 + Math.random() * 0.1;
@@ -399,7 +404,9 @@ export function initThreeBackground(): void {
           vAlpha = twinkle * (0.6 + uScrollProgress * 0.2);
           
           vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          gl_PointSize = size * (300.0 / -mvPosition.z) * (1.0 + uScrollProgress * 0.3);
+          float pointSize = size * (300.0 / -mvPosition.z) * (1.0 + uScrollProgress * 0.3);
+          pointSize = clamp(pointSize, 0.5, 10.0);
+          gl_PointSize = pointSize;
           gl_Position = projectionMatrix * mvPosition;
         }
       `,
@@ -594,6 +601,8 @@ export function initThreeBackground(): void {
   } catch (error) {
     console.error('Falha ao inicializar cena 3D:', error);
     canvas.style.display = 'none';
+    document.body.classList.remove('has-webgl');
+    document.body.classList.add('no-webgl');
   }
 }
 
