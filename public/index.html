@@ -37,7 +37,7 @@
                     },
                     animation: {
                         'fade-up': 'fadeUp 0.8s ease-out forwards',
-                        'scroll-tech': 'scrollTech 40s linear infinite', // REPLACED old animations
+                        'scroll-tech': 'scrollTech 20s linear infinite', // Faster animation
                     },
                     keyframes: {
                         fadeUp: {
@@ -137,8 +137,8 @@
         .bento-card {
             position: relative;
             background: linear-gradient(135deg, rgba(10, 4, 26, 0.4), rgba(10, 4, 26, 0.2));
-            backdrop-filter: blur(12px) saturate(200%);
-            -webkit-backdrop-filter: blur(12px) saturate(200%);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 1rem;
             padding: 1.5rem;
@@ -243,17 +243,43 @@
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 0.75rem;
-            padding: 1rem 1.5rem; /* Made larger */
+            padding: 0.75rem 1rem; /* Smaller default padding */
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             transition: all 0.3s ease;
             cursor: default;
+        }
+        /* Larger on desktop */
+        @media (min-width: 768px) {
+            .tech-item {
+                padding: 1rem 1.5rem;
+                gap: 0.75rem;
+            }
         }
         .tech-item:hover {
             background: rgba(10, 4, 26, 0.85);
             border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
+        }
+        /* Smaller icons and text on mobile */
+        .tech-item svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        @media (min-width: 768px) {
+            .tech-item svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+        .tech-item span {
+            font-size: 0.875rem;
+        }
+        @media (min-width: 768px) {
+            .tech-item span {
+                font-size: 1.125rem;
+            }
         }
         
         /* Floating Header Style */
@@ -320,6 +346,60 @@
         .text-highlight {
             color: #a78bfa; /* primary-light */
             font-weight: 500;
+        }
+        
+        /* Hero Description Style */
+        .hero-description {
+            position: relative;
+            padding: 1.5rem 2rem;
+            margin-top: 2rem;
+            background: linear-gradient(135deg, rgba(10, 4, 26, 0.6), rgba(10, 4, 26, 0.4));
+            backdrop-filter: blur(10px) saturate(180%);
+            -webkit-backdrop-filter: blur(10px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            font-family: 'Roboto Mono', monospace;
+            line-height: 1.7;
+            letter-spacing: 0.03em;
+        }
+        
+        .hero-description::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(138, 43, 226, 0.5), 
+                rgba(167, 139, 250, 0.5), 
+                transparent
+            );
+        }
+        
+        .hero-description-keyword {
+            color: #a78bfa;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .hero-description-keyword::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(167, 139, 250, 0.4), 
+                transparent
+            );
+            opacity: 0.6;
         }
         
         /* Project Card Icon Tag */
@@ -583,7 +663,7 @@
     <main class="relative z-10 p-4 md:p-8 max-w-7xl mx-auto">
 
         <!-- ===== SECTION 1: HERO (REDESIGNED) ===== -->
-        <section class="min-h-screen flex items-center justify-center relative py-20">
+        <section class="min-h-screen flex items-center justify-center relative py-20 pb-32 md:pb-20">
             <div class="flex flex-col md:flex-row items-center justify-between gap-12 w-full">
                 
                 <!-- Text Content -->
@@ -604,8 +684,8 @@
                     <h2 class="text-2xl md:text-4xl font-light text-gradient opacity-0 animate-fade-up font-mono" style="animation-delay: 0.6s;">
                         Desenvolvedor & Inovador em Tecnologia
                     </h2>
-                    <p class="mt-6 text-lg md:text-xl text-light-text max-w-xl mx-auto md:mx-0 opacity-0 animate-fade-up font-serif leading-relaxed" style="animation-delay: 0.8s;">
-                        Criando aplicações web modernas e focadas em produto com domínio sólido de frontend, serverless e experiência do usuário.
+                    <p class="hero-description text-base md:text-lg text-light-text max-w-2xl mx-auto md:mx-0 opacity-0 animate-fade-up font-mono" style="animation-delay: 0.8s;">
+                        Criando <span class="hero-description-keyword">aplicações web modernas</span> e focadas em produto com domínio sólido de <span class="hero-description-keyword">frontend,</span> <span class="hero-description-keyword">serverless</span> e <span class="hero-description-keyword">experiência do usuário</span>.
                     </p>
                 </div>
                 
@@ -624,8 +704,8 @@
             </div>
             
             <!-- Scroll Down Indicator -->
-            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0 animate-fade-up" style="animation-delay: 1s;">
-                <div class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center p-1">
+            <div class="absolute bottom-6 md:bottom-10 left-0 right-0 flex justify-center opacity-0 animate-fade-up z-10" style="animation-delay: 1s;">
+                <div class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center items-center p-1">
                     <div class="w-1 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                 </div>
             </div>
@@ -635,30 +715,30 @@
         <section class="my-24 py-8 overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_10%,_black_90%,transparent_100%)]">
             <div class="flex animate-scroll-tech">
                 <!-- List 1 -->
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#3178C6]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.21 2.21a.75.75 0 00-1.06 0l-.36.36L2.61 10.75a.75.75 0 000 1.06l.36.36 8.18 8.18a.75.75 0 001.06 0l8.77-8.77a.75.75 0 000-1.06l-8.77-8.77zM11.65 4.33l6.53 6.53h-5.47V4.33zm-.01 15.34l-6.53-6.53h5.47v6.53z"/></svg><span class="font-mono text-lg text-light-text">TypeScript</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#61DAFB]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 6.5c-3.033 0-5.5 2.467-5.5 5.5s2.467 5.5 5.5 5.5 5.5-2.467 5.5-5.5-2.467-5.5-5.5-5.5zm0 9c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(150 12 12)"/></svg><span class="font-mono text-lg text-light-text">React</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg><span class="font-mono text-lg text-light-text">Next.js</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#646CFF]" fill="currentColor" viewBox="0 0 24 24"><path d="M16.9 2.1a1.2 1.2 0 00-1.8 0L3.3 13.9a1.2 1.2 0 00-.3 1.5l1.8 3.6a1.2 1.2 0 001.2 1h13.2a1.2 1.2 0 001.2-1l1.8-3.6a1.2 1.2 0 00-.3-1.5L16.9 2.1zM12 13.5L8.2 6.1l3.8-3.8 3.8 3.8L12 13.5z"/></svg><span class="font-mono text-lg text-light-text">Vite</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#06B6D4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.001 4.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zm-3.376 9.3c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1zm6.75-4.5c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1zM4.626 9.3c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1z"/></svg><span class="font-mono text-lg text-light-text">Tailwind</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#FFA000]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg><span class="font-mono text-lg text-light-text">Firebase</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10s4.5 10 10 10 10-4.49 10-10-4.5-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z"/></svg><span class="font-mono text-lg text-light-text">Gemini AI</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg><span class="font-mono text-lg text-light-text">Vercel</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#F5C32E]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg><span class="font-mono text-lg text-light-text">Firestore</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#00A2FF]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.63 21.84c-1.3 0-2.5-.3-3.6-.9-1.1-.6-2-1.3-2.8-2.3s-1.4-2-1.9-3.2c-.5-1.2-.7-2.4-.7-3.7s.2-2.5.7-3.7c.5-1.2 1.1-2.2 1.9-3.2s1.7-1.8 2.8-2.3c1.1-.6 2.3-.9 3.6-.9 1.2 0 2.3.3 3.3.8 1 .5 1.9 1.2 2.6 2l-2.9 2.1c-.5-.5-1-.9-1.6-1.2-.6-.3-1.3-.5-2-.5-1 0-1.8.3-2.5.8-.7.5-1.2 1.2-1.6 2-.4.8-.6 1.7-.6 2.7s.2 1.9.6 2.7c.4.8 1 1.5 1.6 2 .7.5 1.5.8 2.5.8 1.4 0 2.6-.5 3.6-1.6l2.9 2.1c-.7.8-1.6 1.5-2.6 2-1 .6-2.1.8-3.3.8z"/></svg><span class="font-mono text-lg text-light-text">Mercado Pago</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#F44336]" fill="currentColor" viewBox="0 0 24 24"><path d="M21.58 7.19C21.43 6.4 20.8 5.78 20 5.63c-1.4-.25-7.1-.25-7.1-.25s-5.7 0-7.1.25C5.2 5.78 4.57 6.4 4.42 7.19c-.25 1.4-.25 4.81-.25 4.81s0 3.4.25 4.81c.15.79.78 1.42 1.58 1.56 1.4.25 7.1.25 7.1.25s5.7 0 7.1-.25c.8-.13 1.43-.77 1.58-1.56.25-1.4.25-4.81.25-4.81s0-3.4-.25-4.81zM9.9 14.8V9.2l4.8 2.8-4.8 2.8z"/></svg><span class="font-mono text-lg text-light-text">IPTV</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#3178C6]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.21 2.21a.75.75 0 00-1.06 0l-.36.36L2.61 10.75a.75.75 0 000 1.06l.36.36 8.18 8.18a.75.75 0 001.06 0l8.77-8.77a.75.75 0 000-1.06l-8.77-8.77zM11.65 4.33l6.53 6.53h-5.47V4.33zm-.01 15.34l-6.53-6.53h5.47v6.53z"/></svg><span class="font-mono text-light-text">TypeScript</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#61DAFB]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 6.5c-3.033 0-5.5 2.467-5.5 5.5s2.467 5.5 5.5 5.5 5.5-2.467 5.5-5.5-2.467-5.5-5.5-5.5zm0 9c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(150 12 12)"/></svg><span class="font-mono text-light-text">React</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg><span class="font-mono text-light-text">Next.js</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#646CFF]" fill="currentColor" viewBox="0 0 24 24"><path d="M16.9 2.1a1.2 1.2 0 00-1.8 0L3.3 13.9a1.2 1.2 0 00-.3 1.5l1.8 3.6a1.2 1.2 0 001.2 1h13.2a1.2 1.2 0 001.2-1l1.8-3.6a1.2 1.2 0 00-.3-1.5L16.9 2.1zM12 13.5L8.2 6.1l3.8-3.8 3.8 3.8L12 13.5z"/></svg><span class="font-mono text-light-text">Vite</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#06B6D4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.001 4.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zm-3.376 9.3c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1zm6.75-4.5c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1zM4.626 9.3c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1z"/></svg><span class="font-mono text-light-text">Tailwind</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#FFA000]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg><span class="font-mono text-light-text">Firebase</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10s4.5 10 10 10 10-4.49 10-10-4.5-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z"/></svg><span class="font-mono text-light-text">Gemini AI</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg><span class="font-mono text-light-text">Vercel</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#F5C32E]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg><span class="font-mono text-light-text">Firestore</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#00A2FF]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.63 21.84c-1.3 0-2.5-.3-3.6-.9-1.1-.6-2-1.3-2.8-2.3s-1.4-2-1.9-3.2c-.5-1.2-.7-2.4-.7-3.7s.2-2.5.7-3.7c.5-1.2 1.1-2.2 1.9-3.2s1.7-1.8 2.8-2.3c1.1-.6 2.3-.9 3.6-.9 1.2 0 2.3.3 3.3.8 1 .5 1.9 1.2 2.6 2l-2.9 2.1c-.5-.5-1-.9-1.6-1.2-.6-.3-1.3-.5-2-.5-1 0-1.8.3-2.5.8-.7.5-1.2 1.2-1.6 2-.4.8-.6 1.7-.6 2.7s.2 1.9.6 2.7c.4.8 1 1.5 1.6 2 .7.5 1.5.8 2.5.8 1.4 0 2.6-.5 3.6-1.6l2.9 2.1c-.7.8-1.6 1.5-2.6 2-1 .6-2.1.8-3.3.8z"/></svg><span class="font-mono text-light-text">Mercado Pago</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#F44336]" fill="currentColor" viewBox="0 0 24 24"><path d="M21.58 7.19C21.43 6.4 20.8 5.78 20 5.63c-1.4-.25-7.1-.25-7.1-.25s-5.7 0-7.1.25C5.2 5.78 4.57 6.4 4.42 7.19c-.25 1.4-.25 4.81-.25 4.81s0 3.4.25 4.81c.15.79.78 1.42 1.58 1.56 1.4.25 7.1.25 7.1.25s5.7 0 7.1-.25c.8-.13 1.43-.77 1.58-1.56.25-1.4.25-4.81.25-4.81s0-3.4-.25-4.81zM9.9 14.8V9.2l4.8 2.8-4.8 2.8z"/></svg><span class="font-mono text-light-text">IPTV</span></div>
 
                 <!-- List 2 (Duplicate for seamless loop) -->
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#3178C6]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.21 2.21a.75.75 0 00-1.06 0l-.36.36L2.61 10.75a.75.75 0 000 1.06l.36.36 8.18 8.18a.75.75 0 001.06 0l8.77-8.77a.75.75 0 000-1.06l-8.77-8.77zM11.65 4.33l6.53 6.53h-5.47V4.33zm-.01 15.34l-6.53-6.53h5.47v6.53z"/></svg><span class="font-mono text-lg text-light-text">TypeScript</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#61DAFB]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 6.5c-3.033 0-5.5 2.467-5.5 5.5s2.467 5.5 5.5 5.5 5.5-2.467 5.5-5.5-2.467-5.5-5.5-5.5zm0 9c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(150 12 12)"/></svg><span class="font-mono text-lg text-light-text">React</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg><span class="font-mono text-lg text-light-text">Next.js</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#646CFF]" fill="currentColor" viewBox="0 0 24 24"><path d="M16.9 2.1a1.2 1.2 0 00-1.8 0L3.3 13.9a1.2 1.2 0 00-.3 1.5l1.8 3.6a1.2 1.2 0 001.2 1h13.2a1.2 1.2 0 001.2-1l1.8-3.6a1.2 1.2 0 00-.3-1.5L16.9 2.1zM12 13.5L8.2 6.1l3.8-3.8 3.8 3.8L12 13.5z"/></svg><span class="font-mono text-lg text-light-text">Vite</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#06B6D4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.001 4.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zm-3.376 9.3c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1zm6.75-4.5c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1zM4.626 9.3c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1z"/></svg><span class="font-mono text-lg text-light-text">Tailwind</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#FFA000]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg><span class="font-mono text-lg text-light-text">Firebase</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10s4.5 10 10 10 10-4.49 10-10-4.5-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z"/></svg><span class="font-mono text-lg text-light-text">Gemini AI</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg><span class="font-mono text-lg text-light-text">Vercel</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#F5C32E]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg><span class="font-mono text-lg text-light-text">Firestore</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#00A2FF]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.63 21.84c-1.3 0-2.5-.3-3.6-.9-1.1-.6-2-1.3-2.8-2.3s-1.4-2-1.9-3.2c-.5-1.2-.7-2.4-.7-3.7s.2-2.5.7-3.7c.5-1.2 1.1-2.2 1.9-3.2s1.7-1.8 2.8-2.3c1.1-.6 2.3-.9 3.6-.9 1.2 0 2.3.3 3.3.8 1 .5 1.9 1.2 2.6 2l-2.9 2.1c-.5-.5-1-.9-1.6-1.2-.6-.3-1.3-.5-2-.5-1 0-1.8.3-2.5.8-.7.5-1.2 1.2-1.6 2-.4.8-.6 1.7-.6 2.7s.2 1.9.6 2.7c.4.8 1 1.5 1.6 2 .7.5 1.5.8 2.5.8 1.4 0 2.6-.5 3.6-1.6l2.9 2.1c-.7.8-1.6 1.5-2.6 2-1 .6-2.1.8-3.3.8z"/></svg><span class="font-mono text-lg text-light-text">Mercado Pago</span></div>
-                <div class="tech-item mx-2 md:mx-4"><svg class="h-6 w-6 text-[#F44336]" fill="currentColor" viewBox="0 0 24 24"><path d="M21.58 7.19C21.43 6.4 20.8 5.78 20 5.63c-1.4-.25-7.1-.25-7.1-.25s-5.7 0-7.1.25C5.2 5.78 4.57 6.4 4.42 7.19c-.25 1.4-.25 4.81-.25 4.81s0 3.4.25 4.81c.15.79.78 1.42 1.58 1.56 1.4.25 7.1.25 7.1.25s5.7 0 7.1-.25c.8-.13 1.43-.77 1.58-1.56.25-1.4.25-4.81.25-4.81s0-3.4-.25-4.81zM9.9 14.8V9.2l4.8 2.8-4.8 2.8z"/></svg><span class="font-mono text-lg text-light-text">IPTV</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#3178C6]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.21 2.21a.75.75 0 00-1.06 0l-.36.36L2.61 10.75a.75.75 0 000 1.06l.36.36 8.18 8.18a.75.75 0 001.06 0l8.77-8.77a.75.75 0 000-1.06l-8.77-8.77zM11.65 4.33l6.53 6.53h-5.47V4.33zm-.01 15.34l-6.53-6.53h5.47v6.53z"/></svg><span class="font-mono text-light-text">TypeScript</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#61DAFB]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M12 6.5c-3.033 0-5.5 2.467-5.5 5.5s2.467 5.5 5.5 5.5 5.5-2.467 5.5-5.5-2.467-5.5-5.5-5.5zm0 9c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.5" transform="rotate(150 12 12)"/></svg><span class="font-mono text-light-text">React</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg><span class="font-mono text-light-text">Next.js</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#646CFF]" fill="currentColor" viewBox="0 0 24 24"><path d="M16.9 2.1a1.2 1.2 0 00-1.8 0L3.3 13.9a1.2 1.2 0 00-.3 1.5l1.8 3.6a1.2 1.2 0 001.2 1h13.2a1.2 1.2 0 001.2-1l1.8-3.6a1.2 1.2 0 00-.3-1.5L16.9 2.1zM12 13.5L8.2 6.1l3.8-3.8 3.8 3.8L12 13.5z"/></svg><span class="font-mono text-light-text">Vite</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#06B6D4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.001 4.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zm-3.376 9.3c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1zm6.75-4.5c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1zM4.626 9.3c.1.4.4.7.7.7h4.8c.3 0 .6-.2.7-.5s0-.7-.3-1l-2.4-3.9-2.4 3.9c-.3.3-.4.7-.1 1.1z"/></svg><span class="font-mono text-light-text">Tailwind</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#FFA000]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg><span class="font-mono text-light-text">Firebase</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10s4.5 10 10 10 10-4.49 10-10-4.5-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z"/></svg><span class="font-mono text-light-text">Gemini AI</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg><span class="font-mono text-light-text">Vercel</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#F5C32E]" fill="currentColor" viewBox="0 0 24 24"><path d="M2.87 18.06L0 12.02l2.67-6.02L8.7 2.87l4.33-2.1L18.42 0l3.71 5.92-2.1 4.35 1.83 4.31-2.87 6.04-6.04 2.87-4.35 2.1-4.32-1.83zM9.4 8.12l-4.14 2.5 2.14 5.37 5.03-1.34L9.4 8.12zm7.1 5.38l-4.14-6.5-4.46 1.8 1.34 5.03 7.26-.33z"/></svg><span class="font-mono text-light-text">Firestore</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#00A2FF]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.63 21.84c-1.3 0-2.5-.3-3.6-.9-1.1-.6-2-1.3-2.8-2.3s-1.4-2-1.9-3.2c-.5-1.2-.7-2.4-.7-3.7s.2-2.5.7-3.7c.5-1.2 1.1-2.2 1.9-3.2s1.7-1.8 2.8-2.3c1.1-.6 2.3-.9 3.6-.9 1.2 0 2.3.3 3.3.8 1 .5 1.9 1.2 2.6 2l-2.9 2.1c-.5-.5-1-.9-1.6-1.2-.6-.3-1.3-.5-2-.5-1 0-1.8.3-2.5.8-.7.5-1.2 1.2-1.6 2-.4.8-.6 1.7-.6 2.7s.2 1.9.6 2.7c.4.8 1 1.5 1.6 2 .7.5 1.5.8 2.5.8 1.4 0 2.6-.5 3.6-1.6l2.9 2.1c-.7.8-1.6 1.5-2.6 2-1 .6-2.1.8-3.3.8z"/></svg><span class="font-mono text-light-text">Mercado Pago</span></div>
+                <div class="tech-item mx-1 md:mx-4"><svg class="text-[#F44336]" fill="currentColor" viewBox="0 0 24 24"><path d="M21.58 7.19C21.43 6.4 20.8 5.78 20 5.63c-1.4-.25-7.1-.25-7.1-.25s-5.7 0-7.1.25C5.2 5.78 4.57 6.4 4.42 7.19c-.25 1.4-.25 4.81-.25 4.81s0 3.4.25 4.81c.15.79.78 1.42 1.58 1.56 1.4.25 7.1.25 7.1.25s5.7 0 7.1-.25c.8-.13 1.43-.77 1.58-1.56.25-1.4.25-4.81.25-4.81s0-3.4-.25-4.81zM9.9 14.8V9.2l4.8 2.8-4.8 2.8z"/></svg><span class="font-mono text-light-text">IPTV</span></div>
             </div>
         </section>
         
@@ -670,7 +750,7 @@
                 <span class="text-primary-light/50">]</span>
             </h2>
             <div class="bento-card">
-                <p class="text-lg text-light-text font-serif leading-relaxed">
+                <p class="text-lg text-light-text font-mono leading-relaxed">
                     <!-- Drop Cap and text styling -->
                     <span class="text-5xl font-bold text-primary float-left mr-3">S</span>
                     ou um desenvolvedor focado em produto, especializado em tecnologias web modernas. Com domínio sólido do <span class="text-highlight">ecossistema React</span>, <span class="text-highlight">Next.js</span> e backends serverless no <span class="text-highlight">Firebase</span>, construo aplicações escaláveis e de alto desempenho do zero. Minha expertise inclui desde componentização avançada de frontend e <span class="text-highlight">design mobile-first</span> até integrações complexas com APIs de pagamento (<span class="text-highlight">Mercado Pago</span>) e <span class="text-highlight">IA (Google Gemini)</span>. Tenho paixão por enfrentar desafios e transformar ideias em experiências digitais seguras, eficientes e amigáveis ao usuário.
@@ -691,7 +771,7 @@
                 <!-- Project 1: ZeroGasto (Large) -->
                 <div class="bento-card md:col-span-2 md:row-span-2">
                     <h3 class="text-2xl font-semibold text-heading mb-3 font-mono">ZeroGasto</h3>
-                    <p class="text-light-text mb-4 font-serif leading-relaxed">
+                    <p class="text-light-text mb-4 font-mono leading-relaxed">
                         Um aplicativo de gestão financeira pessoal com dashboards, acompanhamento de metas e relatórios interativos. Design mobile-first com foco em UX acessível e categorização automática.
                     </p>
                     <div class="w-full h-32 bg-primary/10 rounded-lg border border-primary-light/20 flex items-center justify-center text-primary-light/50">
@@ -741,7 +821,7 @@
                 <!-- Project 2: HoroscopoZap (Tall) -->
                 <div class="bento-card md:row-span-2">
                     <h3 class="text-2xl font-semibold text-heading mb-3 font-mono">HoroscopoZap</h3>
-                    <p class="text-light-text mb-4 font-serif leading-relaxed">
+                    <p class="text-light-text mb-4 font-mono leading-relaxed">
                         WebApp de análise de conversas do WhatsApp usando NLP e IA para análise de sentimento. Backend escalável em Firebase Functions com integração de pagamento.
                     </p>
                     <div class="w-full h-32 bg-primary/10 rounded-lg border border-primary-light/20 flex items-center justify-center text-primary-light/50">
@@ -783,17 +863,17 @@
                 <!-- Skill 1 -->
                 <div class="bento-card">
                     <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Design & UX</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Interfaces mobile-first, transições suaves e animações modernas.</p>
+                    <p class="text-light-text text-sm font-mono leading-relaxed">Interfaces mobile-first, transições suaves e animações modernas.</p>
                 </div>
                 <!-- Skill 2 -->
                 <div class="bento-card">
                     <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Componentização</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Arquitetura modular avançada para máxima reutilização de código.</p>
+                    <p class="text-light-text text-sm font-mono leading-relaxed">Arquitetura modular avançada para máxima reutilização de código.</p>
                 </div>
                 <!-- Skill 3 -->
                 <div class="bento-card">
                     <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Performance</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Foco constante em otimização, desde renderização até carregamento eficiente.</p>
+                    <p class="text-light-text text-sm font-mono leading-relaxed">Foco constante em otimização, desde renderização até carregamento eficiente.</p>
                 </div>
             </div>
         </section>
@@ -809,17 +889,17 @@
                 <!-- Service 1 -->
                 <div class="bento-card">
                     <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Desenvolvimento Frontend</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Construindo interfaces responsivas e de alto desempenho com <span class="text-highlight">React</span>, <span class="text-highlight">Next.js</span> e <span class="text-highlight">Tailwind CSS</span>.</p>
+                    <p class="text-light-text text-sm font-mono leading-relaxed">Construindo interfaces responsivas e de alto desempenho com <span class="text-highlight">React</span>, <span class="text-highlight">Next.js</span> e <span class="text-highlight">Tailwind CSS</span>.</p>
                 </div>
                 <!-- Service 2 -->
                 <div class="bento-card">
                     <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Backend Serverless</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Backends escaláveis usando <span class="text-highlight">Firebase Functions</span>, <span class="text-highlight">Firestore</span> e regras de autenticação seguras.</p>
+                    <p class="text-light-text text-sm font-mono leading-relaxed">Backends escaláveis usando <span class="text-highlight">Firebase Functions</span>, <span class="text-highlight">Firestore</span> e regras de autenticação seguras.</p>
                 </div>
                 <!-- Service 3 -->
                 <div class="bento-card">
                     <h4 class="text-xl font-semibold text-heading mb-2 font-mono">Integração de APIs</h4>
-                    <p class="text-light-text text-sm font-serif leading-relaxed">Conectando seu aplicativo a serviços de terceiros como <span class="text-highlight">Mercado Pago</span> e <span class="text-highlight">Gemini AI</span>.</p>
+                    <p class="text-light-text text-sm font-mono leading-relaxed">Conectando seu aplicativo a serviços de terceiros como <span class="text-highlight">Mercado Pago</span> e <span class="text-highlight">Gemini AI</span>.</p>
                 </div>
             </div>
         </section>
@@ -832,22 +912,22 @@
                 Entre em Contato
                 <span class="text-primary-light/50">]</span>
             </h2>
-            <p class="text-lg text-light-text mb-8 max-w-lg mx-auto font-serif leading-relaxed">
+            <p class="text-lg text-light-text mb-8 max-w-lg mx-auto font-mono leading-relaxed">
                 Estou disponível para novos projetos e aberto a oportunidades.
             </p>
             <div class="flex justify-center gap-6">
                 <!-- SVGs are inlined for a single-file solution -->
-                <a href="mailto:wesley.rios@example.com" class="text-gray-400 hover:text-primary transition-colors" aria-label="E-mail">
+                <a href="mailto:limarioswesley@gmail.com" class="text-gray-400 hover:text-primary transition-colors" aria-label="E-mail">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                 </a>
-                <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="LinkedIn"> <!-- Substitua # pela URL do LinkedIn -->
+                <a href="https://www.linkedin.com/in/wesley-rios-b5a1b6323/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-primary transition-colors" aria-label="LinkedIn">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
                 </a>
-                <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="GitHub"> <!-- Substitua # pela URL do GitHub -->
+                <a href="https://github.com/RiosWesley/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-primary transition-colors" aria-label="GitHub">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.085 8.199-11.386 0-6.627-5.373-12-12-12z" />
                     </svg>
@@ -1110,6 +1190,7 @@
             // --- 6. 3D Background (Three.js) - Enhanced Organic Blob with Multiple Effects ---
             let scene, camera, renderer, blobMesh, mouseX = 0, mouseY = 0, scrollProgress = 0;
             let blobGroup, particles, connectionLines, orbitalRings, particleVelocities, particleCount;
+            let starField;
             const canvas = document.getElementById('bg-canvas');
 
             if (canvas) {
@@ -1380,6 +1461,106 @@
                         connectionLines = new THREE.LineSegments(lineGeometry, lineMaterial);
                         scene.add(connectionLines);
 
+                        // Star field background for depth effect
+                        const starCount = 5000;
+                        const starGeometry = new THREE.BufferGeometry();
+                        const starPositions = new Float32Array(starCount * 3);
+                        const starSizes = new Float32Array(starCount);
+                        const starColors = new Float32Array(starCount * 3);
+                        
+                        for (let i = 0; i < starCount; i++) {
+                            // Distribute stars in multiple depth layers (farther back)
+                            const depthLayer = Math.floor(Math.random() * 3); // 0, 1, or 2
+                            const minRadius = 8 + depthLayer * 5;
+                            const maxRadius = 12 + depthLayer * 5;
+                            const radius = minRadius + Math.random() * (maxRadius - minRadius);
+                            const theta = Math.random() * Math.PI * 2;
+                            const phi = Math.acos(Math.random() * 2 - 1);
+                            
+                            starPositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                            starPositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                            starPositions[i * 3 + 2] = radius * Math.cos(phi);
+                            
+                            // Varying star sizes (smaller stars are more common)
+                            const sizeRandom = Math.random();
+                            if (sizeRandom < 0.7) {
+                                starSizes[i] = 0.005 + Math.random() * 0.01; // Small stars
+                            } else if (sizeRandom < 0.95) {
+                                starSizes[i] = 0.015 + Math.random() * 0.01; // Medium stars
+                            } else {
+                                starSizes[i] = 0.025 + Math.random() * 0.015; // Large bright stars
+                            }
+                            
+                            // Varying star colors (white to purple tint)
+                            const colorVariation = Math.random();
+                            if (colorVariation < 0.7) {
+                                // White stars
+                                starColors[i * 3] = 1.0;
+                                starColors[i * 3 + 1] = 1.0;
+                                starColors[i * 3 + 2] = 1.0;
+                            } else if (colorVariation < 0.9) {
+                                // Light purple stars
+                                starColors[i * 3] = 0.8 + Math.random() * 0.2;
+                                starColors[i * 3 + 1] = 0.7 + Math.random() * 0.2;
+                                starColors[i * 3 + 2] = 0.9 + Math.random() * 0.1;
+                            } else {
+                                // Purple stars
+                                starColors[i * 3] = 0.6 + Math.random() * 0.2;
+                                starColors[i * 3 + 1] = 0.4 + Math.random() * 0.2;
+                                starColors[i * 3 + 2] = 0.8 + Math.random() * 0.2;
+                            }
+                        }
+                        
+                        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+                        starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
+                        starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+                        
+                        const starMaterial = new THREE.ShaderMaterial({
+                            uniforms: {
+                                uTime: { value: 0 },
+                                uScrollProgress: { value: 0 }
+                            },
+                            vertexShader: `
+                                attribute float size;
+                                attribute vec3 color;
+                                uniform float uTime;
+                                uniform float uScrollProgress;
+                                varying vec3 vColor;
+                                varying float vAlpha;
+                                
+                                void main() {
+                                    vColor = color;
+                                    // Stars twinkle slightly
+                                    float twinkle = 0.8 + sin(uTime * 0.5 + position.x * 10.0) * 0.2;
+                                    vAlpha = twinkle * (0.6 + uScrollProgress * 0.2);
+                                    
+                                    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                                    // Stars appear smaller when far away (parallax effect)
+                                    gl_PointSize = size * (300.0 / -mvPosition.z) * (1.0 + uScrollProgress * 0.3);
+                                    gl_Position = projectionMatrix * mvPosition;
+                                }
+                            `,
+                            fragmentShader: `
+                                varying vec3 vColor;
+                                varying float vAlpha;
+                                
+                                void main() {
+                                    float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
+                                    // Create star shape with soft edges
+                                    float alpha = 1.0 - smoothstep(0.0, 0.4, distanceToCenter);
+                                    // Add slight glow to larger stars
+                                    float glow = 1.0 - smoothstep(0.0, 0.6, distanceToCenter) * 0.3;
+                                    gl_FragColor = vec4(vColor * glow, alpha * vAlpha);
+                                }
+                            `,
+                            transparent: true,
+                            vertexColors: true,
+                            blending: THREE.AdditiveBlending
+                        });
+                        
+                        starField = new THREE.Points(starGeometry, starMaterial);
+                        scene.add(starField);
+
                         // Orbital rings
                         const ringCount = 2;
                         orbitalRings = [];
@@ -1469,6 +1650,14 @@
                                 
                                 particles.geometry.attributes.position.needsUpdate = true;
                                 particles.rotation.y = elapsedTime * 0.01;
+                            }
+                            
+                            // Update star field
+                            if (starField && starField.material) {
+                                starField.material.uniforms.uTime.value = elapsedTime;
+                                starField.material.uniforms.uScrollProgress.value = scrollProgress;
+                                // Very slow rotation for parallax effect
+                                starField.rotation.y = elapsedTime * 0.002;
                             }
                             
                             // Update connection lines (reduced number)
