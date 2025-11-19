@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Pages - Wesley Rios</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Roboto+Mono:wght@400;700&family=Lora:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="antialiased">
+
+    <div id="loading-screen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loading-text"></div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar"></div>
+        </div>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="bg-blur-overlay"></div>
+
+    <header id="floating-header">
+        <div id="header-inner">
+            <a href="/" class="text-xl font-bold font-mono text-heading">Wesley Rios</a>
+
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/" class="font-mono text-sm text-light-text hover:text-primary transition-colors">Voltar ao
+                    Início</a>
+            </nav>
+
+            <a href="/" class="md:hidden z-50 p-2 -mr-2 text-heading">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <main class="relative z-10 px-4 py-4 md:px-8 md:py-8 max-w-7xl mx-auto w-full overflow-x-hidden">
+
+        <section class="my-12 pt-20 w-full overflow-x-hidden">
+            <h1 class="text-3xl md:text-5xl font-bold text-center mb-4 font-mono opacity-0 animate-fade-up"
+                style="animation-delay: 0.2s;">
+                <span class="whitespace-nowrap">
+                    <span class="text-primary-light/50">[</span>
+                    <span class="text-gradient" data-scramble="true">Landing Pages</span>
+                    <span class="text-primary-light/50">]</span>
+                </span>
+            </h1>
+            <p class="text-center text-light-text max-w-2xl mx-auto font-mono mb-12 md:mb-16 opacity-0 animate-fade-up"
+                style="animation-delay: 0.4s;" data-scramble="true">
+                Designs focados em conversão, performance e estética premium.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 fade-in-section">
+
+                <!-- SaaS Landing Page -->
+                <div class="bento-card group cursor-pointer overflow-hidden hover:border-primary/50 transition-all duration-300 h-full flex flex-col">
+                    <div
+                        class="relative aspect-video w-full overflow-hidden rounded-lg mb-4 border border-primary-light/10 bg-primary/5 flex-shrink-0">
+                        <img src="/images/lp-thumbnails/saas.png" alt="SaaS Landing Page"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span
+                                class="px-4 py-2 bg-primary text-white rounded-full font-mono text-sm font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Ver
+                                Detalhes</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow flex flex-col">
+                        <h3
+                            class="text-xl font-semibold text-heading font-mono mb-2 group-hover:text-primary transition-colors">
+                            SaaS Tech Platform</h3>
+                        <p class="text-light-text text-sm font-mono leading-relaxed mb-4 flex-grow">
+                            Interface moderna para startups de tecnologia com foco em conversão e clareza de proposta de
+                            valor.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="project-tech-tag">SaaS</span>
+                        <span class="project-tech-tag">Tech</span>
+                        <span class="project-tech-tag">Startup</span>
+                    </div>
+                </div>
+
+                <!-- Creative Studio Landing Page -->
+                <a href="/creative-studio.html" class="bento-card group cursor-pointer overflow-hidden hover:border-primary/50 transition-all duration-300 h-full flex flex-col block">
+                    <div
+                        class="relative aspect-video w-full overflow-hidden rounded-lg mb-4 border border-primary-light/10 bg-primary/5 flex-shrink-0">
+                        <img src="/images/lp-thumbnails/agency.png" alt="Creative Studio Landing Page"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span
+                                class="px-4 py-2 bg-primary text-white rounded-full font-mono text-sm font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Ver
+                                Detalhes</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow flex flex-col">
+                        <h3
+                            class="text-xl font-semibold text-heading font-mono mb-2 group-hover:text-primary transition-colors">
+                            Creative Studio</h3>
+                        <p class="text-light-text text-sm font-mono leading-relaxed mb-4 flex-grow">
+                            Layout estilo suíço com tipografia ousada e alto contraste para agências digitais criativas.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="project-tech-tag">Swiss Style</span>
+                        <span class="project-tech-tag">Bold Typography</span>
+                        <span class="project-tech-tag">Portfolio</span>
+                    </div>
+                </a>
+
+                <!-- Restaurant Landing Page -->
+                <div class="bento-card group cursor-pointer overflow-hidden hover:border-primary/50 transition-all duration-300 h-full flex flex-col">
+                    <div
+                        class="relative aspect-video w-full overflow-hidden rounded-lg mb-4 border border-primary-light/10 bg-primary/5 flex-shrink-0">
+                        <img src="/images/lp-thumbnails/restaurant.png" alt="Restaurant Landing Page"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span
+                                class="px-4 py-2 bg-primary text-white rounded-full font-mono text-sm font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Ver
+                                Detalhes</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow flex flex-col">
+                        <h3
+                            class="text-xl font-semibold text-heading font-mono mb-2 group-hover:text-primary transition-colors">
+                            Restaurant Brand</h3>
+                        <p class="text-light-text text-sm font-mono leading-relaxed mb-4 flex-grow">
+                            Design acolhedor e apetitoso para restaurantes, com foco em menu visual e reservas online.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="project-tech-tag">Food & Beverage</span>
+                        <span class="project-tech-tag">Hospitality</span>
+                        <span class="project-tech-tag">Booking</span>
+                    </div>
+                </div>
+
+                <!-- E-commerce Landing Page -->
+                <div class="bento-card group cursor-pointer overflow-hidden hover:border-primary/50 transition-all duration-300 h-full flex flex-col">
+                    <div
+                        class="relative aspect-video w-full overflow-hidden rounded-lg mb-4 border border-primary-light/10 bg-primary/5 flex-shrink-0">
+                        <img src="/images/lp-thumbnails/ecommerce.png" alt="Fashion E-commerce Landing Page"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span
+                                class="px-4 py-2 bg-primary text-white rounded-full font-mono text-sm font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Ver
+                                Detalhes</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow flex flex-col">
+                        <h3
+                            class="text-xl font-semibold text-heading font-mono mb-2 group-hover:text-primary transition-colors">
+                            Fashion Brand</h3>
+                        <p class="text-light-text text-sm font-mono leading-relaxed mb-4 flex-grow">
+                            Minimalismo e foco no produto para marcas de moda que buscam elegância e conversão.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="project-tech-tag">E-commerce</span>
+                        <span class="project-tech-tag">Minimalist</span>
+                        <span class="project-tech-tag">Retail</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <footer class="my-12 text-center fade-in-section w-full overflow-x-hidden">
+            <p class="text-sm text-gray-500 mt-12 font-mono" data-scramble="true">&copy; 2025 Wesley Rios. Todos os
+                direitos reservados.</p>
+        </footer>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

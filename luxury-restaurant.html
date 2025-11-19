@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Colher Dourada - Alta Gastronomia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Cormorant Garamond"', 'serif'],
+                        script: ['"Great Vibes"', 'cursive'],
+                        body: ['"Montserrat"', 'sans-serif'],
+                    },
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                            950: '#451a03',
+                        },
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #09090b;
+            /* zinc-950 */
+            color: #d1d5db;
+            /* gray-300 */
+        }
+
+        ::selection {
+            background-color: #f59e0b;
+            /* amber-500 */
+            color: black;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .bg-gold-gradient {
+            background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728);
+        }
+
+        /* Linhas Geométricas de Fundo */
+        .geo-lines {
+            background-image:
+                linear-gradient(30deg, transparent 49%, rgba(212, 175, 55, 0.05) 50%, transparent 51%),
+                linear-gradient(150deg, transparent 49%, rgba(212, 175, 55, 0.05) 50%, transparent 51%);
+            background-size: 100px 100px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #78350f;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+    </style>
+</head>
+
+<body class="font-body overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 bg-transparent py-8">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <!-- Logo Area -->
+            <div class="flex items-center gap-2 group cursor-pointer">
+                <div class="p-2 border border-amber-500/30 rotate-45 group-hover:border-amber-400 transition-colors">
+                    <!-- UtensilsCrossed Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="w-5 h-5 text-amber-500 -rotate-45">
+                        <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8" />
+                        <path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7" />
+                        <path d="m2.1 21.8 6.4-6.3" />
+                        <path d="m19 5-7 7" />
+                    </svg>
+                </div>
+                <span
+                    class="ml-3 text-xl font-display tracking-widest text-white group-hover:text-amber-400 transition-colors">
+                    A COLHER <span class="text-amber-500 font-semibold">DOURADA</span>
+                </span>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-12">
+                <a href="#cardápio"
+                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
+                    Cardápio
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#reservas"
+                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
+                    Reservas
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#sobre"
+                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
+                    Sobre Nós
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#eventos"
+                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
+                    Eventos
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+
+                <button
+                    class="px-8 py-2 transition-all duration-300 font-serif tracking-wider uppercase text-xs border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                    Reservar Agora
+                </button>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden text-white">
+                <!-- Menu Icon -->
+                <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" x2="20" y1="12" y2="12" />
+                    <line x1="4" x2="20" y1="6" y2="6" />
+                    <line x1="4" x2="20" y1="18" y2="18" />
+                </svg>
+                <!-- X Icon (Hidden by default) -->
+                <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu"
+            class="hidden md:hidden absolute top-full left-0 w-full bg-zinc-950 border-b border-amber-900/30 py-8 px-6 flex flex-col gap-6 animate-fade-in shadow-2xl">
+            <a href="#cardápio" class="text-lg font-display text-center text-gray-300 hover:text-amber-400">Cardápio</a>
+            <a href="#reservas" class="text-lg font-display text-center text-gray-300 hover:text-amber-400">Reservas</a>
+            <a href="#sobre" class="text-lg font-display text-center text-gray-300 hover:text-amber-400">Sobre Nós</a>
+            <a href="#eventos" class="text-lg font-display text-center text-gray-300 hover:text-amber-400">Eventos</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background & Overlay -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-black/60 z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-zinc-950 via-transparent to-zinc-950 z-20"></div>
+            <div class="absolute inset-0 geo-lines opacity-30"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-30 grid md:grid-cols-12 gap-12 items-center">
+
+            <!-- Text Content -->
+            <div class="md:col-span-6 text-center md:text-left space-y-6">
+                <div class="inline-block border-b border-amber-500 pb-1 mb-4">
+                    <span class="text-amber-400 font-body text-xs tracking-[0.3em] uppercase">Est. 2024</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-display text-white leading-tight">
+                    A Colher <br />
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 drop-shadow-lg">
+                        Dourada
+                    </span>
+                </h1>
+                <p
+                    class="text-2xl md:text-4xl font-script text-amber-500/90 -mt-2 mb-8 transform -rotate-2 origin-left">
+                    Uma Jornada Culinária Exclusiva
+                </p>
+                <p class="text-gray-400 font-body font-light leading-relaxed max-w-md mx-auto md:mx-0 mb-8">
+                    Descubra a arte da alta gastronomia onde sabores clássicos encontram a inovação moderna em um
+                    ambiente de sofisticação incomparável.
+                </p>
+                <div class="flex flex-col md:flex-row gap-6 justify-center md:justify-start">
+                    <button
+                        class="px-8 py-3 transition-all duration-300 font-serif tracking-wider uppercase text-sm border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                        Ver Cardápio
+                    </button>
+                    <button
+                        class="px-8 py-3 transition-all duration-300 font-serif tracking-wider uppercase text-sm border border-white/20 text-white hover:border-amber-500 hover:text-amber-500 bg-black/40 backdrop-blur-sm hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                        Fazer Reserva
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hero Image Composition -->
+            <div class="md:col-span-6 relative mt-12 md:mt-0">
+                <!-- Decorative Frames -->
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-amber-500/10 rounded-full animate-pulse-slow">
+                </div>
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border border-amber-500/5 rounded-full">
+                </div>
+
+                <!-- Main Image -->
+                <div class="relative rounded-lg overflow-hidden shadow-2xl shadow-amber-900/20 group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 opacity-60 transition-opacity group-hover:opacity-40">
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?q=80&w=2070&auto=format&fit=crop"
+                        alt="Vieiras Grelhadas - Prato Assinatura"
+                        class="w-full h-[500px] object-cover transform transition-transform duration-700 group-hover:scale-105" />
+                    <!-- Floating Caption -->
+                    <div class="absolute bottom-8 right-8 z-20 text-right">
+                        <p class="text-amber-400 font-display text-xl italic">Vieiras Douradas</p>
+                        <p className="text-xs text-gray-400 uppercase tracking-widest">Prato Assinatura</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div
+            class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+            <span class="text-[10px] uppercase tracking-widest text-amber-500">Explore</span>
+            <div class="w-px h-12 bg-gradient-to-b from-amber-500 to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- About/Luxury Section -->
+    <section id="sobre" class="py-24 bg-zinc-900 relative overflow-hidden">
+        <!-- Decorative Lines -->
+        <div
+            class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent">
+        </div>
+        <div class="absolute top-0 left-10 w-px h-32 bg-gradient-to-b from-amber-500/30 to-transparent"></div>
+        <div class="absolute bottom-0 right-10 w-px h-32 bg-gradient-to-t from-amber-500/30 to-transparent"></div>
+
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <div class="mb-6 flex justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="text-amber-500 w-8 h-8 opacity-80">
+                    <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8" />
+                    <path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7" />
+                    <path d="m2.1 21.8 6.4-6.3" />
+                    <path d="m19 5-7 7" />
+                </svg>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-display text-white mb-8 tracking-wide">
+                EXPERIÊNCIA DE <span class="text-amber-500">LUXO</span>
+            </h2>
+            <p class="text-lg text-gray-400 leading-loose font-light font-body mb-12">
+                Entregue-se a uma experiência gastronômica inesquecível, onde cada prato é uma verdadeira obra-prima
+                e cada momento é elaborado com perfeição. Nossa cozinha une tradição e vanguarda para despertar todos os
+                seus sentidos.
+            </p>
+            <button
+                class="mx-auto block w-fit px-8 py-3 transition-all duration-300 font-serif tracking-wider uppercase text-sm border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                Reservar Mesa
+            </button>
+        </div>
+    </section>
+
+    <!-- Featured Menu Preview -->
+    <section id="cardápio" class="py-24 bg-zinc-950 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-amber-500 font-body text-xs tracking-[0.3em] uppercase block mb-2">Nossas
+                    Seleções</span>
+                <h2 class="text-4xl font-display text-white">Destaques do Chef</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dish 1 -->
+                <div
+                    class="group p-8 border border-white/5 bg-zinc-900/50 hover:border-amber-500/30 hover:bg-zinc-900 transition-all duration-500 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                    <div class="flex justify-between items-baseline mb-4 border-b border-dashed border-gray-700 pb-4">
+                        <h3 class="text-xl font-display text-amber-100 group-hover:text-amber-400 transition-colors">
+                            Filé Mignon Trufado</h3>
+                        <span class="text-lg font-display text-amber-500">R$ 145</span>
+                    </div>
+                    <p class="text-gray-400 font-body text-sm leading-relaxed">Medalhões de filé mignon, redução de
+                        vinho do porto, azeite de trufas brancas e purê rústico.</p>
+                </div>
+
+                <!-- Dish 2 -->
+                <div
+                    class="group p-8 border border-white/5 bg-zinc-900/50 hover:border-amber-500/30 hover:bg-zinc-900 transition-all duration-500 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                    <div class="flex justify-between items-baseline mb-4 border-b border-dashed border-gray-700 pb-4">
+                        <h3 class="text-xl font-display text-amber-100 group-hover:text-amber-400 transition-colors">
+                            Lagosta Thermidor</h3>
+                        <span class="text-lg font-display text-amber-500">R$ 210</span>
+                    </div>
+                    <p class="text-gray-400 font-body text-sm leading-relaxed">Cauda de lagosta gratinada com molho
+                        cremoso de mostarda Dijon, conhaque e queijo gruyère.</p>
+                </div>
+
+                <!-- Dish 3 -->
+                <div
+                    class="group p-8 border border-white/5 bg-zinc-900/50 hover:border-amber-500/30 hover:bg-zinc-900 transition-all duration-500 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                    <div class="flex justify-between items-baseline mb-4 border-b border-dashed border-gray-700 pb-4">
+                        <h3 class="text-xl font-display text-amber-100 group-hover:text-amber-400 transition-colors">
+                            Risoto de Açafrão</h3>
+                        <span class="text-lg font-display text-amber-500">R$ 115</span>
+                    </div>
+                    <p class="text-gray-400 font-body text-sm leading-relaxed">Arroz arbóreo italiano, açafrão
+                        importado, vieiras grelhadas e toque de limão siciliano.</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="#"
+                    class="inline-flex items-center gap-2 text-amber-500 uppercase tracking-widest text-xs hover:text-white transition-colors border-b border-transparent hover:border-white pb-1">
+                    Ver Menu Completo
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="w-4 h-4">
+                        <path d="m9 18 6-6-6-6" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info / Footer Section -->
+    <footer class="bg-zinc-900 border-t border-white/5 pt-20 pb-10">
+        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-12 mb-16 text-center md:text-left">
+            <!-- Contact -->
+            <div class="space-y-6">
+                <h4 class="text-xl font-display text-white tracking-wider">CONTATO</h4>
+                <div class="space-y-4 text-gray-400 font-body font-light text-sm">
+                    <p class="flex items-center justify-center md:justify-start gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-4 h-4 text-amber-500">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        Av. Paulista, 1234 - Jardins, SP
+                    </p>
+                    <p class="flex items-center justify-center md:justify-start gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-4 h-4 text-amber-500">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
+                        (11) 3000-0000
+                    </p>
+                    <p class="flex items-center justify-center md:justify-start gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-4 h-4 text-amber-500">
+                            <rect width="20" height="16" x="2" y="4" rx="2" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                        reservas@colherdourada.com.br
+                    </p>
+                </div>
+            </div>
+
+            <!-- Logo Center -->
+            <div class="flex flex-col items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="w-10 h-10 text-amber-500 mb-4">
+                    <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8" />
+                    <path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7" />
+                    <path d="m2.1 21.8 6.4-6.3" />
+                    <path d="m19 5-7 7" />
+                </svg>
+                <h3 class="text-2xl font-display text-white tracking-[0.2em]">A COLHER</h3>
+                <h3 class="text-2xl font-display text-amber-500 tracking-[0.2em]">DOURADA</h3>
+            </div>
+
+            <!-- Hours -->
+            <div class="space-y-6 text-center md:text-right">
+                <h4 class="text-xl font-display text-white tracking-wider">HORÁRIOS</h4>
+                <div class="space-y-2 text-gray-400 font-body font-light text-sm">
+                    <p>Segunda - Quinta: 19h - 23h</p>
+                    <p>Sexta - Sábado: 19h - 01h</p>
+                    <p>Domingo: Fechado</p>
+                </div>
+                <div class="flex gap-4 justify-center md:justify-end pt-2">
+                    <!-- Instagram -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="w-5 h-5 text-gray-500 hover:text-amber-500 cursor-pointer transition-colors">
+                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                    </svg>
+                    <!-- Facebook -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="w-5 h-5 text-gray-500 hover:text-amber-500 cursor-pointer transition-colors">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                    </svg>
+                    <!-- Twitter -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="w-5 h-5 text-gray-500 hover:text-amber-500 cursor-pointer transition-colors">
+                        <path
+                            d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 border-t border-white/5 pt-8 text-center">
+            <p class="text-xs text-gray-600 font-body uppercase tracking-widest">
+                © 2024 A Colher Dourada. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-zinc-950/95', 'backdrop-blur-md', 'py-4', 'border-b', 'border-white/5');
+                navbar.classList.remove('bg-transparent', 'py-8');
+            } else {
+                navbar.classList.remove('bg-zinc-950/95', 'backdrop-blur-md', 'py-4', 'border-b', 'border-white/5');
+                navbar.classList.add('bg-transparent', 'py-8');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

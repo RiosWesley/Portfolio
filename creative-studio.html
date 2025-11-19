@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAUS | Digital Craft & Innovation</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-blue: #2E6AFF; /* Azul vibrante da imagem */
+            --bg-dark: #0a0a0a;
+            --text-main: #111;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #ffffff;
+            color: var(--text-main);
+            cursor: none; /* Custom cursor */
+        }
+
+        h1, h2, h3, .nav-link, .btn-text {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: black;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(0,0,0,0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Geometric Elements */
+        .triangle-wrapper {
+            position: absolute;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .slash-line {
+            position: absolute;
+            width: 4px;
+            height: 150%;
+            background: black;
+            top: -25%;
+            left: 50%;
+            transform: rotate(25deg) scaleY(0);
+            transform-origin: top;
+            z-index: 10;
+        }
+
+        /* Grid Item Animations */
+        .grid-card {
+            transition: transform 0.4s ease;
+            overflow: hidden;
+        }
+        .grid-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 10px 10px 0px var(--brand-blue);
+        }
+
+        /* Cube Animation CSS */
+        .scene {
+            width: 60px;
+            height: 60px;
+            perspective: 600px;
+        }
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateCube 10s infinite linear;
+        }
+        .cube-face {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid black;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cube-face:nth-child(1) { transform: rotateY(  0deg) translateZ(30px); }
+        .cube-face:nth-child(2) { transform: rotateY( 90deg) translateZ(30px); }
+        .cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(30px); }
+        .cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(30px); }
+        .cube-face:nth-child(5) { transform: rotateX( 90deg) translateZ(30px); }
+        .cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(30px); }
+
+        @keyframes rotateCube {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Waves */
+        .wave-lines path {
+            stroke-dasharray: 100;
+            animation: dash 5s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: 200; }
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .reveal-text span {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+
+        .hover-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--brand-blue);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .hover-underline:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Loader -->
+    <div class="loader">
+        <h1 class="text-6xl font-bold overflow-hidden"><span class="reveal-text-inner block">HAUS</span></h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold tracking-tighter hover:text-[var(--brand-blue)] transition-colors duration-300">HAUS</a>
+            <div class="hidden md:flex space-x-10 text-sm font-semibold tracking-wide">
+                <a href="#" class="nav-link hover-underline">Work</a>
+                <a href="#" class="nav-link hover-underline">About</a>
+                <a href="#" class="nav-link hover-underline">Services</a>
+                <a href="#" class="nav-link hover-underline">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto relative overflow-hidden">
+
+        <!-- Section 1: Hero -->
+        <section class="relative min-h-[80vh] flex flex-col justify-center items-center text-center mb-24">
+            
+            <!-- Background Geometry -->
+            <div class="absolute inset-0 flex justify-center items-center pointer-events-none select-none">
+                <!-- Blue Triangle -->
+                <div class="triangle-wrapper w-[400px] h-[400px] md:w-[600px] md:h-[600px]">
+                    <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-2xl opacity-0" id="hero-triangle">
+                        <polygon points="50,15 100,100 0,100" fill="var(--brand-blue)" />
+                    </svg>
+                </div>
+                <!-- Black Slash Line -->
+                <div class="slash-line" id="slash-line"></div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="relative z-20 mix-blend-multiply">
+                <h1 class="text-[15vw] md:text-[12rem] leading-[0.8] font-bold tracking-tighter mb-4 overflow-hidden text-black">
+                    <span class="hero-char inline-block">H</span>
+                    <span class="hero-char inline-block">A</span>
+                    <span class="hero-char inline-block">U</span>
+                    <span class="hero-char inline-block">S</span>
+                </h1>
+                <p class="text-xl md:text-3xl font-semibold tracking-[0.3em] text-gray-800 uppercase hero-sub opacity-0">
+                    Digital Craft & Innovation.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- Section 2: The Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-32 perspective-1000">
+            
+            <!-- Block 1: Circle X -->
+            <div class="grid-card bg-black p-8 aspect-square flex items-center justify-center group cursor-pointer border-2 border-black">
+                <div class="relative w-32 h-32 rounded-full border-4 border-white flex items-center justify-center group-hover:rotate-90 transition-transform duration-700">
+                    <div class="absolute w-full h-1 bg-[var(--brand-blue)] rotate-45 scale-0 group-hover:scale-100 transition-transform duration-500 delay-100"></div>
+                    <div class="absolute w-full h-1 bg-[var(--brand-blue)] -rotate-45 scale-0 group-hover:scale-100 transition-transform duration-500 delay-200"></div>
+                    <!-- Default X lines -->
+                    <div class="absolute w-3/4 h-1 bg-white rotate-45"></div>
+                    <div class="absolute w-3/4 h-1 bg-white -rotate-45"></div>
+                </div>
+            </div>
+
+            <!-- Block 2: The Cube -->
+            <div class="grid-card bg-white border-2 border-black p-8 aspect-square flex items-center justify-center cursor-pointer">
+                <div class="scene">
+                    <div class="cube">
+                        <div class="cube-face text-xs font-bold">HAUS</div>
+                        <div class="cube-face"></div>
+                        <div class="cube-face"></div>
+                        <div class="cube-face"></div>
+                        <div class="cube-face"></div>
+                        <div class="cube-face"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Block 3: Waves -->
+            <div class="grid-card bg-white border-2 border-black overflow-hidden relative aspect-square cursor-pointer">
+                <svg class="wave-lines absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                    <pattern id="pattern-waves" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M0 20 Q10 5 20 20 T40 20" fill="none" stroke="black" stroke-width="4"/>
+                        <path d="M0 30 Q10 15 20 30 T40 30" fill="none" stroke="black" stroke-width="4"/>
+                        <path d="M0 40 Q10 25 20 40 T40 40" fill="none" stroke="black" stroke-width="4"/>
+                    </pattern>
+                    <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-waves)"/>
+                </svg>
+                <div class="absolute inset-0 bg-[var(--brand-blue)] mix-blend-screen opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+            </div>
+
+            <!-- Block 4: Typography -->
+            <div class="grid-card bg-black text-white p-8 aspect-square flex flex-col justify-center text-3xl md:text-4xl font-bold leading-tight cursor-pointer group">
+                <span class="group-hover:text-[var(--brand-blue)] transition-colors duration-300">DISRUPT.</span>
+                <span class="group-hover:pl-4 transition-all duration-300">CREATE.</span>
+                <span class="text-gray-500 group-hover:text-white transition-colors duration-300">EVOLVE.</span>
+            </div>
+
+        </section>
+
+        <!-- Section 3: Expertise -->
+        <section class="mb-32">
+            <h2 class="text-4xl font-bold mb-12 border-b-4 border-black pb-4 inline-block" id="expertise-title">OUR EXPERTISE</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8" id="expertise-grid">
+                <!-- Item -->
+                <div class="expertise-item group">
+                    <div class="flex items-center mb-3 text-[var(--brand-blue)]">
+                        <i data-lucide="layers" class="w-6 h-6 mr-2 group-hover:rotate-12 transition-transform"></i>
+                        <span class="font-bold text-lg">BRANDING</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">Visual identity that speaks louder than words.</p>
+                </div>
+
+                 <!-- Item -->
+                <div class="expertise-item group">
+                    <div class="flex items-center mb-3 text-[var(--brand-blue)]">
+                        <i data-lucide="monitor" class="w-6 h-6 mr-2 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-bold text-lg">WEB DESIGN</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">Immersive experiences built for the modern web.</p>
+                </div>
+
+                <!-- Item -->
+                <div class="expertise-item group">
+                    <div class="flex items-center mb-3 text-[var(--brand-blue)]">
+                        <i data-lucide="play-circle" class="w-6 h-6 mr-2 group-hover:rotate-90 transition-transform"></i>
+                        <span class="font-bold text-lg">MOTION</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">Bringing static narratives to life through movement.</p>
+                </div>
+
+                <!-- Item -->
+                <div class="expertise-item group">
+                    <div class="flex items-center mb-3 text-[var(--brand-blue)]">
+                        <i data-lucide="target" class="w-6 h-6 mr-2 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-bold text-lg">STRATEGY</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">Data-driven insights for sustainable growth.</p>
+                </div>
+
+                <!-- Item -->
+                <div class="expertise-item group">
+                    <div class="flex items-center mb-3 text-[var(--brand-blue)]">
+                        <i data-lucide="smartphone" class="w-6 h-6 mr-2 group-hover:-rotate-12 transition-transform"></i>
+                        <span class="font-bold text-lg">UI/UX</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">Intuitive interfaces focused on user conversion.</p>
+                </div>
+
+                <!-- Item -->
+                <div class="expertise-item group">
+                    <div class="flex items-center mb-3 text-[var(--brand-blue)]">
+                        <i data-lucide="pen-tool" class="w-6 h-6 mr-2 group-hover:translate-x-2 transition-transform"></i>
+                        <span class="font-bold text-lg">ART DIRECTION</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">Curating the aesthetic soul of your project.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: CTA -->
+        <section class="relative py-24 border-t-2 border-black flex justify-center overflow-hidden group">
+            <div class="absolute inset-0 bg-[var(--brand-blue)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left z-0"></div>
+            
+            <button class="relative z-10 bg-black text-white px-12 py-6 text-2xl font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300 shadow-[8px_8px_0px_0px_rgba(46,106,255,1)] hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,0)] hover:translate-x-[4px] hover:translate-y-[4px]">
+                Start a Project
+            </button>
+        </section>
+
+        <!-- Decorative Footer Shapes -->
+        <div class="h-32 w-full overflow-hidden relative">
+            <svg viewBox="0 0 100 20" class="w-full h-full absolute bottom-0" preserveAspectRatio="none">
+                <polygon points="0,20 20,0 40,20 60,0 80,20 100,0 100,20" fill="black"/>
+            </svg>
+        </div>
+
+    </main>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // --- Custom Cursor Logic ---
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Slight lag for the outline
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Add hover effect to interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .grid-card');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorOutline.style.backgroundColor = 'rgba(46, 106, 255, 0.2)';
+                cursorOutline.style.borderColor = 'transparent';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorOutline.style.backgroundColor = 'transparent';
+                cursorOutline.style.borderColor = 'rgba(0,0,0,0.5)';
+            });
+        });
+
+        // --- GSAP Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Page Load Sequence
+        const tl = gsap.timeline();
+
+        // Reveal Loader Text
+        tl.to('.reveal-text-inner', {
+            y: 0,
+            duration: 1,
+            ease: "power4.out"
+        })
+        .to('.loader', {
+            y: '-100%',
+            duration: 1,
+            ease: "power3.inOut",
+            delay: 0.5
+        })
+        // Hero Animations
+        .from('.hero-char', {
+            y: 200,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "back.out(1.7)"
+        }, "-=0.5")
+        .to('#hero-triangle', {
+            opacity: 1,
+            duration: 1
+        }, "-=1")
+        .to('#slash-line', {
+            scaleY: 1,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.8")
+        .to('.hero-sub', {
+            opacity: 1,
+            letterSpacing: '0.15em', // animate spacing
+            duration: 1
+        }, "-=0.5");
+
+        // 2. Parallax Effect for Hero Geometry
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            gsap.to('.triangle-wrapper', {
+                x: x * 2, // Moves opposite to mouse
+                y: y * 2,
+                rotation: x,
+                duration: 1,
+                ease: "power1.out"
+            });
+
+            gsap.to('#slash-line', {
+                x: -x,
+                rotation: 25 + (x * 0.5),
+                duration: 1,
+                ease: "power1.out"
+            });
+        });
+
+        // 3. Scroll Animations for Grid Items
+        gsap.utils.toArray('.grid-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                },
+                y: 100,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.1,
+                ease: "power3.out"
+            });
+        });
+
+        // 4. Expertise List Stagger
+        gsap.from('.expertise-item', {
+            scrollTrigger: {
+                trigger: '#expertise-grid',
+                start: "top 80%",
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out"
+        });
+
+        // 5. Title Underline Animation
+        gsap.from('#expertise-title', {
+            scrollTrigger: {
+                trigger: '#expertise-title',
+                start: "top 85%",
+            },
+            width: 0,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+    </script>
+</body>
+</html>

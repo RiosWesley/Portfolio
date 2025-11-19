@@ -11,7 +11,7 @@ let scrollProgress = 0;
 let blobGroup: THREE.Group | null = null;
 let particles: THREE.Points | null = null;
 let connectionLines: THREE.LineSegments | null = null;
-let orbitalRings: THREE.Mesh[] = [];
+
 let particleVelocities: Float32Array | null = null;
 let particleCount = 0;
 let starField: THREE.Points | null = null;
@@ -125,16 +125,17 @@ const vertexShader = `
     
     vec3 pos = position;
     
-    float noise = snoise(pos * 0.5 + uTime * 0.15);
-    float noise2 = snoise(pos * 0.8 + uTime * 0.1);
-    float noise3 = snoise(pos * 1.2 + uTime * 0.075);
+    // Slower, smoother noise for a more premium feel
+    float noise = snoise(pos * 0.6 + uTime * 0.1);
+    float noise2 = snoise(pos * 1.0 + uTime * 0.05);
     
-    float displacement = (noise * 0.3 + noise2 * 0.2 + noise3 * 0.1) * 0.4;
+    float displacement = (noise * 0.4 + noise2 * 0.2) * 0.5;
     
+    // Subtle mouse influence
     vec3 mouseInfluence = normalize(pos) * 0.0;
     float mouseDistance = distance(uMouse, vec2(pos.x, pos.y));
-    if (mouseDistance < 2.0) {
-      mouseInfluence = normalize(pos) * (1.0 - mouseDistance / 2.0) * 0.3;
+    if (mouseDistance < 2.5) {
+      mouseInfluence = normalize(pos) * (1.0 - mouseDistance / 2.5) * 0.2;
     }
     
     pos += normal * displacement + mouseInfluence;
@@ -150,25 +151,34 @@ const fragmentShader = `
   varying vec3 vNormal;
   
   void main() {
-    vec3 color1 = vec3(0.545, 0.169, 0.886);
-    vec3 color2 = vec3(0.655, 0.545, 0.980);
-    vec3 color3 = vec3(0.290, 0.102, 0.541);
+    // More sophisticated color palette (Deep Violet -> Neon Purple -> Lavender touch)
+    vec3 color1 = vec3(0.4, 0.0, 0.8); // Deep Violet
+    vec3 color2 = vec3(0.6, 0.2, 1.0); // Vibrant Purple
+    vec3 color3 = vec3(0.8, 0.7, 1.0); // Soft Lavender accent
     
     float gradient = (vPosition.y + 2.0) / 4.0;
-    vec3 baseColor = mix(color3, color1, gradient);
     
-    baseColor = mix(baseColor, color2, uScrollProgress * 0.3);
+    // Smoother mixing
+    vec3 baseColor = mix(color1, color2, gradient + 0.2 * sin(uTime * 0.2));
     
+    // Fresnel effect for inner glow/rim
     vec3 viewDirection = normalize(cameraPosition - vPosition);
-    float fresnel = pow(1.0 - dot(viewDirection, vNormal), 2.0);
+    float fresnel = pow(1.0 - dot(viewDirection, vNormal), 2.5);
     
-    vec3 finalColor = mix(baseColor, color2, fresnel * 0.5);
+    // Add a bit of the lavender accent on the edges
+    vec3 finalColor = mix(baseColor, color3, fresnel * 0.4);
     
-    float glow = fresnel * (0.3 + uScrollProgress * 0.4);
+    // Dynamic glow pulse
+    float pulse = 0.9 + 0.1 * sin(uTime * 0.5);
+    finalColor *= pulse;
     
-    float alpha = 0.15 + fresnel * 0.25 + uScrollProgress * 0.2;
+    // Scroll interaction - shift towards lighter purple
+    finalColor = mix(finalColor, vec3(0.7, 0.4, 1.0), uScrollProgress * 0.3);
     
-    gl_FragColor = vec4(finalColor + glow, alpha);
+    // Alpha calculation
+    float alpha = 0.3 + fresnel * 0.4 + uScrollProgress * 0.2;
+    
+    gl_FragColor = vec4(finalColor, alpha);
   }
 `;
 
@@ -361,23 +371,7 @@ export function initThreeBackground(): void {
     starField = new THREE.Points(starGeometry, starMaterial);
     scene.add(starField);
 
-    const ringCount = 2;
-    orbitalRings = [];
-    for (let i = 0; i < ringCount; i++) {
-      const ringGeometry = new THREE.RingGeometry(3 + i * 1.5, 3.1 + i * 1.5, 64);
-      const ringMaterial = new THREE.MeshBasicMaterial({
-        color: 0x8a2be2,
-        transparent: true,
-        opacity: 0.1,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending
-      });
-      const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-      ring.rotation.x = Math.PI / 2;
-      ring.userData = { speed: 0.2 + i * 0.1, offset: i * Math.PI / ringCount };
-      orbitalRings.push(ring);
-      scene.add(ring);
-    }
+
 
     let targetMouseX = 0;
     let targetMouseY = 0;
@@ -505,14 +499,7 @@ export function initThreeBackground(): void {
         }
       }
 
-      orbitalRings.forEach((ring, i) => {
-        const data = ring.userData as { speed: number; offset: number };
-        ring.rotation.z = elapsedTime * data.speed * 0.5 + data.offset;
-        ring.rotation.y = Math.sin(elapsedTime * 0.05 + i) * 0.2;
-        if (ring.material instanceof THREE.MeshBasicMaterial) {
-          ring.material.opacity = 0.1 + scrollProgress * 0.1;
-        }
-      });
+
 
       if (camera) {
         const cameraOffsetX = Math.sin(elapsedTime * 0.05) * 0.3 + mouseX * 0.5;
