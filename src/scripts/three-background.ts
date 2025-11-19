@@ -174,13 +174,13 @@ const fragmentShader = `
 
 function onWindowResize(): void {
   if (!camera || !renderer) return;
-  
+
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   const currentConfig = isMobileDevice() ? config.mobile : config.desktop;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, currentConfig.antialias ? 2 : 1));
-  
+
   const isMobile = isMobileDevice();
   const targetZ = isMobile ? 6.5 : 5;
   if (Math.abs(camera.position.z - targetZ) < 1) {
@@ -190,7 +190,7 @@ function onWindowResize(): void {
 
 function onScroll(): void {
   if (!camera) return;
-  
+
   const isMobile = isMobileDevice();
   const minZ = isMobile ? 6.5 : 5;
   const maxZ = 18;
@@ -198,7 +198,7 @@ function onScroll(): void {
   scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
   const scrollFactor = scrollProgress * (maxZ - minZ);
   camera.position.z = minZ + scrollFactor;
-  
+
   if (blobGroup) {
     blobGroup.position.y = -scrollProgress * 2;
   }
@@ -218,31 +218,31 @@ export function initThreeBackground(): void {
     const currentConfig = isMobileDevice() ? config.mobile : config.desktop;
     maxConnectionLines = currentConfig.maxConnectionLines;
     skipFactor = isMobileDevice() ? 8 : 5;
-    
+
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    
+
     const isMobile = isMobileDevice();
     const initialZ = isMobile ? 6.5 : 5;
     camera.position.set(0, 0, initialZ);
 
-    renderer = new THREE.WebGLRenderer({ 
-      canvas, 
-      alpha: true, 
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
       antialias: currentConfig.antialias,
       powerPreference: 'high-performance'
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, currentConfig.antialias ? 2 : 1));
     renderer.setClearColor(0x000000, 0);
-    
+
     canvas.style.opacity = '1';
 
     blobGroup = new THREE.Group();
     scene.add(blobGroup);
 
     const geometry = new THREE.IcosahedronGeometry(2, currentConfig.geometryDetail);
-    
+
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -255,35 +255,35 @@ export function initThreeBackground(): void {
       side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending
     });
-    
+
     blobMesh = new THREE.Mesh(geometry, material);
     blobGroup.add(blobMesh);
-    
+
     particleCount = currentConfig.particleCount;
     const particleGeometry = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleSizes = new Float32Array(particleCount);
     particleVelocities = new Float32Array(particleCount * 3);
-    
+
     for (let i = 0; i < particleCount; i++) {
       const radius = 4 + Math.random() * 3;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
-      
+
       particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
       particlePositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
       particlePositions[i * 3 + 2] = radius * Math.cos(phi);
-      
+
       particleSizes[i] = Math.random() * 0.03 + 0.01;
-      
+
       particleVelocities[i * 3] = (Math.random() - 0.5) * 0.005;
       particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.005;
       particleVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.005;
     }
-    
+
     particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     particleGeometry.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
-    
+
     const particleMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -320,36 +320,36 @@ export function initThreeBackground(): void {
       transparent: true,
       blending: THREE.AdditiveBlending
     });
-    
+
     particles = new THREE.Points(particleGeometry, particleMaterial);
     scene.add(particles);
 
     const lineGeometry = new THREE.BufferGeometry();
     const linePositions = new Float32Array(particleCount * 6);
     lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-    
+
     const lineMaterial = new THREE.LineBasicMaterial({
       color: 0xa78bfa,
       transparent: true,
       opacity: 0.1,
       blending: THREE.AdditiveBlending
     });
-    
+
     connectionLines = new THREE.LineSegments(lineGeometry, lineMaterial);
     scene.add(connectionLines);
 
     const starCount = currentConfig.starCount;
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
-    
+
     for (let i = 0; i < starCount; i++) {
       starPositions[i * 3] = (Math.random() - 0.5) * 40;
       starPositions[i * 3 + 1] = (Math.random() - 0.5) * 40;
       starPositions[i * 3 + 2] = (Math.random() - 0.5) * 40;
     }
-    
+
     starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    
+
     const starMaterial = new THREE.PointsMaterial({
       size: 0.015,
       color: 0xffffff,
@@ -357,7 +357,7 @@ export function initThreeBackground(): void {
       opacity: 0.6,
       sizeAttenuation: true
     });
-    
+
     starField = new THREE.Points(starGeometry, starMaterial);
     scene.add(starField);
 
@@ -378,17 +378,17 @@ export function initThreeBackground(): void {
       orbitalRings.push(ring);
       scene.add(ring);
     }
-    
+
     let targetMouseX = 0;
     let targetMouseY = 0;
     document.addEventListener('mousemove', (e) => {
       targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
       targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
     });
-    
+
     window.addEventListener('resize', onWindowResize);
     window.addEventListener('scroll', onScroll);
-    
+
     function handleVisibilityChange(): void {
       if (document.hidden) {
         isPaused = true;
@@ -401,88 +401,88 @@ export function initThreeBackground(): void {
         animate();
       }
     }
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
     const clock = new THREE.Clock();
-    
+
     function animate(): void {
       if (!renderer || isPaused || !isPageVisible()) {
         return;
       }
-      
+
       animationId = requestAnimationFrame(animate);
-      
+
       const elapsedTime = clock.getElapsedTime();
-      
+
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
-      
+
       if (blobMesh && blobMesh.material instanceof THREE.ShaderMaterial) {
         blobMesh.material.uniforms.uTime.value = elapsedTime;
         blobMesh.material.uniforms.uMouse.value.set(mouseX * 2, mouseY * 2);
         blobMesh.material.uniforms.uScrollProgress.value = scrollProgress;
-        
+
         const scale = 1 + scrollProgress * 0.5;
         blobMesh.scale.set(scale, scale, scale);
-        
+
         blobMesh.rotation.x = Math.sin(elapsedTime * 0.05) * 0.1 + mouseY * 0.1;
         blobMesh.rotation.y = elapsedTime * 0.025 + mouseX * 0.1;
       }
-      
+
       if (particles && particles.material instanceof THREE.ShaderMaterial) {
         particles.material.uniforms.uTime.value = elapsedTime;
         particles.material.uniforms.uScrollProgress.value = scrollProgress;
-        
+
         const positions = particles.geometry.attributes.position.array as Float32Array;
         const velocities = particleVelocities;
-        
+
         if (velocities) {
           for (let i = 0; i < particleCount; i++) {
             positions[i * 3] += velocities[i * 3];
             positions[i * 3 + 1] += velocities[i * 3 + 1];
             positions[i * 3 + 2] += velocities[i * 3 + 2];
-            
+
             const dist = Math.sqrt(
-              positions[i * 3] ** 2 + 
-              positions[i * 3 + 1] ** 2 + 
+              positions[i * 3] ** 2 +
+              positions[i * 3 + 1] ** 2 +
               positions[i * 3 + 2] ** 2
             );
-            
+
             if (dist > 8) {
               const radius = 4 + Math.random() * 3;
               const theta = Math.random() * Math.PI * 2;
               const phi = Math.acos(Math.random() * 2 - 1);
-              
+
               positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
               positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
               positions[i * 3 + 2] = radius * Math.cos(phi);
             }
           }
-          
+
           particles.geometry.attributes.position.needsUpdate = true;
           particles.rotation.y = elapsedTime * 0.01;
         }
       }
-      
+
       if (starField) {
         starField.rotation.y = elapsedTime * 0.002;
       }
-      
+
       if (connectionLines && particles && particleVelocities) {
         const linePositions = connectionLines.geometry.attributes.position.array as Float32Array;
         const particlePositions = particles.geometry.attributes.position.array as Float32Array;
         let lineIndex = 0;
         const maxDistance = 1.2;
         const maxLines = maxConnectionLines;
-        
+
         for (let i = 0; i < particleCount && lineIndex < maxLines * 6; i += skipFactor * 3) {
           for (let j = i + skipFactor * 3; j < particleCount && lineIndex < maxLines * 6; j += skipFactor * 3) {
             const dx = particlePositions[i] - particlePositions[j];
             const dy = particlePositions[i + 1] - particlePositions[j + 1];
             const dz = particlePositions[i + 2] - particlePositions[j + 2];
             const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-            
+
             if (dist < maxDistance) {
               linePositions[lineIndex] = particlePositions[i];
               linePositions[lineIndex + 1] = particlePositions[i + 1];
@@ -494,17 +494,17 @@ export function initThreeBackground(): void {
             }
           }
         }
-        
+
         for (let i = lineIndex; i < maxLines * 6; i++) {
           linePositions[i] = 0;
         }
-        
+
         connectionLines.geometry.attributes.position.needsUpdate = true;
         if (connectionLines.material instanceof THREE.LineBasicMaterial) {
           connectionLines.material.opacity = 0.1 + scrollProgress * 0.15;
         }
       }
-      
+
       orbitalRings.forEach((ring, i) => {
         const data = ring.userData as { speed: number; offset: number };
         ring.rotation.z = elapsedTime * data.speed * 0.5 + data.offset;
@@ -513,7 +513,7 @@ export function initThreeBackground(): void {
           ring.material.opacity = 0.1 + scrollProgress * 0.1;
         }
       });
-      
+
       if (camera) {
         const cameraOffsetX = Math.sin(elapsedTime * 0.05) * 0.3 + mouseX * 0.5;
         const cameraOffsetY = Math.cos(elapsedTime * 0.075) * 0.2 + mouseY * 0.5;
@@ -521,10 +521,10 @@ export function initThreeBackground(): void {
         camera.position.y = cameraOffsetY;
         camera.lookAt(0, 0, 0);
       }
-      
+
       renderer.render(scene!, camera!);
     }
-    
+
     if (isPageVisible()) {
       animate();
     }
