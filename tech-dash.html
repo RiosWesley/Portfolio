@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsidian Crypto Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --obsidian-bg: #050505;
+            --obsidian-card: #0a0a0a;
+            --neon-cyan: #00f2ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #0aff6c;
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--obsidian-bg);
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--obsidian-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        /* Gradient Border Glassmorphism Technique */
+        .glass-card {
+            position: relative;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            /* The border effect is handled by a pseudo-element or distinct border styling */
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0, 242, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Neon Gradient Border Accent */
+        .neon-border-bottom {
+            position: relative;
+            overflow: hidden;
+        }
+        .neon-border-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-purple), transparent);
+            opacity: 0.7;
+        }
+
+        /* Text Glow Utilities */
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        }
+        .text-glow-purple {
+            text-shadow: 0 0 10px rgba(188, 19, 254, 0.3);
+        }
+
+        /* Custom Chart Tooltip Style override */
+        #chartjs-tooltip {
+            opacity: 1;
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 3px;
+            pointer-events: none;
+            transform: translate(-50%, 0);
+            transition: all .1s ease;
+        }
+
+        /* Navigation Active State */
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(0, 242, 255, 0.1), transparent);
+            border-left: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        /* Subtle Grid Background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        /* Animations */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="flex h-screen text-sm font-light selection:bg-cyan-500 selection:text-black">
+
+    <!-- Sidebar -->
+    <aside class="w-64 hidden md:flex flex-col border-r border-white/5 bg-[#080808] z-20">
+        <div class="p-6 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                <i data-lucide="hexagon" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="text-lg font-medium tracking-widest uppercase text-white">NEXUS</span>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <a href="#" class="nav-item active flex items-center gap-3 px-4 py-3 rounded-r-lg text-gray-300 hover:text-white transition-colors">
+                <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                Painel
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-gray-400 hover:text-white transition-colors hover:bg-white/5">
+                <i data-lucide="candlestick-chart" class="w-4 h-4"></i>
+                Mercado
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-gray-400 hover:text-white transition-colors hover:bg-white/5">
+                <i data-lucide="wallet" class="w-4 h-4"></i>
+                Portfólio
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-gray-400 hover:text-white transition-colors hover:bg-white/5">
+                <i data-lucide="arrow-left-right" class="w-4 h-4"></i>
+                Transações
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-gray-400 hover:text-white transition-colors hover:bg-white/5">
+                <i data-lucide="newspaper" class="w-4 h-4"></i>
+                Notícias
+            </a>
+        </nav>
+
+        <div class="p-4">
+            <div class="glass-card p-4 neon-border-bottom">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-gray-400">Status do Sistema</span>
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse-slow"></span>
+                </div>
+                <div class="text-xs text-gray-500">Latência: <span class="text-green-400">12ms</span></div>
+                <div class="text-xs text-gray-500">Hashrate: <span class="text-cyan-400">145 TH/s</span></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col relative overflow-hidden">
+        <!-- Background Grid Effect -->
+        <div class="absolute inset-0 bg-grid z-0 pointer-events-none"></div>
+
+        <!-- Header -->
+        <header class="h-16 border-b border-white/5 flex items-center justify-between px-6 z-10 backdrop-blur-sm bg-black/20">
+            <div class="md:hidden flex items-center gap-3">
+                <button class="text-gray-400 hover:text-white"><i data-lucide="menu"></i></button>
+                <span class="text-lg font-medium tracking-widest text-white">NEXUS</span>
+            </div>
+            
+            <div class="hidden md:flex items-center text-gray-400 text-xs tracking-wider">
+                <span class="mr-4">BTC/USD <span class="text-green-400 ml-1">+2.4%</span></span>
+                <span class="mr-4">ETH/USD <span class="text-red-400 ml-1">-0.8%</span></span>
+                <span class="mr-4">SOL/USD <span class="text-green-400 ml-1">+5.1%</span></span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button class="relative p-2 text-gray-400 hover:text-white transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-purple-500 rounded-full border border-black"></span>
+                </button>
+                <div class="flex items-center gap-3 pl-4 border-l border-white/10">
+                    <div class="text-right hidden sm:block">
+                        <div class="text-white text-xs font-medium">Alex Cipher</div>
+                        <div class="text-cyan-400 text-[10px]">Trader Pro</div>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 border border-white/20 flex items-center justify-center">
+                        <span class="text-xs font-bold text-white">AC</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-6 z-10 relative">
+            
+            <!-- Header Stats -->
+            <div class="mb-8">
+                <h1 class="text-2xl text-white font-light mb-1">Visão Geral do Portfólio</h1>
+                <p class="text-gray-500 text-xs">Última atualização: <span id="last-updated">Agora mesmo</span></p>
+            </div>
+
+            <!-- Top Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Total Balance -->
+                <div class="glass-card p-5 neon-border-bottom">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Saldo Total</p>
+                            <h2 class="text-2xl text-white font-medium tracking-tight text-glow-cyan">$124,592.40</h2>
+                        </div>
+                        <div class="p-2 bg-cyan-500/10 rounded-lg">
+                            <i data-lucide="wallet" class="w-5 h-5 text-cyan-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="text-green-400 flex items-center bg-green-400/10 px-1.5 py-0.5 rounded">
+                            <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +12.5%
+                        </span>
+                        <span class="text-gray-500">vs mês anterior</span>
+                    </div>
+                </div>
+
+                <!-- 24h Profit -->
+                <div class="glass-card p-5 neon-border-bottom">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Lucro 24h</p>
+                            <h2 class="text-2xl text-white font-medium tracking-tight">$3,240.15</h2>
+                        </div>
+                        <div class="p-2 bg-purple-500/10 rounded-lg">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5 text-purple-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="text-green-400 flex items-center bg-green-400/10 px-1.5 py-0.5 rounded">
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 mr-1"></i> +2.1%
+                        </span>
+                        <span class="text-gray-500">desde ontem</span>
+                    </div>
+                </div>
+
+                <!-- Active Positions -->
+                <div class="glass-card p-5 neon-border-bottom">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Posições Ativas</p>
+                            <h2 class="text-2xl text-white font-medium tracking-tight">8</h2>
+                        </div>
+                        <div class="p-2 bg-green-500/10 rounded-lg">
+                            <i data-lucide="activity" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-800 h-1 rounded-full mt-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-cyan-500 to-purple-500 h-full w-3/4"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">6 Long (Compra), 2 Short (Venda)</p>
+                </div>
+
+                <!-- Staking -->
+                <div class="glass-card p-5 neon-border-bottom">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Recomp. Staking</p>
+                            <h2 class="text-2xl text-white font-medium tracking-tight">$492.00</h2>
+                        </div>
+                        <div class="p-2 bg-yellow-500/10 rounded-lg">
+                            <i data-lucide="coins" class="w-5 h-5 text-yellow-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="text-gray-300">Próx. pagam.:</span>
+                        <span class="text-white font-medium">4h 20m</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Main Chart -->
+                <div class="lg:col-span-2 glass-card p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-white font-medium flex items-center gap-2">
+                                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=025" alt="BTC" class="w-6 h-6">
+                                Ação de Preço Bitcoin
+                            </h3>
+                            <p class="text-xs text-gray-500 mt-1">BTC/USDT • Intervalo 1H</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 rounded bg-white/10 text-xs text-white hover:bg-white/20 transition">1H</button>
+                            <button class="px-3 py-1 rounded bg-transparent border border-white/10 text-xs text-gray-400 hover:text-white transition">4H</button>
+                            <button class="px-3 py-1 rounded bg-transparent border border-white/10 text-xs text-gray-400 hover:text-white transition">1D</button>
+                        </div>
+                    </div>
+                    <div class="h-[300px] w-full">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Asset Allocation -->
+                <div class="glass-card p-6 flex flex-col">
+                    <h3 class="text-white font-medium mb-2">Alocação de Ativos</h3>
+                    <div class="flex-1 relative flex items-center justify-center">
+                        <div class="w-48 h-48">
+                            <canvas id="allocationChart"></canvas>
+                        </div>
+                        <!-- Center Text overlay for doughnut -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                            <span class="text-gray-500 text-xs">Principal</span>
+                            <span class="text-white font-bold text-lg">BTC</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-500 box-shadow-glow"></span>
+                                <span class="text-gray-300">Bitcoin</span>
+                            </div>
+                            <span class="text-white">45%</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                                <span class="text-gray-300">Ethereum</span>
+                            </div>
+                            <span class="text-white">30%</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                <span class="text-gray-300">Solana</span>
+                            </div>
+                            <span class="text-white">15%</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                                <span class="text-gray-300">Outros</span>
+                            </div>
+                            <span class="text-white">10%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions & Market List -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Transactions -->
+                <div class="lg:col-span-2 glass-card p-0 overflow-hidden">
+                    <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                        <h3 class="text-white font-medium">Transações Recentes</h3>
+                        <button class="text-cyan-400 text-xs hover:text-cyan-300">Ver Tudo</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-white/5 text-gray-400 uppercase">
+                                <tr>
+                                    <th class="px-6 py-3 font-medium">Tipo</th>
+                                    <th class="px-6 py-3 font-medium">Ativo</th>
+                                    <th class="px-6 py-3 font-medium">Data</th>
+                                    <th class="px-6 py-3 font-medium">Quantia</th>
+                                    <th class="px-6 py-3 font-medium text-right">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <span class="flex items-center gap-2 text-green-400"><i data-lucide="arrow-down-left" class="w-4 h-4"></i> Recebido</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-white font-medium">Bitcoin <span class="text-gray-500 font-normal">BTC</span></td>
+                                    <td class="px-6 py-4 text-gray-400">24 Out, 2025</td>
+                                    <td class="px-6 py-4 text-white">0.4521 BTC</td>
+                                    <td class="px-6 py-4 text-right"><span class="px-2 py-1 rounded bg-green-500/20 text-green-400 border border-green-500/30">Concluído</span></td>
+                                </tr>
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <span class="flex items-center gap-2 text-gray-300"><i data-lucide="arrow-up-right" class="w-4 h-4"></i> Enviado</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-white font-medium">Ethereum <span class="text-gray-500 font-normal">ETH</span></td>
+                                    <td class="px-6 py-4 text-gray-400">22 Out, 2025</td>
+                                    <td class="px-6 py-4 text-white">12.5 ETH</td>
+                                    <td class="px-6 py-4 text-right"><span class="px-2 py-1 rounded bg-green-500/20 text-green-400 border border-green-500/30">Concluído</span></td>
+                                </tr>
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <span class="flex items-center gap-2 text-purple-400"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Troca</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-white font-medium">USDT <span class="text-gray-500 mx-1">para</span> SOL</td>
+                                    <td class="px-6 py-4 text-gray-400">21 Out, 2025</td>
+                                    <td class="px-6 py-4 text-white">5,000 USDT</td>
+                                    <td class="px-6 py-4 text-right"><span class="px-2 py-1 rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">Pendente</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Watchlist -->
+                <div class="glass-card p-6">
+                    <h3 class="text-white font-medium mb-4">Observatório de Mercado</h3>
+                    <div class="space-y-4">
+                        <!-- Item 1 -->
+                        <div class="flex items-center justify-between p-3 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors cursor-pointer group">
+                            <div class="flex items-center gap-3">
+                                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=025" class="w-8 h-8 group-hover:scale-110 transition-transform">
+                                <div>
+                                    <div class="text-white font-medium text-xs">BTC</div>
+                                    <div class="text-gray-500 text-[10px]">Bitcoin</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-white text-xs">$68,420.00</div>
+                                <div class="text-green-400 text-[10px]">+2.4%</div>
+                            </div>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="flex items-center justify-between p-3 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors cursor-pointer group">
+                            <div class="flex items-center gap-3">
+                                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=025" class="w-8 h-8 group-hover:scale-110 transition-transform">
+                                <div>
+                                    <div class="text-white font-medium text-xs">ETH</div>
+                                    <div class="text-gray-500 text-[10px]">Ethereum</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-white text-xs">$3,845.50</div>
+                                <div class="text-red-400 text-[10px]">-0.8%</div>
+                            </div>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="flex items-center justify-between p-3 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors cursor-pointer group">
+                            <div class="flex items-center gap-3">
+                                <img src="https://cryptologos.cc/logos/solana-sol-logo.png?v=025" class="w-8 h-8 group-hover:scale-110 transition-transform">
+                                <div>
+                                    <div class="text-white font-medium text-xs">SOL</div>
+                                    <div class="text-gray-500 text-[10px]">Solana</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-white text-xs">$145.20</div>
+                                <div class="text-green-400 text-[10px]">+5.1%</div>
+                            </div>
+                        </div>
+                        <!-- Item 4 -->
+                        <div class="flex items-center justify-between p-3 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors cursor-pointer group">
+                            <div class="flex items-center gap-3">
+                                <img src="https://cryptologos.cc/logos/chainlink-link-logo.png?v=025" class="w-8 h-8 group-hover:scale-110 transition-transform">
+                                <div>
+                                    <div class="text-white font-medium text-xs">LINK</div>
+                                    <div class="text-gray-500 text-[10px]">Chainlink</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-white text-xs">$18.90</div>
+                                <div class="text-green-400 text-[10px]">+1.2%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Chart Configuration defaults
+        Chart.defaults.color = '#6b7280';
+        Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.05)';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        // --- Main Price Chart ---
+        const ctxMain = document.getElementById('mainChart').getContext('2d');
+        
+        // Create Gradient for the area chart
+        const gradientMain = ctxMain.createLinearGradient(0, 0, 0, 300);
+        gradientMain.addColorStop(0, 'rgba(0, 242, 255, 0.2)');
+        gradientMain.addColorStop(1, 'rgba(0, 242, 255, 0)');
+
+        const mainChart = new Chart(ctxMain, {
+            type: 'line',
+            data: {
+                labels: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
+                datasets: [{
+                    label: 'Preço BTC',
+                    data: [67500, 67800, 67200, 68100, 68300, 68000, 68500, 68420, 68900],
+                    borderColor: '#00f2ff',
+                    backgroundColor: gradientMain,
+                    borderWidth: 2,
+                    pointBackgroundColor: '#000',
+                    pointBorderColor: '#00f2ff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(10, 10, 10, 0.9)',
+                        titleColor: '#fff',
+                        bodyColor: '#ccc',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                        ticks: { callback: (val) => '$' + val.toLocaleString() }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            }
+        });
+
+        // --- Allocation Doughnut Chart ---
+        const ctxAlloc = document.getElementById('allocationChart').getContext('2d');
+        const allocChart = new Chart(ctxAlloc, {
+            type: 'doughnut',
+            data: {
+                labels: ['BTC', 'ETH', 'SOL', 'Outros'],
+                datasets: [{
+                    data: [45, 30, 15, 10],
+                    backgroundColor: [
+                        '#bc13fe', // Purple
+                        '#00f2ff', // Cyan
+                        '#0aff6c', // Green
+                        '#6b7280'  // Gray
+                    ],
+                    borderColor: '#0a0a0a',
+                    borderWidth: 4,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // --- Real-time Simulation ---
+        // Simulate live price updates every 3 seconds
+        setInterval(() => {
+            // Get last data point
+            const currentData = mainChart.data.datasets[0].data;
+            const lastPrice = currentData[currentData.length - 1];
+            
+            // Random fluctuation (-100 to +100)
+            const change = Math.floor(Math.random() * 200) - 100;
+            const newPrice = lastPrice + change;
+
+            // Update array
+            // Remove first, add new at end to keep chart moving (optional, here just updating last point for visual stability)
+            // For a scrolling chart, we'd shift(). Here we'll just jitter the last point.
+            currentData[currentData.length - 1] = newPrice;
+            
+            mainChart.update('none'); // 'none' mode for performance
+
+            // Flash effect on price text
+            const priceElement = document.querySelector('.text-glow-cyan');
+            if(priceElement) {
+                // Simple flash logic could go here
+            }
+            
+        }, 2000);
+
+    </script>
+</body>
+</html>

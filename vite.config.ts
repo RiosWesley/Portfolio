@@ -11,6 +11,7 @@ const htmlFiles = {
   'landing-pages': resolve(__dirname, 'landing-pages.html'),
   'creative-studio': resolve(__dirname, 'creative-studio.html'),
   'luxury-restaurant': resolve(__dirname, 'luxury-restaurant.html'),
+  'tech-dash': resolve(__dirname, 'tech-dash.html'),
 };
 
 export default defineConfig({

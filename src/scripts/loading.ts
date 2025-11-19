@@ -23,8 +23,8 @@ export function initLoadingScreen(): void {
   
   let glitchInterval: number | undefined;
   let glitchCount = 0;
-  const maxGlitches = 8;
-  const glitchSpeed = 40;
+  const maxGlitches = 4;
+  const glitchSpeed = 25;
   
   function startGlitch(): void {
     glitchInterval = window.setInterval(() => {
@@ -62,7 +62,7 @@ export function initLoadingScreen(): void {
                 }, 50);
               }
             }
-          }, index * 40);
+          }, index * 20);
         });
       }
     }, glitchSpeed);

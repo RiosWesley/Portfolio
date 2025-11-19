@@ -1007,8 +1007,8 @@
                 // Glitch animation function
                 let glitchInterval;
                 let glitchCount = 0;
-                const maxGlitches = 8; // Number of glitch cycles before revealing final text
-                const glitchSpeed = 40; // Milliseconds between character changes
+                const maxGlitches = 4; // Number of glitch cycles before revealing final text
+                const glitchSpeed = 25; // Milliseconds between character changes
                 
                 function startGlitch() {
                     glitchInterval = setInterval(() => {
@@ -1048,7 +1048,7 @@
                                             }, 50);
                                         }
                                     }
-                                }, index * 40);
+                                }, index * 20);
                             });
                         }
                     }, glitchSpeed);
