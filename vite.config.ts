@@ -8,10 +8,10 @@ const __dirname = dirname(__filename);
 // Multi-page build configuration
 const htmlFiles = {
   index: resolve(__dirname, 'index.html'),
-  'landing-pages': resolve(__dirname, 'landing-pages.html'),
-  'creative-studio': resolve(__dirname, 'creative-studio.html'),
-  'luxury-restaurant': resolve(__dirname, 'luxury-restaurant.html'),
-  'tech-dash': resolve(__dirname, 'tech-dash.html'),
+  'landing-pages': resolve(__dirname, 'pages/landing-pages.html'),
+  'creative-studio': resolve(__dirname, 'pages/creative-studio.html'),
+  'luxury-restaurant': resolve(__dirname, 'pages/luxury-restaurant.html'),
+  'tech-dash': resolve(__dirname, 'pages/tech-dash.html'),
 };
 
 export default defineConfig({

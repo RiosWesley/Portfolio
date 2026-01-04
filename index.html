@@ -350,189 +350,141 @@
                 </span>
             </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bento-grid fade-in-section">
-                <!-- Seasons - Card grande principal -->
-                <div class="bento-card md:col-span-2 md:row-span-2">
-                    <div class="flex items-center justify-between gap-6 mb-4">
-                        <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bento-grid fade-in-section">
+                <!-- Seasons - Card grande principal (Full width on smaller, 2 columns wide on large) -->
+                <div class="bento-card md:col-span-2">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-4">
+                        <div class="flex-grow">
                             <h3 class="text-2xl font-semibold text-heading font-mono" data-scramble="true">Seasons</h3>
                             <p class="text-xs uppercase tracking-[0.3em] text-primary-light/80 font-mono mt-2"
-                                data-scramble="true">Seu ano
-                                em conversas</p>
+                                data-scramble="true">Seu ano em conversas</p>
                         </div>
                         <div
-                            class="h-16 w-16 rounded-xl border border-primary-light/30 bg-primary/5 flex items-center justify-center overflow-hidden">
+                            class="h-16 w-16 rounded-xl border border-primary-light/30 bg-primary/5 flex items-center justify-center overflow-hidden flex-shrink-0">
                             <img src="/images/seasons-logo.png" alt="Logo do Seasons"
                                 class="h-full w-full object-cover" />
                         </div>
                     </div>
-                    <p class="text-light-text mb-5 font-mono leading-relaxed" data-scramble="true">
+                    <p class="text-light-text mb-6 font-mono leading-relaxed max-w-3xl" data-scramble="true">
                         Seasons cria um Wrapped personalizado das conversas do WhatsApp e revela insights, top amigos e
                         momentos especiais em uma narrativa visual pensada para mobile-first.
                     </p>
-                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-light-text font-mono mb-6">
-                        <li class="p-3 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            Processamento 100% local
-                            com privacidade total — os dados nunca saem do dispositivo.</li>
-                        <li class="p-3 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            Modos Casal, Amigos e
-                            Grupo destacam linguagem do amor, cultura de emojis e dinâmica do squad.</li>
-                        <li class="p-3 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            Linguagem do amor, mapas
-                            de calor e tópicos em alta com histórias exportáveis em alta qualidade.</li>
-                        <li class="p-3 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            Relatórios destacam
-                            cultura de emojis, momentos de flood e quem ignora mensagens.</li>
-                    </ul>
-                    <div class="flex flex-col gap-3 md:flex-row md:items-center">
-                        <span class="text-xs uppercase tracking-[0.3em] text-light-text/80 font-mono"
-                            data-scramble="true">Landing page
-                            oficial</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-light-text font-mono mb-8">
+                        <div class="p-4 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
+                            <strong class="text-primary block mb-1">Privacidade Total</strong>
+                            Processamento 100% local — os dados nunca saem do seu dispositivo.
+                        </div>
+                        <div class="p-4 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
+                            <strong class="text-primary block mb-1">Múltiplos Modos</strong>
+                            Modos Casal, Amigos e Grupo destacam linguagens do amor e dinâmicas do squad.
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-4 md:flex-row md:items-center">
                         <a href="https://seasonsrecap.web.app" target="_blank" rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-primary text-dark font-semibold font-mono hover:bg-primary-light transition-colors"
+                            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-dark font-semibold font-mono hover:bg-primary-light transition-all transform hover:scale-[1.02]"
                             data-magnetic="true">
                             Explorar Seasons
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="1.5">
+                                stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7" />
                             </svg>
                         </a>
+                        <span
+                            class="text-[10px] uppercase tracking-[0.3em] text-light-text/50 font-mono text-center md:text-left">
+                            Landing page oficial
+                        </span>
                     </div>
                 </div>
 
-                <!-- AVA Sage - Card alto ao lado do Seasons -->
-                <div class="bento-card md:row-span-2">
-                    <h3 class="text-2xl font-semibold text-heading mb-3 font-mono" data-scramble="true">AVA Sage</h3>
-                    <p class="text-light-text mb-4 font-mono leading-relaxed" data-scramble="true">
-                        Plataforma web de gestão acadêmica. Suporta 4 perfis de usuário (Aluno, Professor, Coordenador,
-                        Administrador) com dashboards personalizados, gerenciamento de atividades, notas e frequência.
-                    </p>
-                    <div
-                        class="w-full h-32 bg-primary/10 rounded-lg border border-primary-light/20 flex items-center justify-center text-primary-light/50">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="1">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" />
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M7.41 8.586l-2.828 2.828a1 1 0 000 1.414l2.828 2.828M12 5v.01M12 8v.01M12 11v.01M12 14v.01" />
+                <!-- Landing Pages Grid Title -->
+                <div class="md:col-span-2 pt-12 pb-4">
+                    <h3 class="text-xl font-bold font-mono text-heading flex items-center gap-4">
+                        <span class="h-px bg-primary-light/20 flex-grow"></span>
+                        <span class="text-gradient uppercase tracking-widest text-sm" data-scramble="true">Coleção de
+                            Landing Pages</span>
+                        <span class="h-px bg-primary-light/20 flex-grow"></span>
+                    </h3>
+                </div>
+
+                <!-- LP 1: Tech Dashboard -->
+                <a href="/pages/tech-dash.html"
+                    class="bento-card group hover:border-primary/50 transition-all duration-300">
+                    <div class="relative aspect-video rounded-lg overflow-hidden border border-primary-light/10 mb-4">
+                        <img src="/images/lp-thumbnails/saas.png" alt="Obsidian Crypto Dashboard"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent opacity-60"></div>
+                    </div>
+                    <h4 class="text-lg font-bold font-mono text-heading group-hover:text-primary transition-colors"
+                        data-scramble="true">Obsidian Crypto</h4>
+                    <p class="text-xs text-light-text font-mono mt-2 mb-4" data-scramble="true">Dashboard obsidiano com
+                        gráficos interativos e tempo real.</p>
+                    <div class="flex items-center gap-2 text-primary text-xs font-mono font-bold">
+                        EXPLORAR <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7-7 7M3 12h18" />
                         </svg>
-                    </div>
-                </div>
-
-                <!-- Chefmind.AI - Card grande -->
-                <div class="bento-card md:col-span-2 md:row-span-2">
-                    <div class="flex items-center justify-between gap-6 mb-4">
-                        <div>
-                            <h3 class="text-2xl font-semibold text-heading font-mono" data-scramble="true">Chefmind.AI</h3>
-                            <p class="text-xs uppercase tracking-[0.3em] text-primary-light/80 font-mono mt-2"
-                                data-scramble="true">AI Agent
-                                para restaurantes</p>
-                        </div>
-                        <div
-                            class="h-16 w-16 rounded-xl border border-primary-light/30 bg-primary/5 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-light-text mb-5 font-mono leading-relaxed" data-scramble="true">
-                        Agente de IA inteligente que automatiza o gerenciamento de pedidos e atendimentos de restaurantes.
-                        Reduz tempo de resposta, aumenta eficiência operacional e melhora a experiência do cliente com
-                        processamento de linguagem natural.
-                    </p>
-                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-light-text font-mono mb-6">
-                        <li class="p-3 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            <strong class="text-primary">Atendimento Automatizado</strong> — Processa pedidos, responde
-                            dúvidas e gerencia reservas 24/7 com IA conversacional avançada.</li>
-                        <li class="p-3 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            <strong class="text-primary">Gestão de Pedidos</strong> — Integração inteligente com sistemas
-                            de cozinha, controle de estoque e otimização de tempo de preparo.</li>
-                        <li class="p-3 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            <strong class="text-primary">Análise Preditiva</strong> — Previsão de demanda, sugestões de
-                            cardápio e insights operacionais baseados em dados históricos.</li>
-                        <li class="p-3 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            <strong class="text-primary">Multi-canal</strong> — Atende WhatsApp, delivery apps e site
-                            simultaneamente, mantendo consistência em todas as plataformas.</li>
-                    </ul>
-                    <div class="flex flex-col gap-3 md:flex-row md:items-center">
-                        <span class="text-xs uppercase tracking-[0.3em] text-light-text/80 font-mono"
-                            data-scramble="true">Solução
-                            completa</span>
-                        <div
-                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-primary text-dark font-semibold font-mono hover:bg-primary-light transition-colors">
-                            Em Desenvolvimento
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Landing Pages - Card médio -->
-                <a href="/landing-pages.html"
-                    class="bento-card md:col-span-1 md:row-span-2 flex flex-col group cursor-pointer hover:border-primary/50 transition-all duration-300">
-                    <div class="flex items-center justify-between gap-4 mb-4">
-                        <div>
-                            <h3 class="text-xl font-semibold text-heading font-mono group-hover:text-primary transition-colors"
-                                data-scramble="true">Landing Pages</h3>
-                            <p class="text-xs uppercase tracking-[0.3em] text-primary-light/80 font-mono mt-1"
-                                data-scramble="true">Galeria</p>
-                        </div>
-                        <div
-                            class="h-12 w-12 rounded-xl border border-primary-light/30 bg-primary/5 flex items-center justify-center flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-light-text mb-4 font-mono leading-relaxed text-sm" data-scramble="true">
-                        Coleção de landing pages de alta conversão com design premium e performance otimizada.
-                    </p>
-                    <ul class="space-y-2 text-xs text-light-text font-mono mb-4 flex-grow">
-                        <li class="p-2 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            <strong class="text-primary">Crypto Dashboard</strong> — Interface obsidiana com gráficos interativos</li>
-                        <li class="p-2 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            <strong class="text-primary">Creative Studio</strong> — Layout estilo suíço</li>
-                        <li class="p-2 rounded-lg border border-primary-light/15 bg-primary/5" data-scramble="true">
-                            <strong class="text-primary">Restaurant & Fashion</strong> — Designs premium</li>
-                    </ul>
-                    <div class="mt-auto pt-4">
-                        <div
-                            class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary text-dark text-xs font-semibold font-mono hover:bg-primary-light transition-colors">
-                            Explorar
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7" />
-                            </svg>
-                        </div>
                     </div>
                 </a>
 
-                <div class="bento-card">
-                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono" data-scramble="true">Design & UX</h4>
-                    <p class="text-light-text text-sm font-mono leading-relaxed" data-scramble="true">Interfaces
-                        mobile-first, transições
-                        suaves e animações modernas.</p>
-                </div>
+                <!-- LP 2: Creative Studio -->
+                <a href="/pages/creative-studio.html"
+                    class="bento-card group hover:border-primary/50 transition-all duration-300">
+                    <div class="relative aspect-video rounded-lg overflow-hidden border border-primary-light/10 mb-4">
+                        <img src="/images/lp-thumbnails/agency.png" alt="Creative Studio"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent opacity-60"></div>
+                    </div>
+                    <h4 class="text-lg font-bold font-mono text-heading group-hover:text-primary transition-colors"
+                        data-scramble="true">Creative Studio</h4>
+                    <p class="text-xs text-light-text font-mono mt-2 mb-4" data-scramble="true">Layout estilo suíço com
+                        tipografia ousada para agências.</p>
+                    <div class="flex items-center gap-2 text-primary text-xs font-mono font-bold">
+                        EXPLORAR <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7-7 7M3 12h18" />
+                        </svg>
+                    </div>
+                </a>
 
-                <div class="bento-card">
-                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono" data-scramble="true">Componentização
-                    </h4>
-                    <p class="text-light-text text-sm font-mono leading-relaxed" data-scramble="true">Arquitetura
-                        modular avançada para
-                        máxima reutilização de código.</p>
-                </div>
-                <div class="bento-card">
-                    <h4 class="text-xl font-semibold text-heading mb-2 font-mono" data-scramble="true">Performance</h4>
-                    <p class="text-light-text text-sm font-mono leading-relaxed" data-scramble="true">Foco constante em
-                        otimização, desde
-                        renderização até carregamento eficiente.</p>
+                <!-- LP 3: Luxury Restaurant -->
+                <a href="/pages/luxury-restaurant.html"
+                    class="bento-card group hover:border-primary/50 transition-all duration-300">
+                    <div class="relative aspect-video rounded-lg overflow-hidden border border-primary-light/10 mb-4">
+                        <img src="/images/lp-thumbnails/restaurant.png" alt="Luxury Restaurant"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent opacity-60"></div>
+                    </div>
+                    <h4 class="text-lg font-bold font-mono text-heading group-hover:text-primary transition-colors"
+                        data-scramble="true">Restaurant Brand</h4>
+                    <p class="text-xs text-light-text font-mono mt-2 mb-4" data-scramble="true">Design acolhedor com
+                        foco em menu visual e reservas.</p>
+                    <div class="flex items-center gap-2 text-primary text-xs font-mono font-bold">
+                        EXPLORAR <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7-7 7M3 12h18" />
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- LP 4: Fashion E-commerce -->
+                <div class="bento-card group hover:border-primary/50 transition-all duration-300">
+                    <div class="relative aspect-video rounded-lg overflow-hidden border border-primary-light/10 mb-4">
+                        <img src="/images/lp-thumbnails/ecommerce.png" alt="Fashion Brand"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent opacity-60"></div>
+                        <div
+                            class="absolute top-2 right-2 px-2 py-1 bg-primary text-dark text-[8px] font-bold rounded font-mono">
+                            EM BREVE</div>
+                    </div>
+                    <h4 class="text-lg font-bold font-mono text-heading" data-scramble="true">Fashion Minimalist</h4>
+                    <p class="text-xs text-light-text font-mono mt-2 mb-4" data-scramble="true">Minimalismo e elegância
+                        com alto foco em conversão mobile.</p>
+                    <div class="flex items-center gap-2 text-primary-light/30 text-xs font-mono font-bold">
+                        EM DESENVOLVIMENTO
+                    </div>
                 </div>
             </div>
         </section>
