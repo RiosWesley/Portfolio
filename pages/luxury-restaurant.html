@@ -1,49 +1,62 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Colher Dourada - Alta Gastronomia</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Oohashi Culinária Oriental | Feira de Santana</title>
+    <meta name="description"
+        content="O melhor da culinária japonesa em Feira de Santana. Rodízio, Sushi, Sashimi e pratos quentes. Peça pelo iFood ou WhatsApp.">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500&family=Great+Vibes&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Noto+Serif+JP:wght@400;700;900&family=Zeyada&display=swap"
         rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        display: ['"Cormorant Garamond"', 'serif'],
-                        script: ['"Great Vibes"', 'cursive'],
-                        body: ['"Montserrat"', 'sans-serif'],
-                    },
                     colors: {
-                        amber: {
-                            50: '#fffbeb',
-                            100: '#fef3c7',
-                            200: '#fde68a',
-                            300: '#fcd34d',
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                            600: '#d97706',
-                            700: '#b45309',
-                            800: '#92400e',
-                            900: '#78350f',
-                            950: '#451a03',
-                        },
+                        'oohashi-black': '#0a0a0a',
+                        'oohashi-dark': '#121212',
+                        'oohashi-red': '#DC2626',
+                        'oohashi-gold': '#D4AF37',
+                        'oohashi-orange': '#FF6B00',
+                    },
+                    fontFamily: {
+                        'sans': ['Montserrat', 'sans-serif'],
+                        'serif': ['Noto Serif JP', 'serif'],
+                        'hand': ['Zeyada', 'cursive'],
+                    },
+                    backgroundImage: {
+                        'manga-lines': "repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(255, 255, 255, 0.03) 50px, transparent 51px), repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(255, 255, 255, 0.03) 50px, transparent 51px)",
+                        'radial-speed': "repeating-conic-gradient(from 0deg, transparent 0deg, transparent 10deg, rgba(255, 255, 255, 0.05) 10.5deg, transparent 11deg)",
                     },
                     animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
                     },
                     keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { boxShadow: '0 0 10px -5px #D4AF37' },
+                            'to': { boxShadow: '0 0 20px 5px #D4AF37' },
                         }
                     }
                 }
@@ -52,448 +65,754 @@
     </script>
 
     <style>
-        body {
-            background-color: #09090b;
-            /* zinc-950 */
-            color: #d1d5db;
-            /* gray-300 */
-        }
-
-        ::selection {
-            background-color: #f59e0b;
-            /* amber-500 */
-            color: black;
-        }
-
-        .gold-gradient {
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .bg-gold-gradient {
-            background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728);
-        }
-
-        /* Linhas Geométricas de Fundo */
-        .geo-lines {
-            background-image:
-                linear-gradient(30deg, transparent 49%, rgba(212, 175, 55, 0.05) 50%, transparent 51%),
-                linear-gradient(150deg, transparent 49%, rgba(212, 175, 55, 0.05) 50%, transparent 51%);
-            background-size: 100px 100px;
-        }
-
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #09090b;
+            background: #0a0a0a;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #78350f;
+            background: #333;
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #f59e0b;
+            background: #D4AF37;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #D4AF37;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Manga/Japanese Text Effects */
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            letter-spacing: 0.5em;
+        }
+
+        .text-stroke-gold {
+            -webkit-text-stroke: 1px #D4AF37;
+            color: transparent;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 107, 0, 0.6);
+        }
+
+        /* Loader */
+        .loader-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        .loader-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .chopsticks-loader {
+            position: relative;
+            width: 60px;
+            height: 60px;
         }
     </style>
 </head>
 
-<body class="font-body overflow-x-hidden">
+<body class="bg-oohashi-black text-gray-200 font-sans overflow-x-hidden selection:bg-oohashi-red selection:text-white">
 
-    <!-- Navbar -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 bg-transparent py-8">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <!-- Logo Area -->
-            <div class="flex items-center gap-2 group cursor-pointer">
-                <div class="p-2 border border-amber-500/30 rotate-45 group-hover:border-amber-400 transition-colors">
-                    <!-- UtensilsCrossed Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="w-5 h-5 text-amber-500 -rotate-45">
-                        <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8" />
-                        <path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7" />
-                        <path d="m2.1 21.8 6.4-6.3" />
-                        <path d="m19 5-7 7" />
-                    </svg>
+    <!-- Loading Screen -->
+    <div class="loader-screen" id="loader">
+        <div class="flex flex-col items-center">
+            <span class="text-4xl font-serif text-oohashi-gold mb-4 animate-pulse">大橋</span>
+            <div class="w-16 h-1 bg-oohashi-red rounded-full animate-bounce"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div
+                        class="w-10 h-10 border-2 border-oohashi-gold rounded-full flex items-center justify-center relative overflow-hidden group">
+                        <span
+                            class="text-oohashi-red font-bold text-xl relative z-10 group-hover:scale-110 transition-transform">O</span>
+                        <div
+                            class="absolute inset-0 bg-oohashi-gold opacity-0 group-hover:opacity-20 transition-opacity">
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span
+                            class="font-serif font-bold text-white tracking-widest text-lg leading-none">OOHASHI</span>
+                        <span class="text-[10px] text-oohashi-gold uppercase tracking-[0.3em]">Culinária Oriental</span>
+                    </div>
                 </div>
-                <span
-                    class="ml-3 text-xl font-display tracking-widest text-white group-hover:text-amber-400 transition-colors">
-                    A COLHER <span class="text-amber-500 font-semibold">DOURADA</span>
-                </span>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home"
+                            class="hover:text-oohashi-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Início</a>
+                        <a href="#menu"
+                            class="hover:text-oohashi-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Cardápio</a>
+                        <a href="#experience"
+                            class="hover:text-oohashi-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Experiência</a>
+                        <a href="#location"
+                            class="hover:text-oohashi-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Localização</a>
+                    </div>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <a href="https://wa.me/5575999999999" target="_blank"
+                        class="bg-oohashi-red hover:bg-red-700 text-white px-6 py-2.5 rounded-sm font-bold tracking-wider transform hover:-translate-y-0.5 transition-all shadow-lg shadow-red-900/40 flex items-center gap-2">
+                        <i class="fas fa-motorcycle"></i> PEÇA AGORA
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="toggleMobileMenu()"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span class="sr-only">Abrir menu</span>
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
-
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center gap-12">
-                <a href="/"
-                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
-                    Voltar
-                    <span
-                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#cardápio"
-                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
-                    Cardápio
-                    <span
-                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#reservas"
-                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
-                    Reservas
-                    <span
-                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#sobre"
-                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
-                    Sobre Nós
-                    <span
-                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#eventos"
-                    class="text-sm font-body uppercase tracking-widest hover:text-amber-400 transition-colors relative group text-gray-300">
-                    Eventos
-                    <span
-                        class="absolute -bottom-2 left-0 w-0 h-px bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-
-                <button
-                    class="px-8 py-2 transition-all duration-300 font-serif tracking-wider uppercase text-xs border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                    Reservar Agora
-                </button>
-            </div>
-
-            <!-- Mobile Toggle -->
-            <button id="mobile-menu-btn" class="md:hidden text-white">
-                <!-- Menu Icon -->
-                <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="4" x2="20" y1="12" y2="12" />
-                    <line x1="4" x2="20" y1="6" y2="6" />
-                    <line x1="4" x2="20" y1="18" y2="18" />
-                </svg>
-                <!-- X Icon (Hidden by default) -->
-                <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path d="M18 6 6 18" />
-                    <path d="m6 6 12 12" />
-                </svg>
-            </button>
         </div>
 
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu"
-            class="hidden md:hidden absolute top-full left-0 w-full bg-zinc-950 border-b border-amber-900/30 py-8 px-6 flex flex-col gap-6 animate-fade-in shadow-2xl">
-            <a href="#cardápio" class="text-lg font-display text-center text-gray-300 hover:text-amber-400">Cardápio</a>
-            <a href="#reservas" class="text-lg font-display text-center text-gray-300 hover:text-amber-400">Reservas</a>
-            <a href="#sobre" class="text-lg font-display text-center text-gray-300 hover:text-amber-400">Sobre Nós</a>
-            <a href="#eventos" class="text-lg font-display text-center text-gray-300 hover:text-amber-400">Eventos</a>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-oohashi-dark border-b border-gray-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" onclick="toggleMobileMenu()"
+                    class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Início</a>
+                <a href="#menu" onclick="toggleMobileMenu()"
+                    class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Cardápio</a>
+                <a href="#experience" onclick="toggleMobileMenu()"
+                    class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Experiência</a>
+                <a href="#location" onclick="toggleMobileMenu()"
+                    class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Localização</a>
+                <a href="https://wa.me/5575999999999"
+                    class="text-oohashi-red font-bold block px-3 py-2 rounded-md text-base">PEÇA PELO WHATSAPP</a>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <!-- Background & Overlay -->
+    <header id="home" class="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Overlay -->
         <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-black/60 z-10"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-zinc-950 via-transparent to-zinc-950 z-20"></div>
-            <div class="absolute inset-0 geo-lines opacity-30"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-oohashi-black via-oohashi-black/80 to-transparent z-10">
+            </div>
+            <div class="absolute inset-0 bg-radial-speed opacity-20 z-0 animate-pulse"></div>
+            <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                alt="Sushi Background"
+                class="w-full h-full object-cover object-center scale-105 animate-[pulse_10s_infinite_alternate]">
         </div>
 
-        <div class="container mx-auto px-6 relative z-30 grid md:grid-cols-12 gap-12 items-center">
+        <!-- Decorative Kanji -->
+        <div class="absolute top-1/4 right-[5%] z-0 pointer-events-none opacity-10 hidden lg:block">
+            <div class="vertical-text font-serif font-black text-9xl text-white">
+                新鮮な
+            </div>
+        </div>
 
-            <!-- Text Content -->
-            <div class="md:col-span-6 text-center md:text-left space-y-6">
-                <div class="inline-block border-b border-amber-500 pb-1 mb-4">
-                    <span class="text-amber-400 font-body text-xs tracking-[0.3em] uppercase">Est. 2024</span>
+        <div class="absolute bottom-1/4 left-[5%] z-0 pointer-events-none opacity-10 hidden lg:block">
+            <div class="vertical-text font-serif font-black text-9xl text-white">
+                情熱
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left w-full">
+            <div class="sm:max-w-2xl">
+                <div class="inline-block mb-4 px-4 py-1 border border-oohashi-gold/30 rounded-full bg-oohashi-black/50 backdrop-blur-sm"
+                    data-aos="fade-down" data-aos-delay="100">
+                    <span class="text-oohashi-gold text-xs font-bold tracking-[0.2em] uppercase">Feira de Santana •
+                        Bahia</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-display text-white leading-tight">
-                    A Colher <br />
+
+                <h1 class="text-5xl sm:text-7xl font-serif font-bold text-white leading-tight mb-6 drop-shadow-2xl"
+                    data-aos="fade-up" data-aos-delay="200">
+                    Arte em cada <br>
                     <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 drop-shadow-lg">
-                        Dourada
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-oohashi-red to-orange-500 relative inline-block">
+                        Fatia
+                        <svg class="absolute w-full h-3 -bottom-1 left-0 text-oohashi-red opacity-80"
+                            viewBox="0 0 100 10" preserveAspectRatio="none">
+                            <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3" fill="none" />
+                        </svg>
                     </span>
                 </h1>
-                <p
-                    class="text-2xl md:text-4xl font-script text-amber-500/90 -mt-2 mb-8 transform -rotate-2 origin-left">
-                    Uma Jornada Culinária Exclusiva
+
+                <p class="text-lg sm:text-xl text-gray-300 mb-8 font-light max-w-lg leading-relaxed" data-aos="fade-up"
+                    data-aos-delay="400">
+                    Descubra a autêntica culinária japonesa. Do clássico ao contemporâneo, preparado com frescor
+                    obsessivo e uma pitada de ousadia.
                 </p>
-                <p class="text-gray-400 font-body font-light leading-relaxed max-w-md mx-auto md:mx-0 mb-8">
-                    Descubra a arte da alta gastronomia onde sabores clássicos encontram a inovação moderna em um
-                    ambiente de sofisticação incomparável.
+
+                <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="600">
+                    <a href="#menu"
+                        class="px-8 py-4 bg-oohashi-red hover:bg-red-700 text-white font-bold rounded-sm tracking-widest shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:shadow-[0_0_30px_rgba(220,38,38,0.8)] transition-all transform hover:-translate-y-1 text-center group">
+                        VER CARDÁPIO
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="https://wa.me/5575999999999"
+                        class="px-8 py-4 border border-white/30 hover:border-oohashi-gold hover:text-oohashi-gold text-white font-bold rounded-sm tracking-widest transition-all backdrop-blur-sm text-center">
+                        RESERVAR MESA
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+            <a href="#menu" class="text-white/50 hover:text-white transition-colors">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Marquee Banner -->
+    <div class="bg-oohashi-gold overflow-hidden py-3">
+        <div class="whitespace-nowrap flex animate-[marquee_20s_linear_infinite]">
+            <span class="text-black font-bold mx-4 uppercase tracking-widest">• Delivery Rápido em Feira</span>
+            <span class="text-black font-bold mx-4 uppercase tracking-widest">• Sushi Fresco Todos os Dias</span>
+            <span class="text-black font-bold mx-4 uppercase tracking-widest">• Melhor Yakisoba da Cidade</span>
+            <span class="text-black font-bold mx-4 uppercase tracking-widest">• Rodízio Premium</span>
+            <span class="text-black font-bold mx-4 uppercase tracking-widest">• Delivery Rápido em Feira</span>
+            <span class="text-black font-bold mx-4 uppercase tracking-widest">• Sushi Fresco Todos os Dias</span>
+            <span class="text-black font-bold mx-4 uppercase tracking-widest">• Melhor Yakisoba da Cidade</span>
+            <span class="text-black font-bold mx-4 uppercase tracking-widest">• Rodízio Premium</span>
+        </div>
+    </div>
+
+    <style>
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 relative bg-oohashi-dark overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-manga-lines opacity-5 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16" data-aos="zoom-in">
+                <h2 class="text-oohashi-gold font-hand text-3xl mb-2">Nossas Especialidades</h2>
+                <h3 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Favoritos da Casa</h3>
+                <div class="w-24 h-1 bg-oohashi-red mx-auto"></div>
+            </div>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Card 1 -->
+                <div class="glass-card rounded-xl overflow-hidden group cursor-pointer" data-aos="fade-up"
+                    data-aos-delay="100">
+                    <div class="relative h-64 overflow-hidden">
+                        <div
+                            class="absolute top-4 right-4 z-20 bg-oohashi-red text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                            Mais Pedido</div>
+                        <img src="https://images.unsplash.com/photo-1617196034421-24e74918a0a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Combo Oohashi"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+                        </div>
+                    </div>
+                    <div class="p-6 relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4
+                                class="text-xl font-bold text-white font-serif group-hover:text-oohashi-gold transition-colors">
+                                Combo Oohashi Premium</h4>
+                            <span class="text-oohashi-gold font-bold text-lg">R$ 119</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-2">Seleção exclusiva do chef com 40 peças:
+                            sashimis variados, niguiris trufados e uramakis especiais.</p>
+                        <div class="flex items-center justify-between border-t border-gray-700 pt-4">
+                            <div class="flex gap-2 text-xs text-gray-500">
+                                <i class="fas fa-fish"></i> Salmão Fresco
+                            </div>
+                            <button
+                                class="text-oohashi-orange hover:text-white font-bold text-sm uppercase tracking-wide transition-colors flex items-center gap-1">
+                                Adicionar <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card rounded-xl overflow-hidden group cursor-pointer" data-aos="fade-up"
+                    data-aos-delay="200">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Sashimi"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+                        </div>
+                    </div>
+                    <div class="p-6 relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4
+                                class="text-xl font-bold text-white font-serif group-hover:text-oohashi-gold transition-colors">
+                                Sashimi Experience</h4>
+                            <span class="text-oohashi-gold font-bold text-lg">R$ 65</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-2">Cortes perfeitos de salmão, atum e peixe
+                            branco do dia. Servido no gelo com wasabi fresco.</p>
+                        <div class="flex items-center justify-between border-t border-gray-700 pt-4">
+                            <div class="flex gap-2 text-xs text-gray-500">
+                                <i class="fas fa-snowflake"></i> Super Fresco
+                            </div>
+                            <button
+                                class="text-oohashi-orange hover:text-white font-bold text-sm uppercase tracking-wide transition-colors flex items-center gap-1">
+                                Adicionar <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card rounded-xl overflow-hidden group cursor-pointer" data-aos="fade-up"
+                    data-aos-delay="300">
+                    <div class="relative h-64 overflow-hidden">
+                        <div
+                            class="absolute top-4 right-4 z-20 bg-oohashi-gold text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                            Novo</div>
+                        <img src="https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Temaki"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+                        </div>
+                    </div>
+                    <div class="p-6 relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4
+                                class="text-xl font-bold text-white font-serif group-hover:text-oohashi-gold transition-colors">
+                                Temaki Hot Philadelfia</h4>
+                            <span class="text-oohashi-gold font-bold text-lg">R$ 28</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-2">Cone crocante empanado, recheado com salmão
+                            grelhado, cream cheese, cebolinha e tarê.</p>
+                        <div class="flex items-center justify-between border-t border-gray-700 pt-4">
+                            <div class="flex gap-2 text-xs text-gray-500">
+                                <i class="fas fa-fire"></i> Crocante
+                            </div>
+                            <button
+                                class="text-oohashi-orange hover:text-white font-bold text-sm uppercase tracking-wide transition-colors flex items-center gap-1">
+                                Adicionar <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="glass-card rounded-xl overflow-hidden group cursor-pointer" data-aos="fade-up"
+                    data-aos-delay="400">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1552611052-33e04de081de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Yakisoba"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+                        </div>
+                    </div>
+                    <div class="p-6 relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4
+                                class="text-xl font-bold text-white font-serif group-hover:text-oohashi-gold transition-colors">
+                                Yakisoba Clássico</h4>
+                            <span class="text-oohashi-gold font-bold text-lg">R$ 35</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-2">Macarrão artesanal, mix de legumes frescos,
+                            carne e frango ao molho especial da casa.</p>
+                        <div class="flex items-center justify-between border-t border-gray-700 pt-4">
+                            <div class="flex gap-2 text-xs text-gray-500">
+                                <i class="fas fa-utensils"></i> Porção Generosa
+                            </div>
+                            <button
+                                class="text-oohashi-orange hover:text-white font-bold text-sm uppercase tracking-wide transition-colors flex items-center gap-1">
+                                Adicionar <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="glass-card rounded-xl overflow-hidden group cursor-pointer" data-aos="fade-up"
+                    data-aos-delay="500">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1563612116625-3012372fccce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Tempura"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+                        </div>
+                    </div>
+                    <div class="p-6 relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4
+                                class="text-xl font-bold text-white font-serif group-hover:text-oohashi-gold transition-colors">
+                                Tempurá Imperial</h4>
+                            <span class="text-oohashi-gold font-bold text-lg">R$ 42</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-2">Camarões rosa e legumes selecionados
+                            empanados em massa leve e crocante.</p>
+                        <div class="flex items-center justify-between border-t border-gray-700 pt-4">
+                            <div class="flex gap-2 text-xs text-gray-500">
+                                <i class="fas fa-shrimp"></i> Camarão Rosa
+                            </div>
+                            <button
+                                class="text-oohashi-orange hover:text-white font-bold text-sm uppercase tracking-wide transition-colors flex items-center gap-1">
+                                Adicionar <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 - CTA Card -->
+                <div class="glass-card rounded-xl overflow-hidden group cursor-pointer flex flex-col items-center justify-center border-oohashi-gold border-dashed bg-oohashi-gold/5"
+                    data-aos="fade-up" data-aos-delay="600">
+                    <div class="text-center p-8">
+                        <div
+                            class="w-16 h-16 rounded-full bg-oohashi-black border border-oohashi-gold flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-oohashi-gold/20">
+                            <i class="fas fa-arrow-right text-oohashi-gold text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white font-serif mb-2">Ver Cardápio Completo</h4>
+                        <p class="text-gray-400 text-sm mb-6">Explore todas as nossas opções no delivery.</p>
+                        <a href="https://www.ifood.com.br" target="_blank"
+                            class="inline-block px-6 py-2 bg-oohashi-red hover:bg-red-700 text-white rounded-full text-sm font-bold tracking-wide transition-colors">
+                            Ir para iFood
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center">
+                <p class="text-gray-400 text-sm italic">* Imagens meramente ilustrativas. Consulte disponibilidade.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience / Info Section -->
+    <section id="experience" class="py-20 bg-oohashi-black relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <!-- Image Grid -->
+                <div class="relative" data-aos="fade-right">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                            class="rounded-lg translate-y-8 shadow-2xl border border-gray-800" alt="Sushi Detail">
+                        <img src="https://images.unsplash.com/photo-1611143669185-af224c5e3252?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                            class="rounded-lg shadow-2xl border border-gray-800" alt="Sushi Chef">
+                    </div>
+                    <!-- Circle decoration -->
+                    <div
+                        class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-gray-800 rounded-full opacity-30 animate-[spin_60s_linear_infinite]">
+                    </div>
+                    <div
+                        class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-oohashi-gold/20 rounded-full opacity-50 animate-[spin_40s_linear_infinite_reverse]">
+                    </div>
+                </div>
+
+                <!-- Text Content -->
+                <div data-aos="fade-left">
+                    <h2 class="text-oohashi-gold font-hand text-3xl mb-2">Nossa Filosofia</h2>
+                    <h3 class="text-4xl font-serif font-bold text-white mb-6">Tradição com Toque Moderno</h3>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        No Oohashi, acreditamos que a culinária japonesa é uma forma de arte. Nossos sushimen combinam
+                        técnicas milenares com os ingredientes mais frescos encontrados na Bahia.
+                    </p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        O ambiente foi projetado para transportar você para um Japão moderno, cosmopolita, mas que nunca
+                        esquece suas raízes. Cada prato é uma celebração de sabor, textura e beleza visual.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center text-oohashi-red">
+                                <i class="fas fa-leaf text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Ingredientes Frescos</h4>
+                                <p class="text-xs text-gray-500">Peixes selecionados diariamente.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center text-oohashi-red">
+                                <i class="fas fa-heart text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Feito com Paixão</h4>
+                                <p class="text-xs text-gray-500">Dedicação em cada detalhe.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location & Contact -->
+    <section id="location" class="py-20 bg-neutral-900 relative border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-oohashi-black rounded-2xl overflow-hidden shadow-2xl border border-gray-800">
+
+                <!-- Info -->
+                <div class="p-10 md:p-14 flex flex-col justify-center">
+                    <h3 class="text-3xl font-serif font-bold text-white mb-8">Visite o Oohashi</h3>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4 group">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-oohashi-gold group-hover:bg-oohashi-gold group-hover:text-black transition-colors">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Endereço</h4>
+                                <p class="text-gray-400">Av. Getúlio Vargas, 1234<br>Centro, Feira de Santana - BA</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-oohashi-gold group-hover:bg-oohashi-gold group-hover:text-black transition-colors">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Horário de Funcionamento</h4>
+                                <p class="text-gray-400">Terça a Domingo: 18h às 23h<br>Sexta e Sábado: 18h às 00h</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-oohashi-gold group-hover:bg-oohashi-gold group-hover:text-black transition-colors">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Delivery & Reservas</h4>
+                                <p class="text-gray-400">(75) 99999-9999</p>
+                                <a href="#"
+                                    class="text-oohashi-red text-sm font-bold hover:underline mt-1 inline-block">Chamar
+                                    no WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 flex gap-4">
+                        <a href="#"
+                            class="w-12 h-12 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:border-oohashi-gold hover:text-oohashi-gold hover:scale-110 transition-all">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#"
+                            class="w-12 h-12 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:border-blue-500 hover:text-blue-500 hover:scale-110 transition-all">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#"
+                            class="w-12 h-12 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:border-red-500 hover:text-red-500 hover:scale-110 transition-all">
+                            <i class="fas fa-utensils text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Map (Visual Representation) -->
+                <div
+                    class="relative h-96 md:h-auto bg-gray-800 grayscale hover:grayscale-0 transition-all duration-700 group">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3899.0833785192135!2d-38.9667!3d-12.2667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDE2JzAwLjEiUyAzOMKwNTgnMDAuMSJX!5e0!3m2!1sen!2sbr!4v1620000000000!5m2!1sen!2sbr"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    <div
+                        class="absolute inset-0 bg-oohashi-red/10 pointer-events-none group-hover:bg-transparent transition-colors">
+                    </div>
+                    <!-- Custom Map Marker Overlay (Visual only, iframe handles real map) -->
+                    <div
+                        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                        <div class="w-4 h-4 bg-oohashi-red rounded-full animate-ping absolute"></div>
+                        <div class="w-4 h-4 bg-oohashi-red rounded-full relative border-2 border-white shadow-lg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Button for Mobile -->
+    <a href="https://wa.me/5575999999999"
+        class="fixed bottom-6 right-6 z-40 md:hidden w-16 h-16 bg-green-500 rounded-full shadow-lg flex items-center justify-center text-white text-3xl hover:scale-110 transition-transform animate-bounce">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-black pt-16 pb-8 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex flex-col mb-4">
+                        <span
+                            class="font-serif font-bold text-white tracking-widest text-2xl leading-none">OOHASHI</span>
+                        <span class="text-xs text-oohashi-gold uppercase tracking-[0.3em]">Culinária Oriental</span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        Levando a essência da culinária japonesa para sua mesa com sofisticação e sabor inigualável em
+                        Feira de Santana.
+                    </p>
+                    <div class="text-gray-500 text-sm">
+                        <p>© 2024 Oohashi.</p>
+                        <p>Todos os direitos reservados.</p>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Navegação</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#home" class="hover:text-oohashi-gold transition-colors">Início</a></li>
+                        <li><a href="#menu" class="hover:text-oohashi-gold transition-colors">Cardápio</a></li>
+                        <li><a href="#experience" class="hover:text-oohashi-gold transition-colors">Experiência</a></li>
+                        <li><a href="#" class="hover:text-oohashi-gold transition-colors">Trabalhe Conosco</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Legal</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-oohashi-gold transition-colors">Política de Privacidade</a>
+                        </li>
+                        <li><a href="#" class="hover:text-oohashi-gold transition-colors">Termos de Uso</a></li>
+                        <li><a href="#" class="hover:text-oohashi-gold transition-colors">Informações Nutricionais</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Promo -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Ofertas Exclusivas</h4>
+                    <p class="text-gray-500 text-sm mb-4">Cadastre-se para receber promoções especiais.</p>
+                    <form class="flex flex-col gap-2">
+                        <input type="email" placeholder="Seu e-mail"
+                            class="bg-gray-900 border border-gray-800 text-white px-4 py-2 rounded-sm focus:outline-none focus:border-oohashi-gold text-sm transition-colors">
+                        <button type="button"
+                            class="bg-oohashi-gold text-black font-bold uppercase text-xs px-4 py-3 rounded-sm hover:bg-white transition-colors tracking-widest">
+                            Inscrever-se
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-900 pt-8 text-center">
+                <p class="text-gray-600 text-xs tracking-widest uppercase">
+                    Design by <span class="text-gray-400">Not-Lazy Studio</span>
                 </p>
-                <div class="flex flex-col md:flex-row gap-6 justify-center md:justify-start">
-                    <button
-                        class="px-8 py-3 transition-all duration-300 font-serif tracking-wider uppercase text-sm border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                        Ver Cardápio
-                    </button>
-                    <button
-                        class="px-8 py-3 transition-all duration-300 font-serif tracking-wider uppercase text-sm border border-white/20 text-white hover:border-amber-500 hover:text-amber-500 bg-black/40 backdrop-blur-sm hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                        Fazer Reserva
-                    </button>
-                </div>
             </div>
-
-            <!-- Hero Image Composition -->
-            <div class="md:col-span-6 relative mt-12 md:mt-0">
-                <!-- Decorative Frames -->
-                <div
-                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-amber-500/10 rounded-full animate-pulse-slow">
-                </div>
-                <div
-                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border border-amber-500/5 rounded-full">
-                </div>
-
-                <!-- Main Image -->
-                <div class="relative rounded-lg overflow-hidden shadow-2xl shadow-amber-900/20 group">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 opacity-60 transition-opacity group-hover:opacity-40">
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?q=80&w=2070&auto=format&fit=crop"
-                        alt="Vieiras Grelhadas - Prato Assinatura"
-                        class="w-full h-[500px] object-cover transform transition-transform duration-700 group-hover:scale-105" />
-                    <!-- Floating Caption -->
-                    <div class="absolute bottom-8 right-8 z-20 text-right">
-                        <p class="text-amber-400 font-display text-xl italic">Vieiras Douradas</p>
-                        <p className="text-xs text-gray-400 uppercase tracking-widest">Prato Assinatura</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div
-            class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-            <span class="text-[10px] uppercase tracking-widest text-amber-500">Explore</span>
-            <div class="w-px h-12 bg-gradient-to-b from-amber-500 to-transparent"></div>
-        </div>
-    </section>
-
-    <!-- About/Luxury Section -->
-    <section id="sobre" class="py-24 bg-zinc-900 relative overflow-hidden">
-        <!-- Decorative Lines -->
-        <div
-            class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent">
-        </div>
-        <div class="absolute top-0 left-10 w-px h-32 bg-gradient-to-b from-amber-500/30 to-transparent"></div>
-        <div class="absolute bottom-0 right-10 w-px h-32 bg-gradient-to-t from-amber-500/30 to-transparent"></div>
-
-        <div class="container mx-auto px-6 text-center max-w-4xl">
-            <div class="mb-6 flex justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="text-amber-500 w-8 h-8 opacity-80">
-                    <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8" />
-                    <path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7" />
-                    <path d="m2.1 21.8 6.4-6.3" />
-                    <path d="m19 5-7 7" />
-                </svg>
-            </div>
-            <h2 class="text-4xl md:text-5xl font-display text-white mb-8 tracking-wide">
-                EXPERIÊNCIA DE <span class="text-amber-500">LUXO</span>
-            </h2>
-            <p class="text-lg text-gray-400 leading-loose font-light font-body mb-12">
-                Entregue-se a uma experiência gastronômica inesquecível, onde cada prato é uma verdadeira obra-prima
-                e cada momento é elaborado com perfeição. Nossa cozinha une tradição e vanguarda para despertar todos os
-                seus sentidos.
-            </p>
-            <button
-                class="mx-auto block w-fit px-8 py-3 transition-all duration-300 font-serif tracking-wider uppercase text-sm border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                Reservar Mesa
-            </button>
-        </div>
-    </section>
-
-    <!-- Featured Menu Preview -->
-    <section id="cardápio" class="py-24 bg-zinc-950 relative">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <span class="text-amber-500 font-body text-xs tracking-[0.3em] uppercase block mb-2">Nossas
-                    Seleções</span>
-                <h2 class="text-4xl font-display text-white">Destaques do Chef</h2>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Dish 1 -->
-                <div
-                    class="group p-8 border border-white/5 bg-zinc-900/50 hover:border-amber-500/30 hover:bg-zinc-900 transition-all duration-500 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 left-0 w-full h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
-                    </div>
-                    <div class="flex justify-between items-baseline mb-4 border-b border-dashed border-gray-700 pb-4">
-                        <h3 class="text-xl font-display text-amber-100 group-hover:text-amber-400 transition-colors">
-                            Filé Mignon Trufado</h3>
-                        <span class="text-lg font-display text-amber-500">R$ 145</span>
-                    </div>
-                    <p class="text-gray-400 font-body text-sm leading-relaxed">Medalhões de filé mignon, redução de
-                        vinho do porto, azeite de trufas brancas e purê rústico.</p>
-                </div>
-
-                <!-- Dish 2 -->
-                <div
-                    class="group p-8 border border-white/5 bg-zinc-900/50 hover:border-amber-500/30 hover:bg-zinc-900 transition-all duration-500 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 left-0 w-full h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
-                    </div>
-                    <div class="flex justify-between items-baseline mb-4 border-b border-dashed border-gray-700 pb-4">
-                        <h3 class="text-xl font-display text-amber-100 group-hover:text-amber-400 transition-colors">
-                            Lagosta Thermidor</h3>
-                        <span class="text-lg font-display text-amber-500">R$ 210</span>
-                    </div>
-                    <p class="text-gray-400 font-body text-sm leading-relaxed">Cauda de lagosta gratinada com molho
-                        cremoso de mostarda Dijon, conhaque e queijo gruyère.</p>
-                </div>
-
-                <!-- Dish 3 -->
-                <div
-                    class="group p-8 border border-white/5 bg-zinc-900/50 hover:border-amber-500/30 hover:bg-zinc-900 transition-all duration-500 relative overflow-hidden">
-                    <div
-                        class="absolute top-0 left-0 w-full h-1 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
-                    </div>
-                    <div class="flex justify-between items-baseline mb-4 border-b border-dashed border-gray-700 pb-4">
-                        <h3 class="text-xl font-display text-amber-100 group-hover:text-amber-400 transition-colors">
-                            Risoto de Açafrão</h3>
-                        <span class="text-lg font-display text-amber-500">R$ 115</span>
-                    </div>
-                    <p class="text-gray-400 font-body text-sm leading-relaxed">Arroz arbóreo italiano, açafrão
-                        importado, vieiras grelhadas e toque de limão siciliano.</p>
-                </div>
-            </div>
-
-            <div class="mt-12 text-center">
-                <a href="#"
-                    class="inline-flex items-center gap-2 text-amber-500 uppercase tracking-widest text-xs hover:text-white transition-colors border-b border-transparent hover:border-white pb-1">
-                    Ver Menu Completo
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="w-4 h-4">
-                        <path d="m9 18 6-6-6-6" />
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Info / Footer Section -->
-    <footer class="bg-zinc-900 border-t border-white/5 pt-20 pb-10">
-        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-12 mb-16 text-center md:text-left">
-            <!-- Contact -->
-            <div class="space-y-6">
-                <h4 class="text-xl font-display text-white tracking-wider">CONTATO</h4>
-                <div class="space-y-4 text-gray-400 font-body font-light text-sm">
-                    <p class="flex items-center justify-center md:justify-start gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="w-4 h-4 text-amber-500">
-                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                            <circle cx="12" cy="10" r="3" />
-                        </svg>
-                        Av. Paulista, 1234 - Jardins, SP
-                    </p>
-                    <p class="flex items-center justify-center md:justify-start gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="w-4 h-4 text-amber-500">
-                            <path
-                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                        </svg>
-                        (11) 3000-0000
-                    </p>
-                    <p class="flex items-center justify-center md:justify-start gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="w-4 h-4 text-amber-500">
-                            <rect width="20" height="16" x="2" y="4" rx="2" />
-                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                        </svg>
-                        reservas@colherdourada.com.br
-                    </p>
-                </div>
-            </div>
-
-            <!-- Logo Center -->
-            <div class="flex flex-col items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="w-10 h-10 text-amber-500 mb-4">
-                    <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8" />
-                    <path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7" />
-                    <path d="m2.1 21.8 6.4-6.3" />
-                    <path d="m19 5-7 7" />
-                </svg>
-                <h3 class="text-2xl font-display text-white tracking-[0.2em]">A COLHER</h3>
-                <h3 class="text-2xl font-display text-amber-500 tracking-[0.2em]">DOURADA</h3>
-            </div>
-
-            <!-- Hours -->
-            <div class="space-y-6 text-center md:text-right">
-                <h4 class="text-xl font-display text-white tracking-wider">HORÁRIOS</h4>
-                <div class="space-y-2 text-gray-400 font-body font-light text-sm">
-                    <p>Segunda - Quinta: 19h - 23h</p>
-                    <p>Sexta - Sábado: 19h - 01h</p>
-                    <p>Domingo: Fechado</p>
-                </div>
-                <div class="flex gap-4 justify-center md:justify-end pt-2">
-                    <!-- Instagram -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="w-5 h-5 text-gray-500 hover:text-amber-500 cursor-pointer transition-colors">
-                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-                    </svg>
-                    <!-- Facebook -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="w-5 h-5 text-gray-500 hover:text-amber-500 cursor-pointer transition-colors">
-                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                    </svg>
-                    <!-- Twitter -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="w-5 h-5 text-gray-500 hover:text-amber-500 cursor-pointer transition-colors">
-                        <path
-                            d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="container mx-auto px-6 border-t border-white/5 pt-8 text-center">
-            <p class="text-xs text-gray-600 font-body uppercase tracking-widest">
-                © 2024 A Colher Dourada. Todos os direitos reservados.
-            </p>
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Navbar Scroll Effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-zinc-950/95', 'backdrop-blur-md', 'py-4', 'border-b', 'border-white/5');
-                navbar.classList.remove('bg-transparent', 'py-8');
-            } else {
-                navbar.classList.remove('bg-zinc-950/95', 'backdrop-blur-md', 'py-4', 'border-b', 'border-white/5');
-                navbar.classList.add('bg-transparent', 'py-8');
-            }
+        // Init Animations
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+            easing: 'ease-out-cubic'
+        });
+
+        // Loader Logic
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.classList.add('loader-hidden');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 1500); // Simulate loading time for effect
         });
 
         // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
-        const closeIcon = document.getElementById('close-icon');
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.querySelector('.fa-bars');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            menuIcon.classList.toggle('hidden');
-            closeIcon.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('block');
+                // Optional: Change icon to X
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('block');
+            }
+        }
+
+        // Sticky Navbar Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+                nav.classList.replace('h-24', 'h-20');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Smooth Scroll for anchor links (Native scroll-smooth handles most, this is fallback/enhancement)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
 </body>
